@@ -45,10 +45,13 @@
         };
       };
 
+      homeManagerModules.default = ./homeManagerModules;
       homeConfigurations = {
         "zorbik@titan-r" = lib.homeManagerConfiguration {
-          modules =
-            [ ./hosts/titan-r/homes/zorbik/home.nix ./homeManagerModules ];
+          modules = [
+            ./hosts/titan-r/homes/zorbik/home.nix
+            self.homeManagerModules.default
+          ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = {
             inherit inputs outputs;
