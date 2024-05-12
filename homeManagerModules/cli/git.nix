@@ -1,22 +1,30 @@
-{ lib, config, ... }:
-let cfg = config.git;
+{
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.git;
 in {
   options = {
     git.enable = lib.mkEnableOption "enables git";
+
     git.userName = lib.mkOption {
       type = lib.types.str;
       example = "Ryan Seipp";
     };
+
     git.userEmail = lib.mkOption {
       type = lib.types.str;
       example = "myEmail@example.com";
     };
+
     git.signingKey = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       description = "SSH key to sign commits with";
       example = "ssh-ed25519 <ssh-key-public-hash> comment";
     };
   };
+
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       home.shellAliases = {
@@ -79,8 +87,7 @@ in {
         extraConfig = {
           gpg.format = "ssh";
           ssh = {
-            allowedSignersFile =
-              "${config.home.homeDirectory}/.ssh/allowed_signers";
+            allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
           };
         };
       };

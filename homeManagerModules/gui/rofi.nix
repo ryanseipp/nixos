@@ -1,7 +1,13 @@
-{ pkgs, lib, config, ... }:
-let inherit (config.lib.formats.rasi) mkLiteral;
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  inherit (config.lib.formats.rasi) mkLiteral;
 in {
-  options = { rofi.enable = lib.mkEnableOption "enables rofi"; };
+  options = {rofi.enable = lib.mkEnableOption "enables rofi";};
+
   config = lib.mkIf config.rofi.enable {
     programs.rofi = {
       enable = true;
@@ -9,8 +15,8 @@ in {
       font = "Iosevka Nerd Font 9";
       terminal = "kitty";
       extraConfig = {
-        combi-modes = [ "run" "drun" ];
-        modes = [ "run" "drun" "combi" ];
+        combi-modes = ["run" "drun"];
+        modes = ["run" "drun" "combi"];
         icon-theme = "Oranchelo";
         show-icons = true;
         drun-display-format = ''"{icon} {name}"'';
@@ -49,10 +55,10 @@ in {
           background-color = mkLiteral "@bg-col";
         };
 
-        mainbox = { background-color = mkLiteral "@bg-col"; };
+        mainbox = {background-color = mkLiteral "@bg-col";};
 
         inputbar = {
-          children = map mkLiteral [ "prompt" "entry" ];
+          children = map mkLiteral ["prompt" "entry"];
           background-color = mkLiteral "@bg-col";
           border-radius = mkLiteral "5px";
           padding = mkLiteral "2px";
@@ -93,14 +99,14 @@ in {
           text-color = mkLiteral "@fg-col  ";
         };
 
-        element-icon = { size = mkLiteral "25px"; };
+        element-icon = {size = mkLiteral "25px";};
 
         "element selected" = {
           background-color = mkLiteral " @selected-col ";
           text-color = mkLiteral "@fg-col2  ";
         };
 
-        mode-switcher = { spacing = 0; };
+        mode-switcher = {spacing = 0;};
 
         button = {
           padding = mkLiteral "10px";

@@ -1,10 +1,17 @@
-{ pkgs, lib, config, ... }: {
-  options = { firefox.enable = lib.mkEnableOption "enables firefox"; };
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
+  options = {firefox.enable = lib.mkEnableOption "enables firefox";};
+
   config = lib.mkIf config.firefox.enable {
     programs.firefox = {
       enable = true;
-      package = (pkgs.wrapFirefox
-        (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
+      package =
+        pkgs.wrapFirefox
+        (pkgs.firefox-unwrapped.override {pipewireSupport = true;}) {};
       policies = {
         DisableTelemetry = true;
         DisableFirefoxStudies = true;
@@ -19,28 +26,31 @@
       };
       profiles = {
         zorbik = {
-          bookmarks = [{
-            toolbar = true;
-            bookmarks = [{
-              name = "Nix";
+          bookmarks = [
+            {
+              toolbar = true;
               bookmarks = [
                 {
-                  name = "NixOS Wiki";
-                  url = "https://wiki.nixos.org/wiki/NixOS_Wiki";
-                }
-                {
-                  name = "home-manager options";
-                  url =
-                    "https://nix-community.github.io/home-manager/options.xhtml";
-                }
-                {
-                  name = "Misterio77/nix-config";
-                  url = "https://github.com/Misterio77/nix-config";
+                  name = "Nix";
+                  bookmarks = [
+                    {
+                      name = "NixOS Wiki";
+                      url = "https://wiki.nixos.org/wiki/NixOS_Wiki";
+                    }
+                    {
+                      name = "home-manager options";
+                      url = "https://nix-community.github.io/home-manager/options.xhtml";
+                    }
+                    {
+                      name = "Misterio77/nix-config";
+                      url = "https://github.com/Misterio77/nix-config";
+                    }
+                  ];
                 }
               ];
-            }];
-          }];
-          extensions = with pkgs.inputs.firefox-addons; [ bitwarden ];
+            }
+          ];
+          extensions = with pkgs.inputs.firefox-addons; [bitwarden];
           search = {
             default = "DuckDuckGo";
             engines = {
@@ -49,7 +59,7 @@
               "eBay".metaData.hidden = true;
             };
             force = true;
-            order = [ "DuckDuckGo" "Google" ];
+            order = ["DuckDuckGo" "Google"];
           };
           settings = {
             "browser.contentblocking.category" = "strict";
@@ -61,8 +71,7 @@
               true;
             "browser.newtabpage.activity-stream.feeds.section.topstories" =
               false;
-            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" =
-              "google,amazon";
+            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" = "google,amazon";
             "browser.newtabpage.activity-stream.section.highlights.includePocket" =
               false;
             "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
@@ -95,8 +104,7 @@
                   "downloads-button"
                   "_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action"
                 ];
-                TabsToolbar =
-                  [ "firefox-view-button" "tabbrowser-tabs" "new-tab-button" ];
+                TabsToolbar = ["firefox-view-button" "tabbrowser-tabs" "new-tab-button"];
               };
             };
           };

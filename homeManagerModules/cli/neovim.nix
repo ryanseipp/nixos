@@ -1,7 +1,13 @@
-{ pkgs, lib, config, ... }: {
-  options = { neovim.enable = lib.mkEnableOption "enables neovim"; };
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
+  options = {neovim.enable = lib.mkEnableOption "enables neovim";};
+
   config = lib.mkIf config.neovim.enable {
-    home.shellAliases = { n = "nvim"; };
+    home.shellAliases = {n = "nvim";};
 
     programs.neovim = {
       enable = true;
@@ -71,6 +77,7 @@
         vim-tmux-navigator
       ];
       extraPackages = with pkgs; [
+        alejandra
         clang-tools
         dockerfile-language-server-nodejs
         elixir-ls
@@ -78,7 +85,6 @@
         gopls
         lua-language-server
         nixd
-        nixfmt-classic
         nodePackages.bash-language-server
         nodePackages.eslint
         nodePackages.prettier
@@ -108,9 +114,9 @@
           },
           dev = {
             path = "${
-              pkgs.vimUtils.packDir
-              config.programs.neovim.finalPackage.passthru.packpathDirs
-            }/pack/myNeovimPackages/start",
+          pkgs.vimUtils.packDir
+          config.programs.neovim.finalPackage.passthru.packpathDirs
+        }/pack/myNeovimPackages/start",
             patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "MunifTanjim", "rcarriga", "lukas-reineke", "christoomey", "theHamsta", "leoluz" }
           },
           install = {

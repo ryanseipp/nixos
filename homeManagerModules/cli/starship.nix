@@ -1,5 +1,10 @@
-{ lib, config, ... }: {
-  options = { starship.enable = lib.mkEnableOption "enables starship prompt"; };
+{
+  lib,
+  config,
+  ...
+}: {
+  options = {starship.enable = lib.mkEnableOption "enables starship prompt";};
+
   config = lib.mkIf config.starship.enable {
     programs.starship = {
       enable = true;
@@ -85,7 +90,7 @@
           "$character"
         ];
 
-        cmd_duration = { disabled = false; };
+        cmd_duration = {disabled = false;};
 
         directory = {
           read_only = " ";
@@ -93,7 +98,7 @@
           fish_style_pwd_dir_length = 1;
         };
 
-        git_metrics = { disabled = false; };
+        git_metrics = {disabled = false;};
 
         git_status = {
           conflicted = "=\${count}";
@@ -113,29 +118,29 @@
           use_12hr = true;
         };
 
-        aws = { symbol = "  "; };
-        buf = { symbol = " "; };
-        c = { symbol = " "; };
-        conda = { symbol = " "; };
-        dart = { symbol = " "; };
-        docker_context = { symbol = " "; };
-        dotnet = { symbol = "󰪮 "; };
-        elixir = { symbol = " "; };
-        elm = { symbol = " "; };
-        git_branch = { symbol = " "; };
-        golang = { symbol = " "; };
-        haskell = { symbol = " "; };
-        hg_branch = { symbol = " "; };
-        java = { symbol = " "; };
-        julia = { symbol = " "; };
-        memory_usage = { symbol = "󰍛 "; };
-        nim = { symbol = " "; };
-        nix_shell = { symbol = " "; };
-        nodejs = { symbol = " "; };
-        package = { symbol = " "; };
-        python = { symbol = " "; };
-        spack = { symbol = "🅢 "; };
-        rust = { symbol = " "; };
+        aws = {symbol = "  ";};
+        buf = {symbol = " ";};
+        c = {symbol = " ";};
+        conda = {symbol = " ";};
+        dart = {symbol = " ";};
+        docker_context = {symbol = " ";};
+        dotnet = {symbol = "󰪮 ";};
+        elixir = {symbol = " ";};
+        elm = {symbol = " ";};
+        git_branch = {symbol = " ";};
+        golang = {symbol = " ";};
+        haskell = {symbol = " ";};
+        hg_branch = {symbol = " ";};
+        java = {symbol = " ";};
+        julia = {symbol = " ";};
+        memory_usage = {symbol = "󰍛 ";};
+        nim = {symbol = " ";};
+        nix_shell = {symbol = " ";};
+        nodejs = {symbol = " ";};
+        package = {symbol = " ";};
+        python = {symbol = " ";};
+        spack = {symbol = "🅢 ";};
+        rust = {symbol = " ";};
 
         palettes = {
           catppuccin_mocha = {

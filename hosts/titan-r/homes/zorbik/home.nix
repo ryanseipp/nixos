@@ -1,7 +1,11 @@
-{ outputs, pkgs, ... }: {
+{
+  outputs,
+  pkgs,
+  ...
+}: {
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
-    config = { allowUnfree = true; };
+    config = {allowUnfree = true;};
   };
 
   home.username = "zorbik";
@@ -26,8 +30,7 @@
     enable = true;
     userName = "Ryan Seipp";
     userEmail = "rseipp@ryanseipp.com";
-    signingKey =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCycJpF3hp+BKw88FYMAfjhEtqC/1TkWqZjK1SScIVb rseipp@ryanseipp.com";
+    signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCycJpF3hp+BKw88FYMAfjhEtqC/1TkWqZjK1SScIVb rseipp@ryanseipp.com";
   };
 
   firefox.enable = true;
@@ -42,8 +45,8 @@
     enable = true;
     portal = {
       enable = true;
-      config = { common.default = "*"; };
-      extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
+      config = {common.default = "*";};
+      extraPortals = with pkgs; [xdg-desktop-portal-hyprland];
     };
   };
 
@@ -56,7 +59,7 @@
   };
   programs.keychain = {
     enable = true;
-    keys = [ "id_rsa" "id_ed25519" "rseipp_id_ed25519" ];
+    keys = ["id_rsa" "id_ed25519" "rseipp_id_ed25519"];
     enableBashIntegration = false;
     enableFishIntegration = false;
     enableNushellIntegration = false;
@@ -64,13 +67,6 @@
   };
 
   services.playerctld.enable = true;
-
-  # home.file.".ssh/allowed_signers" = {
-  #   enable = true;
-  #   text = ''
-  #     rseipp@ryanseipp.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCycJpF3hp+BKw88FYMAfjhEtqC/1TkWqZjK1SScIVb rseipp@ryanseipp.com
-  #   '';
-  # };
 
   home.stateVersion = "23.11";
   programs.home-manager.enable = true;

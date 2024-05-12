@@ -1,5 +1,10 @@
-{ lib, config, ... }: {
-  options = { hyprland.enable = lib.mkEnableOption "enables hyprland"; };
+{
+  lib,
+  config,
+  ...
+}: {
+  options = {hyprland.enable = lib.mkEnableOption "enables hyprland";};
+
   config = lib.mkIf config.hyprland.enable {
     wayland.windowManager.hyprland = {
       enable = true;
@@ -84,7 +89,7 @@
         input = {
           kb_layout = "us";
           follow_mouse = 1;
-          touchpad = { natural_scroll = "false"; };
+          touchpad = {natural_scroll = "false";};
 
           sensitivity = 0;
         };
@@ -117,16 +122,16 @@
           "col.shadow" = "$base";
         };
 
-        animations = { enabled = false; };
+        animations = {enabled = false;};
 
         dwindle = {
           pseudotile = true;
           preserve_split = true;
         };
 
-        master = { new_is_master = true; };
+        master = {new_is_master = true;};
 
-        gestures = { workspace_swipe = false; };
+        gestures = {workspace_swipe = false;};
 
         # windowrulev2 = "suppressevent maximize, class:.*";
 
@@ -188,7 +193,7 @@
       };
     };
 
-    programs.hyprlock = { enable = true; };
+    programs.hyprlock = {enable = true;};
 
     services.hyprpaper = {
       enable = true;

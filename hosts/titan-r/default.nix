@@ -1,22 +1,17 @@
-{ pkgs, ... }: {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+{pkgs, ...}: {
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete -older-than 30d";
   };
 
-  imports = [ ./hardware-configuration.nix ];
+  imports = [./hardware-configuration.nix];
 
   networking = {
     hostName = "titan-r";
     networkmanager.enable = true;
-
-    # enableIPv6 = true;
-    # useDHCP = true;
-
-    nameservers =
-      [ "2606:4700:4700::1111" "2606:4700:4700::1001" "1.1.1.1" "1.0.0.1" ];
+    nameservers = ["2606:4700:4700::1111" "2606:4700:4700::1001" "1.1.1.1" "1.0.0.1"];
   };
 
   time.timeZone = "America/New_York";
@@ -24,17 +19,17 @@
 
   users.users.zorbik = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     shell = pkgs.zsh;
   };
 
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [ man-pages man-pages-posix ];
+  environment.systemPackages = with pkgs; [man-pages man-pages-posix];
 
   fonts.packages = with pkgs; [
     inter
     source-sans
-    (nerdfonts.override { fonts = [ "Iosevka" "SourceCodePro" ]; })
+    (nerdfonts.override {fonts = ["Iosevka" "SourceCodePro"];})
   ];
 
   security.polkit.enable = true;
