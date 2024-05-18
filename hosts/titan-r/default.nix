@@ -1,12 +1,16 @@
-{pkgs, ...}: {
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete -older-than 30d";
-  };
+{
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    inputs.hardware.nixosModules.common-cpu-amd
+    inputs.hardware.nixosModules.common-cpu-amd-pstate
+    inputs.hardware.nixosModules.common-gpu-amd
+    inputs.hardware.nixosModules.common-pc-ssd
 
-  imports = [./hardware-configuration.nix];
+    ./hardware-configuration.nix
+  ];
 
   networking = {
     hostName = "titan-r";
@@ -24,7 +28,7 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [man-pages man-pages-posix];
+  environment.systemPackages = with pkgs; [man-pages man-pages-posix r2modman];
 
   fonts.packages = with pkgs; [
     inter
@@ -36,9 +40,9 @@
   security.rtkit.enable = true;
 
   programs.zsh.enable = true;
+  programs.steam.enable = true;
 
   services = {
-    fstrim.enable = true;
     blueman.enable = true;
     pipewire = {
       enable = true;
@@ -48,22 +52,13 @@
     };
   };
 
-  virtualisation.containers.enable = true;
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
-  };
+  podmanHost.enable = true;
 
   hardware = {
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
 
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
+    opengl.enable = true;
   };
 
   systemd.coredump.enable = true;
@@ -71,6 +66,8 @@
   # boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  gc.enable = true;
 
   # system.copySystemConfiguration = true;
 

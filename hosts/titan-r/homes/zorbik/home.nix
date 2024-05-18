@@ -15,6 +15,8 @@
     eza
     fd
     hyprpaper
+    pavucontrol
+    pulsemixer
     qalculate-qt
     ripgrep
     spotify
@@ -34,6 +36,7 @@
     signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCycJpF3hp+BKw88FYMAfjhEtqC/1TkWqZjK1SScIVb rseipp@ryanseipp.com";
   };
 
+  btop.enable = true;
   firefox.enable = true;
   hyprland.enable = true;
   kitty.enable = true;

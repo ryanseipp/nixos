@@ -1,6 +1,7 @@
 {lib, ...}: {
   imports = [
     ./bat.nix
+    ./btop.nix
     ./git.nix
     ./neovim.nix
     ./podman.nix
