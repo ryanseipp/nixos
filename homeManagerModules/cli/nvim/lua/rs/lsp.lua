@@ -291,7 +291,7 @@ M.servers = {
 			"javascriptreact",
 			"reason",
 			"rescript",
-			"rust",
+			-- "rust",
 			"typescript",
 			"typescriptreact",
 			"vue",

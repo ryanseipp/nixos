@@ -15,6 +15,7 @@
     eza
     fd
     hyprpaper
+    qalculate-qt
     ripgrep
     spotify
     vesktop
