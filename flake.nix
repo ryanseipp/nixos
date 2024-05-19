@@ -6,11 +6,6 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     hardware.url = "github:nixos/nixos-hardware";
 
-    generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,7 +22,6 @@
     nixpkgs,
     nixpkgs-stable,
     home-manager,
-    generators,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -68,16 +62,5 @@
         };
       };
     };
-
-    # virtual machine images
-    packages = forEachSystem (pkgs: {
-      k8s-system = generators.nixosGenerate {
-        inherit pkgs;
-        system = "x86_64-linux";
-        format = "qcow-efi";
-        specialArgs = {inherit inputs outputs;};
-        modules = [./hosts/k8s-system self.nixosModules.default];
-      };
-    });
   };
 }

@@ -23,7 +23,7 @@
 
   users.users.zorbik = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "libvirtd"];
     shell = pkgs.zsh;
   };
 
@@ -53,6 +53,7 @@
   };
 
   podmanHost.enable = true;
+  qemuHost.enable = true;
 
   hardware = {
     bluetooth.enable = true;
@@ -63,7 +64,7 @@
 
   systemd.coredump.enable = true;
 
-  # boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
