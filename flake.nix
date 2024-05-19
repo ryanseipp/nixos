@@ -33,11 +33,11 @@
         inherit system;
         config.allowUnfree = true;
       });
-    pkgsForStable = lib.genAttrs systems (system:
-      import nixpkgs-stable {
-        inherit system;
-        config.allowUnfree = true;
-      });
+    # pkgsForStable = lib.genAttrs systems (system:
+    #   import nixpkgs-stable {
+    #     inherit system;
+    #     config.allowUnfree = true;
+    #   });
   in {
     overlays = import ./overlays {inherit inputs;};
     formatter = forEachSystem (pkgs: pkgs.alejandra);
@@ -47,20 +47,24 @@
 
     nixosConfigurations = {
       titan-r = lib.nixosSystem {
-        modules = [./hosts/titan-r self.nixosModules.default];
+        modules = [
+          ./hosts/titan-r
+          self.nixosModules.default
+          home-manager.nixosModules.home-manager
+        ];
         specialArgs = {inherit inputs outputs;};
       };
     };
 
-    homeConfigurations = {
-      "zorbik@titan-r" = lib.homeManagerConfiguration {
-        modules = [./hosts/titan-r/homes/zorbik/home.nix self.homeManagerModules.default];
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = {
-          inherit inputs outputs;
-          pkgs-stable = pkgsForStable.x86_64-linux;
-        };
-      };
-    };
+    # homeConfigurations = {
+    #   "zorbik@titan-r" = lib.homeManagerConfiguration {
+    #     modules = [./hosts/titan-r/homes/zorbik/home.nix];
+    #     pkgs = pkgsFor.x86_64-linux;
+    #     extraSpecialArgs = {
+    #       inherit inputs outputs;
+    #       pkgs-stable = pkgsForStable.x86_64-linux;
+    #     };
+    #   };
+    # };
   };
 }

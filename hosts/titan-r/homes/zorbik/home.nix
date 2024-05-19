@@ -8,6 +8,8 @@
     config = {allowUnfree = true;};
   };
 
+  imports = [outputs.homeManagerModules.default];
+
   home.username = "zorbik";
   home.homeDirectory = "/home/zorbik";
   home.packages = with pkgs; [

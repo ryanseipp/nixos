@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  outputs,
   ...
 }: {
   imports = [
@@ -26,6 +27,7 @@
     extraGroups = ["wheel" "libvirtd"];
     shell = pkgs.zsh;
   };
+  home-manager.users.zorbik = import ./homes/zorbik/home.nix {inherit pkgs inputs outputs;};
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [man-pages man-pages-posix r2modman];
