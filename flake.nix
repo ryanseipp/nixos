@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     hardware.url = "github:nixos/nixos-hardware";
 
     home-manager = {
@@ -20,12 +19,11 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-stable,
     home-manager,
     ...
   } @ inputs: let
     inherit (self) outputs;
-    lib = nixpkgs.lib // home-manager.lib;
+    lib = nixpkgs.lib;
     systems = ["x86_64-linux"];
     forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
     pkgsFor = lib.genAttrs systems (system:
@@ -33,11 +31,6 @@
         inherit system;
         config.allowUnfree = true;
       });
-    # pkgsForStable = lib.genAttrs systems (system:
-    #   import nixpkgs-stable {
-    #     inherit system;
-    #     config.allowUnfree = true;
-    #   });
   in {
     overlays = import ./overlays {inherit inputs;};
     formatter = forEachSystem (pkgs: pkgs.alejandra);
@@ -47,6 +40,7 @@
 
     nixosConfigurations = {
       titan-r = lib.nixosSystem {
+        system = "x64_64-linux";
         modules = [
           ./hosts/titan-r
           self.nixosModules.default
@@ -55,16 +49,5 @@
         specialArgs = {inherit inputs outputs;};
       };
     };
-
-    # homeConfigurations = {
-    #   "zorbik@titan-r" = lib.homeManagerConfiguration {
-    #     modules = [./hosts/titan-r/homes/zorbik/home.nix];
-    #     pkgs = pkgsFor.x86_64-linux;
-    #     extraSpecialArgs = {
-    #       inherit inputs outputs;
-    #       pkgs-stable = pkgsForStable.x86_64-linux;
-    #     };
-    #   };
-    # };
   };
 }
