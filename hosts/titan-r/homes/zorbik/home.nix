@@ -26,6 +26,14 @@
     wl-clipboard
   ];
 
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Original-Ice";
+    size = 24;
+    gtk.enable = true;
+    x11.enable = true;
+  };
+
   home.shellAliases = {
     ls = "eza -l";
     la = "eza -la";

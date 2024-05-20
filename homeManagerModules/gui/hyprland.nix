@@ -229,20 +229,5 @@
         ];
       };
     };
-
-    # home.file.".config/hypr/hyprpaper.conf" = {
-    #   enable = true;
-    #   text = ''
-    #     preload = ~/Pictures/wallpapers/forest-river.jpg
-    #     wallpaper = DP-1,~/Pictures/wallpapers/forest-river.jpg
-    #     wallpaper = DP-2,~/Pictures/wallpapers/forest-river.jpg
-    #     splash = false
-    #   '';
-    # };
-    #
-    # home.file."Pictures/wallpapers/forest-river.jpg" = {
-    #   enable = true;
-    #   source = ../../assets/forest-river.jpg;
-    # };
   };
 }
