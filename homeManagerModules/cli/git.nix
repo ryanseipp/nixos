@@ -22,6 +22,7 @@ in {
       type = lib.types.nullOr lib.types.str;
       description = "SSH key to sign commits with";
       example = "ssh-ed25519 <ssh-key-public-hash> comment";
+      default = null;
     };
   };
 
@@ -29,7 +30,7 @@ in {
     {
       home.shellAliases = {
         g = "git";
-        gbm = ''g br --merged | rg -v "(^\*|master|main)" | xargs g brd'';
+        gbm = ''g br --merged | rg -v "(^\*|main|master|develop)" | xargs g brd'';
       };
 
       programs.git = {
@@ -71,7 +72,6 @@ in {
           rebase.autoStash = true;
           log.abbrevCommit = true;
           help.autoCorrect = "immediate";
-          commit.gpgsign = true;
           diff.tool = "nvimdiff";
         };
       };
@@ -85,6 +85,7 @@ in {
         };
 
         extraConfig = {
+          commit.gpgsign = true;
           gpg.format = "ssh";
           ssh = {
             allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
