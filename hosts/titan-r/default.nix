@@ -30,7 +30,7 @@
   home-manager.users.zorbik = import ./homes/zorbik/home.nix {inherit pkgs inputs outputs;};
 
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [man-pages man-pages-posix r2modman];
+  environment.systemPackages = with pkgs; [man-pages man-pages-posix r2modman liburing];
 
   fonts.packages = with pkgs; [
     inter
@@ -66,6 +66,13 @@
   };
 
   systemd.coredump.enable = true;
+  documentation = {
+    enable = true;
+    dev.enable = true;
+    man.enable = true;
+    info.enable = true;
+    doc.enable = true;
+  };
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
   boot.loader.systemd-boot.enable = true;

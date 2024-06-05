@@ -10,7 +10,7 @@ return {
 				require("telescope.builtin").find_files({
 					prompt_title = "~ nvim ~",
 					shorten_path = false,
-					cwd = "~/nixos/homes/features/cli/nvim/",
+					cwd = "~/nixos/homeManagerModules/cli/nvim/",
 				})
 			end,
 			desc = "find_nvim",
@@ -20,13 +20,13 @@ return {
 			"<leader>fh",
 			function()
 				require("telescope.builtin").find_files({
-					prompt_title = "~ home-manager ~",
+					prompt_title = "~ nixos hosts ~",
 					shorten_path = false,
-					cwd = "~/nixos/homes/",
+					cwd = "~/nixos/hosts/",
 					hidden = true,
 				})
 			end,
-			desc = "find_home_manager",
+			desc = "find_nixos_hosts",
 			silent = true,
 		},
 

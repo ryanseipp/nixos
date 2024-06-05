@@ -78,18 +78,23 @@
       ];
       extraPackages = with pkgs; [
         alejandra
+        beautysh
         clang-tools
+        csharpier
         dockerfile-language-server-nodejs
         elixir-ls
         fzf
         gopls
+        lldb
         lua-language-server
         nixd
         nodePackages.bash-language-server
         nodePackages.eslint
         nodePackages.prettier
+        ocamlformat
         omnisharp-roslyn
         rust-analyzer
+        rustywind
         shfmt
         stylua
         yaml-language-server

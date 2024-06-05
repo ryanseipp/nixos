@@ -15,6 +15,9 @@
       mouse = true;
 
       baseIndex = 1;
+      escapeTime = 10;
+      shell = "${pkgs.zsh}/bin/zsh";
+      terminal = "screen-256color";
 
       plugins = with pkgs.tmuxPlugins; [
         {

@@ -16,6 +16,7 @@
     curl
     eza
     fd
+    gdb
     hyprpaper
     pavucontrol
     pulsemixer
@@ -79,6 +80,21 @@
     enableNushellIntegration = false;
     enableXsessionIntegration = false;
   };
+  programs.zsh.initExtra = ''
+    analyze_dump () {
+      dump=$1
+      info=$(coredumpctl info "$dump")
+      exe=$(echo "$info" | rg 'Executable' | awk '{print $2}')
+
+      echo INFO:
+      echo
+      coredumpctl dump "$dump" --output "$dump.core"
+      echo
+      echo Dropping into debugger...
+      echo
+      gdb "$exe" -c "$dump.core"
+    }
+  '';
 
   services.playerctld.enable = true;
 
