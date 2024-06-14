@@ -14,6 +14,7 @@
   home.homeDirectory = "/home/zorbik";
   home.packages = with pkgs; [
     curl
+    dig
     eza
     fd
     gdb

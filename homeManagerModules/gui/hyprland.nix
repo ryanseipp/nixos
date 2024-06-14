@@ -84,7 +84,7 @@
 
         monitor = ",highrr,auto,auto,vrr,1";
 
-        exec-once = "hyprpaper & waybar";
+        exec-once = "waybar";
 
         input = {
           kb_layout = "us";
