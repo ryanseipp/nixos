@@ -164,14 +164,14 @@ M.custom_attach = function(client, bufnr)
 			"gr",
 			"[LSP] Go to references",
 			function()
-				require("telescope")["lsp_references"]()
+				require("telescope-builtins")["lsp_references"]()
 			end,
 		},
 		{
 			"gi",
 			"[LSP] Go to implementations",
 			function()
-				require("telescope")["lsp_implementations"]()
+				require("telescope-builtins")["lsp_implementations"]()
 			end,
 		},
 		{ "K", "[LSP] Show more information", vim.lsp.buf.hover },

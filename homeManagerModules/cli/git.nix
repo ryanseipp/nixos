@@ -57,6 +57,7 @@ in {
           plog = "log --graph --all --decorate --oneline";
           p = "pull -p";
           pu = "push";
+          puf = "push --force-with-lease";
           rb = "rebase";
           rba = "rebase --abort";
           rbc = "rebase --continue";
