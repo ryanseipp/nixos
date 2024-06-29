@@ -2,85 +2,22 @@
   lib,
   config,
   ...
-}: {
+}: let
+  wallpaper = ../../assets/forest-river.jpg;
+in {
   options = {hyprland.enable = lib.mkEnableOption "enables hyprland";};
 
   config = lib.mkIf config.hyprland.enable {
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = true;
-      systemd.enable = true;
 
       settings = {
-        "debug:disable_logs" = "false";
-        "$rosewaterAlpha" = "f5e0dc";
-        "$flamingoAlpha" = "f2cdcd";
-        "$pinkAlpha" = "f5c2e7";
-        "$mauveAlpha" = "cba6f7";
-        "$redAlpha" = "f38ba8";
-        "$maroonAlpha" = "eba0ac";
-        "$peachAlpha" = "fab387";
-        "$yellowAlpha" = "f9e2af";
-        "$greenAlpha" = "a6e3a1";
-        "$tealAlpha" = "94e2d5";
-        "$skyAlpha" = "89dceb";
-        "$sapphireAlpha" = "74c7ec";
-        "$blueAlpha" = "89b4fa";
-        "$lavenderAlpha" = "b4befe";
-
-        "$textAlpha" = "cdd6f4";
-        "$subtext1Alpha" = "bac2de";
-        "$subtext0Alpha" = "a6adc8";
-
-        "$overlay2Alpha" = "9399b2";
-        "$overlay1Alpha" = "7f849c";
-        "$overlay0Alpha" = "6c7086";
-
-        "$surface2Alpha" = "585b70";
-        "$surface1Alpha" = "45475a";
-        "$surface0Alpha" = "313244";
-
-        "$baseAlpha" = "1e1e2e";
-        "$mantleAlpha" = "181825";
-        "$crustAlpha" = "11111b";
-
-        "$rosewater" = "0xfff5e0dc";
-        "$flamingo" = "0xfff2cdcd";
-        "$pink" = "0xfff5c2e7";
-        "$mauve" = "0xffcba6f7";
-        "$red" = "0xfff38ba8";
-        "$maroon" = "0xffeba0ac";
-        "$peach" = "0xfffab387";
-        "$yellow" = "0xfff9e2af";
-        "$green" = "0xffa6e3a1";
-        "$teal" = "0xff94e2d5";
-        "$sky" = "0xff89dceb";
-        "$sapphire" = "0xff74c7ec";
-        "$blue" = "0xff89b4fa";
-        "$lavender" = "0xffb4befe";
-
-        "$text" = "0xffcdd6f4";
-        "$subtext1" = "0xffbac2de";
-        "$subtext0" = "0xffa6adc8";
-
-        "$overlay2" = "0xff9399b2";
-        "$overlay1" = "0xff7f849c";
-        "$overlay0" = "0xff6c7086";
-
-        "$surface2" = "0xff585b70";
-        "$surface1" = "0xff45475a";
-        "$surface0" = "0xff313244";
-
-        "$base" = "0xff1e1e2e";
-        "$mantle" = "0xff181825";
-        "$crust" = "0xff11111b";
-
         "$mainMod" = "SUPER";
         "$terminal" = "kitty";
         "$fileManager" = "dolphin";
         "$browser" = "firefox";
         "$menu" = "rofi -show combi";
-        env = "XCURSOR_SIZE,24";
 
         monitor = ",highrr,auto,auto,vrr,1";
 
@@ -132,8 +69,6 @@
         master = {new_is_master = true;};
 
         gestures = {workspace_swipe = false;};
-
-        # windowrulev2 = "suppressevent maximize, class:.*";
 
         bind = [
           "$mainMod, RETURN, exec, $terminal"
@@ -193,17 +128,51 @@
       };
     };
 
-    programs.hyprlock = {enable = true;};
-
     services.hyprpaper = {
       enable = true;
       settings = {
-        preload = "${../../assets/forest-river.jpg}";
+        preload = "${wallpaper}";
         wallpaper = [
-          "DP-1,${../../assets/forest-river.jpg}"
-          "DP-2,${../../assets/forest-river.jpg}"
+          "DP-1,${wallpaper}"
+          "DP-2,${wallpaper}"
         ];
         splash = false;
+      };
+    };
+
+    programs.hyprlock = {
+      enable = true;
+      settings = {
+        general = {
+          disable_loading_bar = true;
+          grace = 300;
+          hide_cursor = true;
+          no_fade_in = false;
+        };
+
+        background = [
+          {
+            path = "${wallpaper}";
+            blur_passes = 3;
+            blur_size = 8;
+          }
+        ];
+
+        input-field = [
+          {
+            size = "200, 50";
+            position = "0, -80";
+            monitor = "";
+            dots_center = true;
+            fade_on_empty = false;
+            font_color = "rgb(202, 211, 245)";
+            inner_color = "rgb(91, 96, 120)";
+            outer_color = "rgb(24, 25, 38)";
+            outline_thickness = 5;
+            placeholder_text = "'<span foreground=\"##cad3f5\">Password...</span>'";
+            shadow_passes = 2;
+          }
+        ];
       };
     };
 
@@ -211,18 +180,18 @@
       enable = true;
       settings = {
         general = {
+          lock_cmd = "pidof hyprlock || hyprlock";
+          before_sleep_cmd = "loginctl lock-session";
           after_sleep_cmd = "hyprctl dispatch dpms on";
-          ignore_dbus_inhibit = false;
-          lock_cmd = "hyprlock";
         };
 
         listener = [
           {
-            timeout = 900;
-            on-timeout = "hyprlock";
+            timeout = 60; # 900 = 15 min
+            on-timeout = "loginctl lock-session";
           }
           {
-            timeout = 1200;
+            timeout = 90;
             on-timeout = "hyprctl dispatch dpms off";
             on-resume = "hyprctl dispatch dpms on";
           }

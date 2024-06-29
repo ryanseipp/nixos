@@ -15,4 +15,5 @@
   starship.enable = lib.mkDefault true;
   tmux.enable = lib.mkDefault true;
   zsh.enable = lib.mkDefault true;
+  zsh.enableFzf = lib.mkDefault true;
 }

@@ -39,6 +39,11 @@
     (nerdfonts.override {fonts = ["Iosevka" "SourceCodePro"];})
   ];
 
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+  };
+
   security.polkit.enable = true;
   security.rtkit.enable = true;
 
@@ -63,7 +68,7 @@
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
 
-    opengl.enable = true;
+    graphics.enable = true;
   };
 
   systemd.coredump.enable = true;

@@ -1,4 +1,5 @@
 {
+  inputs,
   outputs,
   pkgs,
   ...
@@ -8,7 +9,16 @@
     config = {allowUnfree = true;};
   };
 
-  imports = [outputs.homeManagerModules.default];
+  imports = [outputs.homeManagerModules.default inputs.catppuccin.homeManagerModules.catppuccin];
+
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    pointerCursor = {
+      enable = true;
+      accent = "light";
+    };
+  };
 
   home.username = "zorbik";
   home.homeDirectory = "/home/zorbik";
@@ -27,14 +37,6 @@
     vesktop
     wl-clipboard
   ];
-
-  home.pointerCursor = {
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Original-Ice";
-    size = 24;
-    gtk.enable = true;
-    x11.enable = true;
-  };
 
   home.shellAliases = {
     ls = "eza -l";
@@ -73,6 +75,7 @@
     enableFishIntegration = false;
     enableNushellIntegration = false;
   };
+
   programs.keychain = {
     enable = true;
     keys = ["id_rsa" "id_ed25519" "rseipp_id_ed25519"];
@@ -81,6 +84,7 @@
     enableNushellIntegration = false;
     enableXsessionIntegration = false;
   };
+
   programs.zsh.initExtra = ''
     analyze_dump () {
       dump=$1
