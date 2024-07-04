@@ -66,15 +66,19 @@ in {
           preserve_split = true;
         };
 
-        master = {new_is_master = true;};
+        # master = {new_status = "master";};
 
         gestures = {workspace_swipe = false;};
+
+        windowrulev2 = [
+          "suppressevent maximize, class:.*"
+        ];
 
         bind = [
           "$mainMod, RETURN, exec, $terminal"
           "$mainMod, Q, killactive,"
           "$mainMod SHIFT, Q, exit,"
-          "$mainMod, F, exec, $fileManager"
+          "$mainMod, F, fullscreen"
           "$mainMod, B, exec, $browser"
           "$mainMod, V, toggleFloating,"
           "$mainMod, R, exec, $menu"

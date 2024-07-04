@@ -91,6 +91,7 @@
         nodePackages.bash-language-server
         nodePackages.eslint
         nodePackages.prettier
+        nodePackages."@astrojs/language-server"
         ocamlformat
         omnisharp-roslyn
         rust-analyzer

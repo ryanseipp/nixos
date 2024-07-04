@@ -67,8 +67,6 @@
   hardware = {
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
-
-    graphics.enable = true;
   };
 
   systemd.coredump.enable = true;
@@ -84,7 +82,13 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  gc.enable = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
+  nix.optimise.automatic = true;
 
   # system.copySystemConfiguration = true;
 
