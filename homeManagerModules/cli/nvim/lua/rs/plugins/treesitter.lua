@@ -6,6 +6,7 @@ return {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		"nvim-treesitter/nvim-treesitter-context",
 	},
+	event = "VeryLazy",
 	config = function()
 		require("nvim-treesitter.configs").setup({
 			sync_install = false,

@@ -68,12 +68,10 @@
         lualine-nvim
         dashboard-nvim
         nvim-web-devicons
-        dressing-nvim
         noice-nvim
         nui-nvim
         nvim-notify
         nvim-tree-lua
-        indent-blankline-nvim
         vim-tmux-navigator
       ];
       extraPackages = with pkgs; [
@@ -123,7 +121,7 @@
           pkgs.vimUtils.packDir
           config.programs.neovim.finalPackage.passthru.packpathDirs
         }/pack/myNeovimPackages/start",
-            patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "lukas-reineke", "christoomey", "thehamsta", "leoluz" }
+            patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz" }
           },
           install = {
             missing = false

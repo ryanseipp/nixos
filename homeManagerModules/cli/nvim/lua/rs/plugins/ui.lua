@@ -5,7 +5,6 @@ return {
 		priority = 1000,
 		opts = {
 			integrations = {
-				mason = true,
 				fidget = true,
 				noice = true,
 				notify = true,
@@ -60,27 +59,12 @@ return {
 		},
 	},
 	{
-		"stevearc/dressing.nvim",
-		lazy = true,
-		init = function()
-			---@diagnostic disable-next-line: duplicate-set-field
-			vim.ui.select = function(...)
-				require("lazy").load({ plugins = { "dressing.nvim" } })
-				return vim.ui.select(...)
-			end
-			---@diagnostic disable-next-line: duplicate-set-field
-			vim.ui.input = function(...)
-				require("lazy").load({ plugins = { "dressing.nvim" } })
-				return vim.ui.input(...)
-			end
-		end,
-	},
-	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
 		dependencies = {
 			"muniftanjim/nui.nvim",
 			"rcarriga/nvim-notify",
+			"nvim-treesitter/nvim-treesitter",
 		},
 		opts = {
 			lsp = {
@@ -114,22 +98,6 @@ return {
 				width = 60,
 			},
 		},
-	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		opts = { enabled = false },
-		init = function()
-			local augroup_indent = vim.api.nvim_create_augroup("custom-indent-guides", { clear = true })
-			vim.api.nvim_clear_autocmds({ group = augroup_indent })
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-				pattern = { "*.yaml", "*.yml" },
-				callback = function(ev)
-					-- print(vim.inspect(ev.buf))
-					require("ibl").setup_buffer(ev.buf, { enabled = true })
-				end,
-			})
-		end,
 	},
 	{
 		"christoomey/vim-tmux-navigator",
