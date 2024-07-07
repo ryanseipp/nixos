@@ -1,9 +1,12 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   wallpaper = ../../assets/forest-river.jpg;
+  hyprlandPkg = config.wayland.windowManager.hyprland.package;
+  hyprlockPkg = config.programs.hyprlock.package;
 in {
   options = {hyprland.enable = lib.mkEnableOption "enables hyprland";};
 
@@ -21,7 +24,10 @@ in {
 
         monitor = ",highrr,auto,auto,vrr,1";
 
-        exec-once = "waybar";
+        exec-once = [
+          "hypridle"
+          "waybar"
+        ];
 
         input = {
           kb_layout = "us";
@@ -149,7 +155,7 @@ in {
       settings = {
         general = {
           disable_loading_bar = true;
-          grace = 300;
+          grace = 30;
           hide_cursor = true;
           no_fade_in = false;
         };
@@ -157,24 +163,38 @@ in {
         background = [
           {
             path = "${wallpaper}";
-            blur_passes = 3;
-            blur_size = 8;
+            blur_passes = 2;
+            blur_size = 3;
+          }
+        ];
+
+        label = [
+          {
+            monitor = "";
+            position = "0, 0";
+            text = "Welcome back, $USER!";
+            font_size = 16;
+            font_family = "Inter";
+            color = "rgb(202, 211, 245)";
+            halign = "center";
+            valign = "center";
           }
         ];
 
         input-field = [
           {
-            size = "200, 50";
-            position = "0, -80";
             monitor = "";
+            size = "300, 32";
+            position = "0, -48";
             dots_center = true;
             fade_on_empty = false;
             font_color = "rgb(202, 211, 245)";
             inner_color = "rgb(91, 96, 120)";
             outer_color = "rgb(24, 25, 38)";
-            outline_thickness = 5;
+            outline_thickness = 2;
             placeholder_text = "'<span foreground=\"##cad3f5\">Password...</span>'";
-            shadow_passes = 2;
+            shadow_passes = 1;
+            rounding = 8;
           }
         ];
       };
@@ -184,20 +204,20 @@ in {
       enable = true;
       settings = {
         general = {
-          lock_cmd = "pidof hyprlock || hyprlock";
+          lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${hyprlockPkg}/bin/hyprlock";
           before_sleep_cmd = "loginctl lock-session";
-          after_sleep_cmd = "hyprctl dispatch dpms on";
+          after_sleep_cmd = "${hyprlandPkg}/bin/hyprctl dispatch dpms on";
         };
 
         listener = [
           {
-            timeout = 60; # 900 = 15 min
+            timeout = 900; # 15 minutes
             on-timeout = "loginctl lock-session";
           }
           {
-            timeout = 90;
-            on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on";
+            timeout = 960; # 16 minutes
+            on-timeout = "${hyprlandPkg}/bin/hyprctl dispatch dpms off";
+            on-resume = "${hyprlandPkg}/bin/hyprctl dispatch dpms on";
           }
         ];
       };
