@@ -33,41 +33,13 @@
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [man-pages man-pages-posix r2modman liburing];
 
-  fonts.packages = with pkgs; [
-    inter
-    source-sans
-    (nerdfonts.override {fonts = ["Iosevka" "SourceCodePro"];})
-  ];
-
-  catppuccin = {
-    enable = true;
-    flavor = "mocha";
-  };
-
-  security.polkit.enable = true;
-  security.rtkit.enable = true;
-
   programs.zsh.enable = true;
   programs.steam.enable = true;
+  security.polkit.enable = true;
 
-  services = {
-    blueman.enable = true;
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      jack.enable = true;
-    };
-  };
-
-  podmanHost.enable = true;
-  qemuHost.enable = true;
-
-  hardware = {
-    bluetooth.enable = true;
-    bluetooth.powerOnBoot = true;
-  };
+  desktop.enable = true;
+  virtualization.enable = true;
+  gc.enable = true;
 
   systemd.coredump.enable = true;
   documentation = {
@@ -81,14 +53,6 @@
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
-
-  nix.optimise.automatic = true;
 
   # system.copySystemConfiguration = true;
 
