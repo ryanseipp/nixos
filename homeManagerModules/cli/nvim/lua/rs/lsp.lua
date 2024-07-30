@@ -321,8 +321,17 @@ M.servers = {
 		},
 	},
 	omnisharp = {
-		enable_editorconfig_support = false,
-		enable_import_completion = true,
+		cmd = { vim.g.omnisharp_path },
+		settings = {
+			FormattingOptions = {
+				EnableEditorConfigSupport = false,
+				OrganizeImports = true,
+			},
+			RoslynExtensionsOptoins = {
+				EnableAnalyzersSupport = true,
+				EnableImportCompletion = true,
+			},
+		},
 	},
 	lua_ls = true,
 	yamlls = {

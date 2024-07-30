@@ -106,6 +106,8 @@
         vim.g.mapleader = " "
         vim.keymap.set("x", "<leader>p", '"_dp')
 
+        vim.g.omnisharp_path = '${pkgs.omnisharp-roslyn}/bin/OmniSharp'
+
         require("lazy").setup({
           spec = {
             {import = "rs.plugins"}
@@ -121,7 +123,7 @@
           pkgs.vimUtils.packDir
           config.programs.neovim.finalPackage.passthru.packpathDirs
         }/pack/myNeovimPackages/start",
-            patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz" }
+            patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem" }
           },
           install = {
             missing = false
