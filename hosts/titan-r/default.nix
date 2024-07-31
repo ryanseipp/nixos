@@ -3,7 +3,9 @@
   inputs,
   outputs,
   ...
-}: {
+}: let
+  cloudflareNameservers = ["2606:4700:4700::1111" "2606:4700:4700::1001" "1.1.1.1" "1.0.0.1"];
+in {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-cpu-amd-pstate
@@ -17,7 +19,7 @@
     hostName = "titan-r";
     firewall.enable = true;
     networkmanager.enable = true;
-    nameservers = ["2606:4700:4700::1111" "2606:4700:4700::1001" "1.1.1.1" "1.0.0.1"];
+    nameservers = cloudflareNameservers;
   };
 
   time.timeZone = "America/New_York";

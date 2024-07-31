@@ -13,5 +13,6 @@
       catppuccin.enable = true;
       package = pkgs.kdePackages.sddm;
     };
+    programs.hyprland.enable = true;
   };
 }
