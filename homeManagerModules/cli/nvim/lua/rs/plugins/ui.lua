@@ -84,6 +84,10 @@ return {
 		},
 	},
 	{
+		"stevearc/dressing.nvim",
+		opts = {},
+	},
+	{
 		"nvim-tree/nvim-tree.lua",
 		keys = {
 			{ "<leader>tt", "<cmd>NvimTreeToggle<cr>", desc = "NvimTreeToggle" },

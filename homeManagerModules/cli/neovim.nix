@@ -65,8 +65,9 @@
 
         # ui
         catppuccin-nvim
-        lualine-nvim
         dashboard-nvim
+        dressing-nvim
+        lualine-nvim
         nvim-web-devicons
         noice-nvim
         nui-nvim

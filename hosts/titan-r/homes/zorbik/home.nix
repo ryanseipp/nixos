@@ -29,6 +29,7 @@
     fd
     gdb
     hyprpaper
+    hoppscotch
     pavucontrol
     pulsemixer
     qalculate-qt
