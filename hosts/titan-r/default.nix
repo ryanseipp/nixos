@@ -36,7 +36,12 @@ in {
   environment.systemPackages = with pkgs; [man-pages man-pages-posix r2modman liburing];
 
   programs.zsh.enable = true;
-  programs.steam.enable = true;
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
+  };
   security.polkit.enable = true;
 
   desktop.enable = true;
@@ -55,6 +60,11 @@ in {
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  hardware.opengl = {
+    extraPackages = [pkgs.amdvlk];
+    extraPackages32 = [pkgs.driversi686Linux.amdvlk];
+  };
 
   # system.copySystemConfiguration = true;
 
