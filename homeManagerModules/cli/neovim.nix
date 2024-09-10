@@ -82,13 +82,13 @@
         csharpier
         dockerfile-language-server-nodejs
         elixir-ls
+        eslint
         fzf
         gopls
         lldb
         lua-language-server
         nixd
         nodePackages.bash-language-server
-        nodePackages.eslint
         nodePackages.prettier
         nodePackages."@astrojs/language-server"
         ocamlformat

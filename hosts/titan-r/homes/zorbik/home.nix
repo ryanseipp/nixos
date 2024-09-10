@@ -36,6 +36,7 @@
     qalculate-qt
     ripgrep
     spotify
+    tidal-hifi
     vesktop
     wl-clipboard
   ];

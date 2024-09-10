@@ -61,7 +61,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  hardware.opengl = {
+  hardware.graphics = {
     extraPackages = [pkgs.amdvlk];
     extraPackages32 = [pkgs.driversi686Linux.amdvlk];
   };
