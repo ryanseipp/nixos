@@ -18,7 +18,6 @@ in {
   networking = {
     hostName = "titan-r";
     firewall.enable = true;
-    networkmanager.enable = true;
     nameservers = cloudflareNameservers;
   };
 
@@ -57,7 +56,7 @@ in {
     doc.enable = true;
   };
 
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = ["aarch64-linux" "riscv64-linux"];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
