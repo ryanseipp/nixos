@@ -241,7 +241,6 @@ M.servers = {
 	astro = true,
 	bashls = true,
 	dockerls = true,
-	elixirls = true,
 	gopls = true,
 	ocamllsp = true,
 	nixd = true,

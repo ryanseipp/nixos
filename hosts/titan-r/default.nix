@@ -59,6 +59,7 @@ in {
   boot.binfmt.emulatedSystems = ["aarch64-linux" "riscv64-linux"];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = ["pcie_port_pm=off"];
 
   hardware.graphics = {
     extraPackages = [pkgs.amdvlk];

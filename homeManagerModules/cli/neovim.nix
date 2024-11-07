@@ -31,6 +31,7 @@
         nvim-dap-ui
         nvim-dap-virtual-text
         nvim-dap-go
+        nvim-nio
 
         # editing
         nvim-autopairs
@@ -46,6 +47,7 @@
         rustaceanvim
         crates-nvim
 
+        elixir-tools-nvim
         typescript-tools-nvim
 
         # misc
@@ -108,6 +110,7 @@
         vim.keymap.set("x", "<leader>p", '"_dp')
 
         vim.g.omnisharp_path = '${pkgs.omnisharp-roslyn}/bin/OmniSharp'
+        vim.g.elixirls_path = '${pkgs.elixir-ls}/lib/language_server.sh'
 
         require("lazy").setup({
           spec = {
@@ -124,7 +127,7 @@
           pkgs.vimUtils.packDir
           config.programs.neovim.finalPackage.passthru.packpathDirs
         }/pack/myNeovimPackages/start",
-            patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem" }
+            patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem", "nvim-neotest", "elixir-tools" }
           },
           install = {
             missing = false

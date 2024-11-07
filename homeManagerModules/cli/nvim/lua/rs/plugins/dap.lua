@@ -79,6 +79,7 @@ return {
 					show_stop_reason = true,
 				},
 			},
+			"rcarriga/nvim-dap-ui",
 		},
 		config = function()
 			vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "", linehl = "", numhl = "" })
@@ -86,7 +87,7 @@ return {
 			vim.fn.sign_define("DapStopped", { text = "➡", texthl = "", linehl = "", numhl = "" })
 			vim.fn.sign_define("DapBreakpointRejected", { text = "○", texthl = "", linehl = "", numhl = "" })
 
-			local dap = require("dap")
+			local dap, dapui = require("dap"), require("dapui")
 			dap.defaults.fallback.external_terminal = {
 				command = "/usr/bin/kitty",
 			}
@@ -115,21 +116,22 @@ return {
 				firefoxExecutable = "/usr/bin/firefox",
 			}
 
-			dap.listeners.after.event_initialized["dapui_config"] = function()
-				require("dapui").open({})
+			dap.listeners.after.event_initialized.dapui_config = function()
+				dapui.open()
 			end
 
-			dap.listeners.before.event_terminated["dapui_config"] = function()
-				require("dapui").close({})
+			dap.listeners.before.event_terminated.dapui_config = function()
+				dapui.close()
 			end
 
-			dap.listeners.before.event_exited["dapui_config"] = function()
-				require("dapui").close({})
+			dap.listeners.before.event_exited.dapui_config = function()
+				dapui.close()
 			end
 		end,
 	},
 	{
 		"rcarriga/nvim-dap-ui",
+		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		keys = {
 			{
 				"<leader>de",
