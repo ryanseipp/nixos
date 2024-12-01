@@ -10,7 +10,8 @@
     fonts.packages = with pkgs; [
       inter
       source-sans
-      (nerdfonts.override {fonts = ["Iosevka" "SourceCodePro"];})
+      nerd-fonts.iosevka
+      nerd-fonts.sauce-code-pro
     ];
   };
 }

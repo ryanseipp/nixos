@@ -244,6 +244,13 @@ M.servers = {
 	gopls = true,
 	ocamllsp = true,
 	nixd = true,
+	denols = {
+		settings = {
+			deno = {
+				enable = vim.fs.root(0, "deno.json") ~= nil,
+			},
+		},
+	},
 	tailwindcss = {
 		filetypes = {
 			"aspnetcorerazor",

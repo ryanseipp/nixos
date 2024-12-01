@@ -5,7 +5,7 @@
 }: {
   options = {podmanHost.enable = lib.mkEnableOption "enables podman";};
 
-  config = lib.mkIf config.qemuHost.enable {
+  config = lib.mkIf config.podmanHost.enable {
     virtualisation.containers.enable = true;
     virtualisation.podman = {
       enable = true;

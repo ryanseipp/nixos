@@ -10,7 +10,6 @@
     services.displayManager.sddm = {
       enable = true;
       wayland.enable = true;
-      catppuccin.enable = true;
       package = pkgs.kdePackages.sddm;
     };
     programs.hyprland.enable = true;

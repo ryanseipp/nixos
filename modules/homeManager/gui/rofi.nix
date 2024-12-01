@@ -27,8 +27,6 @@ in {
         display-Network = " 󰤨  Network";
         sidebar-mode = true;
       };
-
-      catppuccin.enable = true;
     };
   };
 }

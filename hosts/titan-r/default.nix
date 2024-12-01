@@ -3,9 +3,7 @@
   inputs,
   outputs,
   ...
-}: let
-  cloudflareNameservers = ["2606:4700:4700::1111" "2606:4700:4700::1001" "1.1.1.1" "1.0.0.1"];
-in {
+}: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-cpu-amd-pstate
@@ -17,22 +15,27 @@ in {
 
   networking = {
     hostName = "titan-r";
-    firewall.enable = true;
-    nameservers = cloudflareNameservers;
+    networkmanager = {
+      enable = true;
+      wifi.scanRandMacAddress = false;
+    };
   };
-
-  time.timeZone = "America/New_York";
-  i18n.defaultLocale = "en_US.UTF-8";
 
   users.users.zorbik = {
     isNormalUser = true;
-    extraGroups = ["wheel" "libvirtd"];
+    extraGroups = ["wheel" "incus-admin" "networkmanager"];
     shell = pkgs.zsh;
   };
   home-manager.users.zorbik = import ./homes/zorbik/home.nix {inherit pkgs inputs outputs;};
 
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [man-pages man-pages-posix r2modman liburing];
+  environment.systemPackages = with pkgs; [
+    man-pages
+    man-pages-posix
+    r2modman
+    liburing
+    networkmanagerapplet
+  ];
 
   programs.zsh.enable = true;
   programs.steam = {
@@ -44,8 +47,17 @@ in {
   security.polkit.enable = true;
 
   desktop.enable = true;
-  virtualization.enable = true;
+  podmanHost.enable = true;
+  # incusHost.enable = true;
   gc.enable = true;
+
+  programs.ssh = {
+    startAgent = true;
+    extraConfig = ''
+      Host *
+        AddKeysToAgent yes
+    '';
+  };
 
   systemd.coredump.enable = true;
   documentation = {
@@ -60,7 +72,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = ["pcie_port_pm=off"];
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_11;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
 
   hardware.graphics = {
     extraPackages = [pkgs.amdvlk];

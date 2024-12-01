@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  wallpaper = ../../assets/forest-river.jpg;
+  wallpaper = ../../../assets/forest-river.jpg;
   hyprlandPkg = config.wayland.windowManager.hyprland.package;
   hyprlockPkg = config.programs.hyprlock.package;
 in {
@@ -59,10 +59,10 @@ in {
             vibrancy = 0.1696;
           };
 
-          drop_shadow = true;
-          shadow_range = 4;
-          shadow_render_power = 3;
-          "col.shadow" = "$base";
+          # drop_shadow = true;
+          # shadow_range = 4;
+          # shadow_render_power = 3;
+          # "col.shadow" = "$base";
         };
 
         animations = {enabled = false;};

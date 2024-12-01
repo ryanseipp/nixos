@@ -2,13 +2,16 @@
   lib,
   config,
   ...
-}: {
+}:
+with lib; let
+  cfg = config.zsh;
+in {
   options = {
-    zsh.enable = lib.mkEnableOption "enables zsh";
-    zsh.enableFzf = lib.mkEnableOption "enables fzf in zsh";
+    zsh.enable = mkEnableOption "enables zsh";
+    zsh.enableFzf = mkEnableOption "enables fzf in zsh";
   };
 
-  config = lib.mkIf config.zsh.enable {
+  config = mkIf cfg.enable {
     programs.zsh = {
       enable = true;
       autocd = true;
@@ -28,7 +31,7 @@
       '';
     };
 
-    programs.fzf = lib.mkIf config.zsh.enableFzf {
+    programs.fzf = mkIf cfg.enableFzf {
       enable = true;
       enableZshIntegration = true;
     };

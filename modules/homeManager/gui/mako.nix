@@ -10,7 +10,6 @@
       enable = true;
       defaultTimeout = 3000;
       font = "Iosevka Nerd Font 10";
-      catppuccin.enable = true;
     };
   };
 }

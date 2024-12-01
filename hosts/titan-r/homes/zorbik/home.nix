@@ -26,6 +26,7 @@
     curl
     chromium
     dig
+    ethtool
     eza
     fd
     gdb
