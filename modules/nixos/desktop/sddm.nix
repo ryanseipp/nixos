@@ -13,5 +13,6 @@
       package = pkgs.kdePackages.sddm;
     };
     programs.hyprland.enable = true;
+    programs.hyprlock.enable = true;
   };
 }

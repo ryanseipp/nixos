@@ -12,7 +12,11 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      jack.enable = true;
+      jack.enable = false;
     };
+
+    hardware.pulseaudio.extraClientConf = ''
+      cookie-file = ~/.config/pulse/cookie
+    '';
   };
 }

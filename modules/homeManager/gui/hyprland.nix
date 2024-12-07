@@ -138,6 +138,12 @@ in {
       };
     };
 
+    home.packages = with pkgs; [
+      grim
+      slurp
+      wl-clipboard
+    ];
+
     services.hyprpaper = {
       enable = true;
       settings = {
