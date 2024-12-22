@@ -24,15 +24,6 @@
         yank
       ];
 
-      catppuccin = {
-        enable = true;
-        extraConfig = ''
-          set -g @catppuccin_window_default_text "#W"
-          set -g @catppuccin_window_current_text "#W"
-          set -g @catppuccin_status_modules_right "directory session"
-        '';
-      };
-
       extraConfig = ''
         set-option -sa terminal-features ',xterm-kitty:RGB'
 
@@ -46,6 +37,15 @@
 
         bind '"' split-window -v -c "#{pane_current_path}"
         bind % split-window -h -c "#{pane_current_path}"
+      '';
+    };
+
+    catppuccin.tmux = {
+      enable = true;
+      extraConfig = ''
+        set -g @catppuccin_window_default_text "#W"
+        set -g @catppuccin_window_current_text "#W"
+        set -g @catppuccin_status_modules_right "directory session"
       '';
     };
   };

@@ -1,4 +1,8 @@
-{...}: let
+{
+  pkgs,
+  inputs,
+  ...
+}: let
   cloudflareNameservers = ["2606:4700:4700::1111" "2606:4700:4700::1001" "1.1.1.1" "1.0.0.1"];
 in {
   imports = [
@@ -8,7 +12,17 @@ in {
     ./virtualization
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix = {
+    package = pkgs.nix;
+    nixPath = let
+      path = toString ./../..;
+    in [
+      "nixpkgs=${inputs.nixpkgs}"
+      "nixos-config=${path}"
+    ];
+    channel.enable = false;
+    settings.experimental-features = ["nix-command" "flakes"];
+  };
 
   networking = {
     nftables.enable = true;

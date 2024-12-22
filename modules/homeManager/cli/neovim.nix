@@ -131,7 +131,7 @@
           pkgs.vimUtils.packDir
           config.programs.neovim.finalPackage.passthru.packpathDirs
         }/pack/myNeovimPackages/start",
-            patterns = { "catppuccin", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem", "nvim-neotest", "elixir-tools" }
+            patterns = { "catppuccin", "catppuccin-nvim", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem", "nvim-neotest", "elixir-tools" }
           },
           install = {
             missing = false
@@ -191,5 +191,7 @@
       recursive = true;
       source = ./nvim/after;
     };
+
+    catppuccin.nvim.enable = false;
   };
 }

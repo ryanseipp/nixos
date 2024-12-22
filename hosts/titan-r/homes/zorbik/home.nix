@@ -14,7 +14,7 @@
   catppuccin = {
     enable = true;
     flavor = "mocha";
-    pointerCursor = {
+    cursors = {
       enable = true;
       accent = "light";
     };
@@ -32,6 +32,7 @@
     gdb
     hyprpaper
     hoppscotch
+    lynis
     pavucontrol
     pulsemixer
     qalculate-qt

@@ -243,7 +243,17 @@ M.servers = {
 	dockerls = true,
 	gopls = true,
 	ocamllsp = true,
-	nixd = true,
+	nixd = {
+		-- settings = {
+		-- 	nixd = {
+		-- 		options = {
+		-- 			nixos = {
+		-- 				expr = "",
+		-- 			},
+		-- 		},
+		-- 	},
+		-- },
+	},
 	denols = {
 		settings = {
 			deno = {

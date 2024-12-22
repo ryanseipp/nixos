@@ -1,7 +1,7 @@
 return {
 	{
 		"catppuccin/nvim",
-		name = "catppuccin",
+		name = "catppuccin-nvim",
 		priority = 1000,
 		opts = {
 			integrations = {
