@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  wallpaper = ../../../assets/forest-river.jpg;
+  wallpaper = ../../../assets/winter_mountain_drive.jpg;
   hyprlandPkg = config.wayland.windowManager.hyprland.package;
   hyprlockPkg = config.programs.hyprlock.package;
 in {
@@ -50,22 +50,11 @@ in {
 
         decoration = {
           rounding = 8;
-
-          blur = {
-            enabled = true;
-            size = 4;
-            passes = 1;
-
-            vibrancy = 0.1696;
-          };
-
-          # drop_shadow = true;
-          # shadow_range = 4;
-          # shadow_render_power = 3;
-          # "col.shadow" = "$base";
+          blur.enabled = true;
+          shadow.enabled = true;
         };
 
-        animations = {enabled = false;};
+        animations.enabled = false;
 
         dwindle = {
           pseudotile = true;

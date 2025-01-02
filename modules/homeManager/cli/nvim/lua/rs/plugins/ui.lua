@@ -3,14 +3,15 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin-nvim",
 		priority = 1000,
-		opts = {
-			integrations = {
-				fidget = true,
-				noice = true,
-				notify = true,
-			},
-		},
 		config = function()
+			require("catppuccin").setup({
+				transparent_background = true,
+				integrations = {
+					fidget = true,
+					noice = true,
+					notify = true,
+				},
+			})
 			vim.cmd.colorscheme("catppuccin-mocha")
 		end,
 	},

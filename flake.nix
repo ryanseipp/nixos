@@ -52,17 +52,6 @@
         ];
         specialArgs = {inherit inputs outputs;};
       };
-      virt-host = lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = let
-        in [
-          ./hosts/virt-host
-          self.nixosModules.default
-          home-manager.nixosModules.home-manager
-          catppuccin.nixosModules.catppuccin
-        ];
-        specialArgs = {inherit inputs outputs;};
-      };
     };
   };
 }

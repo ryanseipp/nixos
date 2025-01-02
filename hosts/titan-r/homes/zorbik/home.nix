@@ -23,21 +23,27 @@
   home.username = "zorbik";
   home.homeDirectory = "/home/zorbik";
   home.packages = with pkgs; [
-    curl
+    age
+    bitwarden-desktop
     chromium
+    curl
     dig
     ethtool
     eza
     fd
     gdb
-    hyprpaper
+    gimp
     hoppscotch
+    hyprpaper
     lynis
     pavucontrol
     pulsemixer
     qalculate-qt
+    qflipper
     ripgrep
     spotify
+    sops
+    ssh-to-age
     tidal-hifi
     vesktop
     wl-clipboard
@@ -63,6 +69,7 @@
   mako.enable = true;
   rofi.enable = true;
   waybar.enable = true;
+  yazi.enable = true;
 
   xdg = {
     enable = true;
@@ -83,7 +90,7 @@
 
   programs.keychain = {
     enable = true;
-    keys = ["id_rsa" "id_ed25519" "rseipp_id_ed25519"];
+    keys = ["id_rsa" "id_ed25519" "rseipp_id_ed25519" "id_ed25519_sk"];
     enableBashIntegration = false;
     enableFishIntegration = false;
     enableNushellIntegration = false;

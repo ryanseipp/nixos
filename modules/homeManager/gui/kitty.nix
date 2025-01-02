@@ -25,7 +25,27 @@ in {
       shellIntegration.enableZshIntegration = true;
 
       settings = {
-        background_opacity = "0.94";
+        background_opacity = "0.96";
+        enabled_layouts = "splits:split_axis=horizontal";
+      };
+
+      keybindings = {
+        "ctrl+alt+k" = "launch --location=hsplit --cwd=current";
+        "ctrl+alt+l" = "launch --location=vsplit --cwd=current";
+        "ctrl+shift+r" = "layout_action rotate";
+
+        "ctrl+shift+h" = "move_window left";
+        "ctrl+shift+l" = "move_window right";
+        "ctrl+shift+k" = "move_window up";
+        "ctrl+shift+j" = "move_window down";
+
+        "ctrl+h" = "neighboring_window left";
+        "ctrl+l" = "neighboring_window right";
+        "ctrl+k" = "neighboring_window up";
+        "ctrl+j" = "neighboring_window down";
+
+        "ctrl+cmd+l" = "next_tab";
+        "ctrl+cmd+h" = "previous_tab";
       };
     };
 
