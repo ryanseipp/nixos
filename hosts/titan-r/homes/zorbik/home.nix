@@ -20,38 +20,43 @@
     };
   };
 
-  home.username = "zorbik";
-  home.homeDirectory = "/home/zorbik";
-  home.packages = with pkgs; [
-    age
-    bitwarden-desktop
-    chromium
-    curl
-    dig
-    ethtool
-    eza
-    fd
-    gdb
-    gimp
-    hoppscotch
-    hyprpaper
-    lynis
-    pavucontrol
-    pulsemixer
-    qalculate-qt
-    qflipper
-    ripgrep
-    spotify
-    sops
-    ssh-to-age
-    tidal-hifi
-    vesktop
-    wl-clipboard
-  ];
+  home = {
+    username = "zorbik";
+    homeDirectory = "/home/zorbik";
 
-  home.shellAliases = {
-    ls = "eza -l";
-    la = "eza -la";
+    shellAliases = {
+      ls = "eza -l";
+      la = "eza -la";
+    };
+
+    packages = with pkgs; [
+      age
+      bitwarden-desktop
+      chromium
+      curl
+      dig
+      ethtool
+      eza
+      fd
+      gdb
+      gimp
+      hoppscotch
+      hyprpaper
+      lynis
+      pavucontrol
+      pulsemixer
+      qalculate-qt
+      qflipper
+      ripgrep
+      spotify
+      sops
+      ssh-to-age
+      tidal-hifi
+      vesktop
+      wl-clipboard
+    ];
+
+    stateVersion = "23.11";
   };
 
   git = {
@@ -80,41 +85,42 @@
     };
   };
 
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-    enableBashIntegration = false;
-    enableFishIntegration = false;
-    enableNushellIntegration = false;
+  programs = {
+    home-manager.enable = true;
+
+    zsh.initExtra = ''
+      analyze_dump () {
+        dump=$1
+        info=$(coredumpctl info "$dump")
+        exe=$(echo "$info" | rg 'Executable' | awk '{print $2}')
+
+        echo INFO:
+        echo
+        coredumpctl dump "$dump" --output "$dump.core"
+        echo
+        echo Dropping into debugger...
+        echo
+        gdb "$exe" -c "$dump.core"
+      }
+    '';
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      enableBashIntegration = false;
+      enableFishIntegration = false;
+      enableNushellIntegration = false;
+    };
+
+    keychain = {
+      enable = true;
+      keys = ["id_rsa" "id_ed25519" "rseipp_id_ed25519" "id_ed25519_sk"];
+      enableBashIntegration = false;
+      enableFishIntegration = false;
+      enableNushellIntegration = false;
+      enableXsessionIntegration = false;
+    };
   };
-
-  programs.keychain = {
-    enable = true;
-    keys = ["id_rsa" "id_ed25519" "rseipp_id_ed25519" "id_ed25519_sk"];
-    enableBashIntegration = false;
-    enableFishIntegration = false;
-    enableNushellIntegration = false;
-    enableXsessionIntegration = false;
-  };
-
-  programs.zsh.initExtra = ''
-    analyze_dump () {
-      dump=$1
-      info=$(coredumpctl info "$dump")
-      exe=$(echo "$info" | rg 'Executable' | awk '{print $2}')
-
-      echo INFO:
-      echo
-      coredumpctl dump "$dump" --output "$dump.core"
-      echo
-      echo Dropping into debugger...
-      echo
-      gdb "$exe" -c "$dump.core"
-    }
-  '';
 
   services.playerctld.enable = true;
-
-  home.stateVersion = "23.11";
-  programs.home-manager.enable = true;
 }
