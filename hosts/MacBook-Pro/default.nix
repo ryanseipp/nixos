@@ -3,7 +3,8 @@
   inputs,
   outputs,
   ...
-}: {
+}:
+{
   nixpkgs = {
     hostPlatform = "aarch64-darwin";
     config.allowUnfree = true;
@@ -11,30 +12,47 @@
 
   nix = {
     package = pkgs.nix;
-    nixPath = let
-      path = toString ./../..;
-    in [
-      "nixpkgs=${inputs.nixpkgs}"
-      "nixos-config=${path}"
-    ];
+    nixPath =
+      let
+        path = toString ./../..;
+      in
+      [
+        "nixpkgs=${inputs.nixpkgs}"
+        "nixos-config=${path}"
+      ];
 
     channel.enable = false;
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
 
-    optimise.automatic = true;
+    optimise = {
+      automatic = true;
+      interval = {
+        Minute = 10;
+        Hour = 9;
+        Weekday = 1;
+      };
+    };
 
     gc = {
       automatic = true;
-      dates = "weekly";
       options = "--delete-older-than 7d";
+      interval = {
+        Minute = 10;
+        Hour = 9;
+        Weekday = 1;
+      };
     };
   };
 
   users.users.ryanseipp = {
-    isNormalUser = true;
+    home = "/Users/ryanseipp";
+    isHidden = false;
     shell = pkgs.zsh;
   };
-  home-manager.users.ryanseipp = import ./homes/ryanseipp/home.nix {inherit pkgs inputs outputs;};
+  home-manager.users.ryanseipp = import ./homes/ryanseipp/home.nix { inherit pkgs inputs outputs; };
 
   homebrew = {
     enable = true;

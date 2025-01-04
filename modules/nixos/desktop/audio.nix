@@ -2,8 +2,11 @@
   lib,
   config,
   ...
-}: {
-  options = {audio.enable = lib.mkEnableOption "enables desktop audio";};
+}:
+{
+  options = {
+    audio.enable = lib.mkEnableOption "enables desktop audio";
+  };
 
   config = lib.mkIf config.audio.enable {
     security.rtkit.enable = true;
@@ -15,7 +18,7 @@
       jack.enable = false;
     };
 
-    hardware.pulseaudio.extraClientConf = ''
+    services.pulseaudio.extraClientConf = ''
       cookie-file = ~/.config/pulse/cookie
     '';
   };

@@ -3,11 +3,16 @@
   lib,
   config,
   ...
-}: {
-  options = {neovim.enable = lib.mkEnableOption "enables neovim";};
+}:
+{
+  options = {
+    neovim.enable = lib.mkEnableOption "enables neovim";
+  };
 
   config = lib.mkIf config.neovim.enable {
-    home.shellAliases = {n = "nvim";};
+    home.shellAliases = {
+      n = "nvim";
+    };
 
     programs.neovim = {
       enable = true;
@@ -78,19 +83,19 @@
         vim-tmux-navigator
       ];
       extraPackages = with pkgs; [
-        alejandra
         beautysh
         clang-tools
         csharpier
-        deno
+        # deno
         dockerfile-language-server-nodejs
         elixir-ls
         eslint
         fzf
         gopls
-        lldb
+        # lldb
         lua-language-server
         nixd
+        nixfmt-rfc-style
         nodePackages.bash-language-server
         nodePackages.prettier
         nodePackages."@astrojs/language-server"
@@ -100,7 +105,7 @@
         shfmt
         stylua
         yaml-language-server
-        vscode-extensions.vadimcn.vscode-lldb
+        # vscode-extensions.vadimcn.vscode-lldb
         vscode-langservers-extracted
         zls
       ];
@@ -127,10 +132,7 @@
             }
           },
           dev = {
-            path = "${
-          pkgs.vimUtils.packDir
-          config.programs.neovim.finalPackage.passthru.packpathDirs
-        }/pack/myNeovimPackages/start",
+            path = "${pkgs.vimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
             patterns = { "catppuccin", "catppuccin-nvim", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem", "nvim-neotest", "elixir-tools" }
           },
           install = {

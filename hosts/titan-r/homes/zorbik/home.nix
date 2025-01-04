@@ -3,13 +3,19 @@
   outputs,
   pkgs,
   ...
-}: {
+}:
+{
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
-    config = {allowUnfree = true;};
+    config = {
+      allowUnfree = true;
+    };
   };
 
-  imports = [outputs.homeManagerModules.default inputs.catppuccin.homeManagerModules.catppuccin];
+  imports = [
+    outputs.homeManagerModules.default
+    inputs.catppuccin.homeManagerModules.catppuccin
+  ];
 
   catppuccin = {
     enable = true;
@@ -80,8 +86,10 @@
     enable = true;
     portal = {
       enable = true;
-      config = {common.default = "*";};
-      extraPortals = with pkgs; [xdg-desktop-portal-hyprland];
+      config = {
+        common.default = "*";
+      };
+      extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
     };
   };
 
@@ -114,7 +122,12 @@
 
     keychain = {
       enable = true;
-      keys = ["id_rsa" "id_ed25519" "rseipp_id_ed25519" "id_ed25519_sk"];
+      keys = [
+        "id_rsa"
+        "id_ed25519"
+        "rseipp_id_ed25519"
+        "id_ed25519_sk"
+      ];
       enableBashIntegration = false;
       enableFishIntegration = false;
       enableNushellIntegration = false;

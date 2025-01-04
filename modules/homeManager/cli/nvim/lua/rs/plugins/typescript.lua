@@ -9,7 +9,4 @@ return {
 			on_attach = lsp.custom_attach,
 		}
 	end,
-	config = function()
-		vim.opt.shiftwidth = 2
-	end,
 }

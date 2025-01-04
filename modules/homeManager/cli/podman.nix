@@ -3,11 +3,18 @@
   lib,
   config,
   ...
-}: {
-  options = {podman.enable = lib.mkEnableOption "enables podman";};
+}:
+{
+  options = {
+    podman.enable = lib.mkEnableOption "enables podman";
+  };
 
   config = lib.mkIf config.podman.enable {
-    home.packages = with pkgs; [dive podman-tui podman-compose];
+    home.packages = with pkgs; [
+      dive
+      podman-tui
+      podman-compose
+    ];
     home.shellAliases = {
       docker = "podman";
       p = "podman";

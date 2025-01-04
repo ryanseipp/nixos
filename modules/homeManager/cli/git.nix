@@ -2,9 +2,11 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   cfg = config.git;
-in {
+in
+{
   options = {
     git.enable = lib.mkEnableOption "enables git";
 
@@ -26,78 +28,80 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable (lib.mkMerge [
-    {
-      home.shellAliases = {
-        g = "git";
-        gbm = ''g br --merged | rg -v "(^\*|main|master|develop)" | xargs g brd'';
-      };
-
-      programs.git = {
-        enable = true;
-
-        userName = cfg.userName;
-        userEmail = cfg.userEmail;
-
-        aliases = {
-          a = "add";
-          br = "branch";
-          brd = "branch -d";
-          brl = "branch -l";
-          c = "commit";
-          cm = "commit -m";
-          co = "checkout";
-          cob = "checkout -b";
-          com = "checkout main";
-          conf = "config";
-          d = "diff";
-          ds = "diff --staged";
-          m = "merge";
-          new = "log origin.. --reverse";
-          plog = "log --graph --all --decorate --oneline";
-          p = "pull -p";
-          pu = "push";
-          puf = "push --force-with-lease";
-          rb = "rebase";
-          rba = "rebase --abort";
-          rbc = "rebase --continue";
-          rs = "restore";
-          rss = "restore --staged";
-          st = "status";
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      {
+        home.shellAliases = {
+          g = "git";
+          gbm = ''g br --merged | rg -v "(^\*|main|master|develop)" | xargs g brd'';
         };
 
-        extraConfig = {
-          init.defaultBranch = "main";
-          push.autoSetupRemote = true;
-          merge.autoStash = true;
-          rebase.autoStash = true;
-          log.abbrevCommit = true;
-          help.autoCorrect = "immediate";
-          diff.tool = "nvimdiff";
-        };
-      };
-    }
+        programs.git = {
+          enable = true;
 
-    (lib.mkIf (cfg.signingKey != null) {
-      programs.git = {
-        signing = {
-          key = cfg.signingKey;
-          signByDefault = true;
-        };
+          userName = cfg.userName;
+          userEmail = cfg.userEmail;
 
-        extraConfig = {
-          commit.gpgsign = true;
-          gpg.format = "ssh";
-          ssh = {
-            allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
+          aliases = {
+            a = "add";
+            br = "branch";
+            brd = "branch -d";
+            brl = "branch -l";
+            c = "commit";
+            cm = "commit -m";
+            co = "checkout";
+            cob = "checkout -b";
+            com = "checkout main";
+            conf = "config";
+            d = "diff";
+            ds = "diff --staged";
+            m = "merge";
+            new = "log origin.. --reverse";
+            plog = "log --graph --all --decorate --oneline";
+            p = "pull -p";
+            pu = "push";
+            puf = "push --force-with-lease";
+            rb = "rebase";
+            rba = "rebase --abort";
+            rbc = "rebase --continue";
+            rs = "restore";
+            rss = "restore --staged";
+            st = "status";
+          };
+
+          extraConfig = {
+            init.defaultBranch = "main";
+            push.autoSetupRemote = true;
+            merge.autoStash = true;
+            rebase.autoStash = true;
+            log.abbrevCommit = true;
+            help.autoCorrect = "immediate";
+            diff.tool = "nvimdiff";
           };
         };
-      };
+      }
 
-      home.file.".ssh/allowed_signers" = {
-        enable = true;
-        text = ''${cfg.userEmail} namespaces="git" ${cfg.signingKey}'';
-      };
-    })
-  ]);
+      (lib.mkIf (cfg.signingKey != null) {
+        programs.git = {
+          signing = {
+            key = cfg.signingKey;
+            signByDefault = true;
+          };
+
+          extraConfig = {
+            commit.gpgsign = true;
+            gpg.format = "ssh";
+            ssh = {
+              allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
+            };
+          };
+        };
+
+        home.file.".ssh/allowed_signers" = {
+          enable = true;
+          text = ''${cfg.userEmail} namespaces="git" ${cfg.signingKey}'';
+        };
+      })
+    ]
+  );
 }

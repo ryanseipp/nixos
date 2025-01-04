@@ -3,12 +3,16 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   wallpaper = ../../../assets/winter_mountain_drive.jpg;
   hyprlandPkg = config.wayland.windowManager.hyprland.package;
   hyprlockPkg = config.programs.hyprlock.package;
-in {
-  options = {hyprland.enable = lib.mkEnableOption "enables hyprland";};
+in
+{
+  options = {
+    hyprland.enable = lib.mkEnableOption "enables hyprland";
+  };
 
   config = lib.mkIf config.hyprland.enable {
     wayland.windowManager.hyprland = {
@@ -32,7 +36,9 @@ in {
         input = {
           kb_layout = "us";
           follow_mouse = 1;
-          touchpad = {natural_scroll = "false";};
+          touchpad = {
+            natural_scroll = "false";
+          };
 
           sensitivity = 0;
         };
@@ -63,7 +69,9 @@ in {
 
         # master = {new_status = "master";};
 
-        gestures = {workspace_swipe = false;};
+        gestures = {
+          workspace_swipe = false;
+        };
 
         windowrulev2 = [
           "suppressevent maximize, class:.*"

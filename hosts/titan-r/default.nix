@@ -3,7 +3,8 @@
   inputs,
   outputs,
   ...
-}: {
+}:
+{
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-cpu-amd-pstate
@@ -23,10 +24,14 @@
 
   users.users.zorbik = {
     isNormalUser = true;
-    extraGroups = ["wheel" "incus-admin" "networkmanager"];
+    extraGroups = [
+      "wheel"
+      "incus-admin"
+      "networkmanager"
+    ];
     shell = pkgs.zsh;
   };
-  home-manager.users.zorbik = import ./homes/zorbik/home.nix {inherit pkgs inputs outputs;};
+  home-manager.users.zorbik = import ./homes/zorbik/home.nix { inherit pkgs inputs outputs; };
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
@@ -72,10 +77,13 @@
   };
 
   boot = {
-    kernelParams = ["pcie_port_pm=off"];
+    kernelParams = [ "pcie_port_pm=off" ];
     kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
 
-    binfmt.emulatedSystems = ["aarch64-linux" "riscv64-linux"];
+    binfmt.emulatedSystems = [
+      "aarch64-linux"
+      "riscv64-linux"
+    ];
 
     loader = {
       systemd-boot.enable = true;
@@ -85,8 +93,8 @@
 
   hardware = {
     graphics = {
-      extraPackages = [pkgs.amdvlk];
-      extraPackages32 = [pkgs.driversi686Linux.amdvlk];
+      extraPackages = [ pkgs.amdvlk ];
+      extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
     };
 
     flipperzero.enable = true;

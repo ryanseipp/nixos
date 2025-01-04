@@ -2,8 +2,11 @@
   lib,
   config,
   ...
-}: {
-  options = {openssh.enable = lib.mkEnableOption "enables ssh access";};
+}:
+{
+  options = {
+    openssh.enable = lib.mkEnableOption "enables ssh access";
+  };
 
   config = lib.mkIf config.openssh.enable {
     services.openssh = {

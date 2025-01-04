@@ -1,5 +1,11 @@
-{lib, ...}: {
-  imports = [./podmanHost.nix ./incusHost.nix];
+{ lib, ... }:
+{
+  imports = [
+    ./podmanHost.nix
+    ./incusHost.nix
+  ];
 
-  options = {virtualization.enable = lib.mkEnableOption "enables virtualization hosts";};
+  options = {
+    virtualization.enable = lib.mkEnableOption "enables virtualization hosts";
+  };
 }

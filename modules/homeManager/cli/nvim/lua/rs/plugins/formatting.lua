@@ -34,7 +34,7 @@ return {
 			c = { "clang_format" },
 			cs = { "csharpier" },
 			lua = { "stylua" },
-			nix = { "alejandra" },
+			nix = { "nixfmt" },
 			ocaml = { "ocamlformat" },
 			rust = { "rustfmt", "rustywind" },
 			sh = { "beautysh" },

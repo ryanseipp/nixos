@@ -2,9 +2,16 @@
   pkgs,
   inputs,
   ...
-}: let
-  cloudflareNameservers = ["2606:4700:4700::1111" "2606:4700:4700::1001" "1.1.1.1" "1.0.0.1"];
-in {
+}:
+let
+  cloudflareNameservers = [
+    "2606:4700:4700::1111"
+    "2606:4700:4700::1001"
+    "1.1.1.1"
+    "1.0.0.1"
+  ];
+in
+{
   imports = [
     ./gc.nix
     ./desktop
@@ -14,14 +21,19 @@ in {
 
   nix = {
     package = pkgs.nix;
-    nixPath = let
-      path = toString ./../..;
-    in [
-      "nixpkgs=${inputs.nixpkgs}"
-      "nixos-config=${path}"
-    ];
+    nixPath =
+      let
+        path = toString ./../..;
+      in
+      [
+        "nixpkgs=${inputs.nixpkgs}"
+        "nixos-config=${path}"
+      ];
     channel.enable = false;
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
 
   networking = {

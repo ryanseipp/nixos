@@ -2,8 +2,11 @@
   lib,
   config,
   ...
-}: {
-  options = {gc.enable = lib.mkEnableOption "enables nix gc";};
+}:
+{
+  options = {
+    gc.enable = lib.mkEnableOption "enables nix gc";
+  };
 
   config = lib.mkIf config.gc.enable {
     nix.gc = {

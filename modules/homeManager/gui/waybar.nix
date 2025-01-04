@@ -2,8 +2,11 @@
   lib,
   config,
   ...
-}: {
-  options = {waybar.enable = lib.mkEnableOption "enables waybar";};
+}:
+{
+  options = {
+    waybar.enable = lib.mkEnableOption "enables waybar";
+  };
 
   config = lib.mkIf config.waybar.enable {
     programs.waybar = {
@@ -19,8 +22,8 @@
           margin-left = 16;
           margin-right = 16;
           mode = "dock";
-          modules-left = ["hyprland/workspaces"];
-          modules-center = ["hyprland/window"];
+          modules-left = [ "hyprland/workspaces" ];
+          modules-center = [ "hyprland/window" ];
           modules-right = [
             "custom/media"
             "idle_inhibitor"
@@ -31,20 +34,28 @@
             "clock"
             "tray"
           ];
-          "hyprland/workspaces" = {format = "{name}";};
+          "hyprland/workspaces" = {
+            format = "{name}";
+          };
           mpd = {
             format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
             format-disconnected = "Disconnected ";
             format-stopped = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ";
             unknown-tag = "N/A";
             interval = 2;
-            consume-icons = {on = " ";};
+            consume-icons = {
+              on = " ";
+            };
             random-icons = {
               off = ''<span color="#f53c3c"></span> '';
               on = " ";
             };
-            repeat-icons = {on = " ";};
-            single-icons = {on = "1 ";};
+            repeat-icons = {
+              on = " ";
+            };
+            single-icons = {
+              on = "1 ";
+            };
             state-icons = {
               paused = "";
               playing = "";
@@ -75,14 +86,20 @@
             format = "{usage}% ";
             tooltip = false;
           };
-          memory = {format = "{}% ";};
+          memory = {
+            format = "{}% ";
+          };
           temperature = {
             # thermal-zone = 2;
             # hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
             critical-threshold = 80;
             # format-critical = "{temperatureC}°C {icon}";
             format = "{temperatureC}°C {icon}";
-            format-icons = ["" "" ""];
+            format-icons = [
+              ""
+              ""
+              ""
+            ];
           };
           network = {
             # interface = "wlp2*"; // (Optional) To force the use of this interface
@@ -106,7 +123,11 @@
               phone = "";
               portable = "";
               car = "";
-              default = ["" "" ""];
+              default = [
+                ""
+                ""
+                ""
+              ];
             };
             on-click = "pavucontrol";
           };

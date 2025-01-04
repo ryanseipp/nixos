@@ -3,10 +3,14 @@
   lib,
   config,
   ...
-}: let
-  # inherit (config.lib.formats.rasi) mkLiteral;
-in {
-  options = {rofi.enable = lib.mkEnableOption "enables rofi";};
+}:
+let
+in
+# inherit (config.lib.formats.rasi) mkLiteral;
+{
+  options = {
+    rofi.enable = lib.mkEnableOption "enables rofi";
+  };
 
   config = lib.mkIf config.rofi.enable {
     programs.rofi = {
@@ -15,8 +19,15 @@ in {
       font = "Iosevka Nerd Font 9";
       terminal = "kitty";
       extraConfig = {
-        combi-modes = ["run" "drun"];
-        modes = ["run" "drun" "combi"];
+        combi-modes = [
+          "run"
+          "drun"
+        ];
+        modes = [
+          "run"
+          "drun"
+          "combi"
+        ];
         icon-theme = "Oranchelo";
         show-icons = true;
         drun-display-format = ''"{icon} {name}"'';

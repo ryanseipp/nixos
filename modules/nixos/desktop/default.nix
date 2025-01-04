@@ -2,7 +2,8 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   imports = [
     ./audio.nix
     ./bluetooth.nix
@@ -11,7 +12,9 @@
     ./theme.nix
   ];
 
-  options = {desktop.enable = lib.mkEnableOption "enables default desktop experience";};
+  options = {
+    desktop.enable = lib.mkEnableOption "enables default desktop experience";
+  };
 
   config = lib.mkIf config.desktop.enable {
     sddm.enable = true;

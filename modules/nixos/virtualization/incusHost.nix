@@ -2,8 +2,11 @@
   lib,
   config,
   ...
-}: {
-  options = {incusHost.enable = lib.mkEnableOption "enables qemu host tooling";};
+}:
+{
+  options = {
+    incusHost.enable = lib.mkEnableOption "enables qemu host tooling";
+  };
 
   config = lib.mkIf config.incusHost.enable {
     virtualisation.incus = {
@@ -47,8 +50,14 @@
     };
 
     networking.firewall.interfaces.incusbr0 = {
-      allowedTCPPorts = [53 67];
-      allowedUDPPorts = [53 67];
+      allowedTCPPorts = [
+        53
+        67
+      ];
+      allowedUDPPorts = [
+        53
+        67
+      ];
     };
   };
 }

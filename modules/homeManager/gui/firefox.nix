@@ -3,15 +3,16 @@
   lib,
   config,
   ...
-}: {
-  options = {firefox.enable = lib.mkEnableOption "enables firefox";};
+}:
+{
+  options = {
+    firefox.enable = lib.mkEnableOption "enables firefox";
+  };
 
   config = lib.mkIf config.firefox.enable {
     programs.firefox = {
       enable = true;
-      package =
-        pkgs.wrapFirefox
-        (pkgs.firefox-unwrapped.override {pipewireSupport = true;}) {};
+      package = pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { };
       policies = {
         DisableTelemetry = true;
         DisableFirefoxStudies = true;
@@ -50,7 +51,7 @@
               ];
             }
           ];
-          extensions = with pkgs.inputs.firefox-addons; [bitwarden];
+          extensions = with pkgs.inputs.firefox-addons; [ bitwarden ];
           search = {
             default = "DuckDuckGo";
             engines = {
@@ -59,21 +60,20 @@
               "eBay".metaData.hidden = true;
             };
             force = true;
-            order = ["DuckDuckGo" "Google"];
+            order = [
+              "DuckDuckGo"
+              "Google"
+            ];
           };
           settings = {
             "browser.contentblocking.category" = "strict";
-            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" =
-              false;
-            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" =
-              false;
-            "browser.newtabpage.activity-stream.feeds.section.highlights" =
-              true;
-            "browser.newtabpage.activity-stream.feeds.section.topstories" =
-              false;
-            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" = "google,amazon";
-            "browser.newtabpage.activity-stream.section.highlights.includePocket" =
-              false;
+            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
+            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
+            "browser.newtabpage.activity-stream.feeds.section.highlights" = true;
+            "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" =
+              "google,amazon";
+            "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
             "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
             "browser.theme.content-theme" = 0;
             "browser.theme.toolbar-theme" = 0;
@@ -104,7 +104,11 @@
                   "downloads-button"
                   "_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action"
                 ];
-                TabsToolbar = ["firefox-view-button" "tabbrowser-tabs" "new-tab-button"];
+                TabsToolbar = [
+                  "firefox-view-button"
+                  "tabbrowser-tabs"
+                  "new-tab-button"
+                ];
               };
             };
           };

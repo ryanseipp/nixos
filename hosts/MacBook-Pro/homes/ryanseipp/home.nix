@@ -3,7 +3,8 @@
   inputs,
   outputs,
   ...
-}: {
+}:
+{
   nixpkgs.config.allowUnfree = true;
 
   imports = [
@@ -63,8 +64,12 @@
   };
 
   btop.enable = true;
-  kitty.enable = true;
   yazi.enable = true;
+
+  kitty = {
+    enable = true;
+    font = "Iosevka Nerd Font";
+  };
 
   git = {
     enable = true;

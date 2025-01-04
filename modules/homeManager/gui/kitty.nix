@@ -3,9 +3,11 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.kitty;
-in {
+in
+{
   options = {
     kitty.enable = mkEnableOption "enable kitty";
     kitty.font = mkOption {
