@@ -11,7 +11,11 @@
   config = lib.mkIf config.starship.enable {
     programs.starship = {
       enable = true;
+      enableBashIntegration = false;
       enableZshIntegration = true;
+      enableFishIntegration = false;
+      enableIonIntegration = false;
+      enableNushellIntegration = false;
       settings = {
         add_newline = false;
         format = lib.concatStrings [

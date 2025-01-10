@@ -16,9 +16,22 @@
 
   networking = {
     hostName = "titan-r";
+    domain = "home.ryanseipp.com";
+
     networkmanager = {
       enable = true;
       wifi.scanRandMacAddress = false;
+    };
+
+    hosts = {
+      "10.0.0.10" = [
+        "kube-host-1.home.ryanseipp.com"
+        "kube-host-1"
+      ];
+      "2601:547:e01:8c0:cafe::10" = [
+        "kube-host-1.home.ryanseipp.com"
+        "kube-host-1"
+      ];
     };
   };
 
@@ -40,6 +53,7 @@
     r2modman
     liburing
     networkmanagerapplet
+    winbox4
   ];
 
   programs = {
