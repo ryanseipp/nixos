@@ -30,6 +30,8 @@
     username = "zorbik";
     homeDirectory = "/home/zorbik";
 
+    preferXdgDirectories = true;
+
     shellAliases = {
       ls = "eza -l";
       la = "eza -la";

@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 with lib;
@@ -29,6 +30,10 @@ in
       settings = {
         background_opacity = "0.96";
         enabled_layouts = "splits:split_axis=horizontal";
+
+        # allow vim-kitty-navigator to focus windows
+        allow_remote_control = "yes";
+        listen_on = "unix:/tmp/mykitty";
       };
 
       keybindings = {
@@ -41,10 +46,10 @@ in
         "ctrl+shift+k" = "move_window up";
         "ctrl+shift+j" = "move_window down";
 
-        "ctrl+h" = "neighboring_window left";
-        "ctrl+l" = "neighboring_window right";
-        "ctrl+k" = "neighboring_window up";
-        "ctrl+j" = "neighboring_window down";
+        "ctrl+h" = "kitten pass_keys.py left ctrl+h";
+        "ctrl+l" = "kitten pass_keys.py right ctrl+l";
+        "ctrl+k" = "kitten pass_keys.py top ctrl+k";
+        "ctrl+j" = "kitten pass_keys.py bottom ctrl+j";
 
         "ctrl+cmd+l" = "next_tab";
         "ctrl+cmd+h" = "previous_tab";
@@ -53,6 +58,13 @@ in
 
     home.shellAliases = {
       ssh = "kitten ssh";
+    };
+
+    xdg.configFile."kitty/pass_keys.py" = {
+      source = "${pkgs.vimPlugins.vim-kitty-navigator}/pass_keys.py";
+    };
+    xdg.configFile."kitty/get_layout.py" = {
+      source = "${pkgs.vimPlugins.vim-kitty-navigator}/get_layout.py";
     };
   };
 }
