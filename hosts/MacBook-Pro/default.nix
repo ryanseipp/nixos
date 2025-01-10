@@ -61,6 +61,7 @@
       "docker"
       "docker-credential-helper"
       "gnu-sed"
+      "helm"
       "yarn"
     ];
     casks = [

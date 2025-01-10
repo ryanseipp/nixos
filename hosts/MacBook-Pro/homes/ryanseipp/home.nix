@@ -69,6 +69,7 @@
   kitty = {
     enable = true;
     font = "Iosevka Nerd Font";
+    fontSize = 12;
   };
 
   git = {

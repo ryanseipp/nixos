@@ -12,9 +12,14 @@ in
   options = {
     kitty.enable = mkEnableOption "enable kitty";
     kitty.font = mkOption {
-      type = types.nullOr types.str;
+      type = types.str;
       default = "Iosevka";
       description = "Default kitty font";
+    };
+    kitty.fontSize = mkOption {
+      type = types.number;
+      default = 10;
+      description = "Font size for kitty";
     };
   };
 
@@ -23,7 +28,7 @@ in
       enable = true;
       font = mkIf (cfg.font != null) {
         name = cfg.font;
-        size = 10;
+        size = cfg.fontSize;
       };
       shellIntegration.enableZshIntegration = true;
 
