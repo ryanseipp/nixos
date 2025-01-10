@@ -33,7 +33,7 @@ in
 
         # allow vim-kitty-navigator to focus windows
         allow_remote_control = "yes";
-        listen_on = "unix:/tmp/mykitty";
+        listen_on = if pkgs.stdenv.isLinux then "unix:@mykitty" else "unix:/tmp/mykitty";
       };
 
       keybindings = {

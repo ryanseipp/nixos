@@ -10,6 +10,7 @@
   };
 
   config = lib.mkIf config.sddm.enable {
+    services.displayManager.defaultSession = "hyprland";
     services.displayManager.sddm = {
       enable = true;
       wayland.enable = true;
