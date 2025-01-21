@@ -80,6 +80,7 @@
   environment.systemPackages = with pkgs; [
     android-tools
     nodejs_22
+    postgresql
   ];
 
   fonts.packages = with pkgs; [

@@ -59,6 +59,7 @@
       spotify
       sops
       ssh-to-age
+      subnetcalc
       tidal-hifi
       vesktop
       wl-clipboard

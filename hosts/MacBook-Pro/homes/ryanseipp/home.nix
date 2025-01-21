@@ -29,19 +29,14 @@
     packages = with pkgs; [
       cilium-cli
       crane
-      crossplane-cli
       cocoapods
       cosign
+      devbox
       dive
       docker
       docker-compose
       eza
       fd
-      go
-      gopls
-      gofumpt
-      golangci-lint
-      govulncheck
       jq
       just
       kcl
@@ -49,6 +44,8 @@
       kclvm_cli
       kind
       kubectl
+      kubectl-tree
+      kubectl-cnpg
       kubectx
       librsvg
       opentofu
@@ -56,6 +53,7 @@
       ripgrep
       trivy
       slsa-verifier
+      subnetcalc
       watchman
       yq-go
     ];
