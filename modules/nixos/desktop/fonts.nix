@@ -12,9 +12,10 @@
   config = lib.mkIf config.prettyFonts.enable {
     fonts.packages = with pkgs; [
       inter
-      source-sans
+      iosevka
+      (iosevka.override { set = "Term"; })
       nerd-fonts.iosevka
-      nerd-fonts.sauce-code-pro
+      nerd-fonts.iosevka-term
     ];
   };
 }

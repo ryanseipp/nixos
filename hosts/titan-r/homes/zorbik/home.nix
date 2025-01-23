@@ -79,6 +79,7 @@
   firefox.enable = true;
   hyprland.enable = true;
   kitty.enable = true;
+  ghostty.enable = true;
   podman.enable = true;
   mako.enable = true;
   rofi.enable = true;

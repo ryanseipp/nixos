@@ -13,12 +13,12 @@ in
     kitty.enable = mkEnableOption "enable kitty";
     kitty.font = mkOption {
       type = types.str;
-      default = "Iosevka";
+      default = "Iosevka Term";
       description = "Default kitty font";
     };
     kitty.fontSize = mkOption {
       type = types.number;
-      default = 10;
+      default = 11;
       description = "Font size for kitty";
     };
   };
