@@ -13,7 +13,7 @@ in
       enable = mkEnableOption "enable ghostty";
       font = mkOption {
         type = types.str;
-        default = "Iosevka Term";
+        default = "Iosevka";
         description = "Default ghostty font";
       };
       fontSize = mkOption {

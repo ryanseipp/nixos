@@ -13,7 +13,6 @@
     fonts.packages = with pkgs; [
       inter
       iosevka
-      (iosevka.override { set = "Term"; })
       nerd-fonts.iosevka
       nerd-fonts.iosevka-term
     ];
