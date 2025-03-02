@@ -1,6 +1,7 @@
 { ... }:
 {
   imports = [
+    ./brave.nix
     ./firefox.nix
     ./ghostty.nix
     ./hyprland.nix

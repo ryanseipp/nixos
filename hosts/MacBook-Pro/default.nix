@@ -66,6 +66,7 @@
     ];
     casks = [
       "android-studio"
+      "brave-browser"
       "dbeaver-community"
       "kitty"
       "tidal"
@@ -74,8 +75,20 @@
     onActivation = {
       autoUpdate = true;
       upgrade = true;
+      cleanup = "uninstall";
+    };
+    global = {
+      autoUpdate = false;
     };
   };
+
+  networking = {
+    computerName = "Ryan Seipp's MBP";
+    hostName = "Ryan-Seipps-MBP";
+    localHostName = "Ryan-Seipps-MBP";
+  };
+
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   environment.systemPackages = with pkgs; [
     android-tools
@@ -91,8 +104,53 @@
     nerd-fonts.symbols-only
   ];
 
-  services.nix-daemon.enable = true;
   programs.zsh.enable = true;
 
-  system.stateVersion = 4;
+  system = {
+    stateVersion = 4;
+    defaults = {
+      ".GlobalPreferences"."com.apple.mouse.scaling" = -1.0;
+      ActivityMonitor.IconType = 5;
+      NSGlobalDomain = {
+        AppleInterfaceStyle = "Dark";
+        AppleShowAllFiles = true;
+        AppleShowAllExtensions = true;
+      };
+      controlcenter = {
+        AirDrop = false;
+        BatteryShowPercentage = true;
+        Bluetooth = true;
+        Display = false;
+        FocusModes = false;
+        NowPlaying = true;
+        Sound = true;
+      };
+      dock = {
+        autohide = true;
+        mru-spaces = false;
+        orientation = "bottom";
+        persistent-apps = [
+          { app = "/Applications/kitty.app"; }
+          { app = "/Applications/Brave Browser.app"; }
+          { app = "/Applications/Slack.app"; }
+          { app = "/Applications/1Password.app"; }
+          { app = "/Applications/TIDAL.app"; }
+          { app = "/Applications/NetNewsWire.app"; }
+          { app = "/Applications/Docker.app"; }
+          { app = "/Applications/Azure VPN Client.app"; }
+          { app = "/System/Applications/System Settings.app"; }
+          { spacer.small = true; }
+        ];
+        show-recents = false;
+      };
+      finder = {
+        AppleShowAllFiles = true;
+        AppleShowAllExtensions = true;
+        FXPreferredViewStyle = "Nslv";
+        FXRemoveOldTrashItems = true;
+        ShowPathbar = true;
+        _FXSortFoldersFirst = true;
+      };
+    };
+  };
 }
