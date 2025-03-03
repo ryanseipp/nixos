@@ -136,7 +136,7 @@
           { app = "/Applications/1Password.app"; }
           { app = "/Applications/TIDAL.app"; }
           { app = "/Applications/NetNewsWire.app"; }
-          { app = "/Applications/Docker.app"; }
+          { app = "/Applications/Docker.app/Contents/MacOS/Docker Desktop.app"; }
           { app = "/Applications/Azure VPN Client.app"; }
           { app = "/System/Applications/System Settings.app"; }
           { spacer.small = true; }
