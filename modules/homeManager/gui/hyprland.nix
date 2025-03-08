@@ -178,7 +178,7 @@ in
           monitor = "";
           path = "${wallpaper}";
           blur_passes = 2;
-          blur_size = 3;
+          blur_size = 5;
           color = "$base";
         };
 
