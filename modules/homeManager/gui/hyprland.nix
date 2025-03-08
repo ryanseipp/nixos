@@ -5,7 +5,7 @@
   ...
 }:
 let
-  wallpaper = ../../../assets/winter_mountain_drive.jpg;
+  wallpaper = ../../../assets/shop.jpg;
   hyprlandPkg = config.wayland.windowManager.hyprland.package;
   hyprlockPkg = config.programs.hyprlock.package;
 in
@@ -158,8 +158,8 @@ in
       settings = {
         preload = "${wallpaper}";
         wallpaper = [
-          "DP-1,${wallpaper}"
-          "DP-2,${wallpaper}"
+          "DP-1,contain:${wallpaper}"
+          "DP-2,contain:${wallpaper}"
         ];
         splash = false;
       };
