@@ -149,7 +149,7 @@
         .modules-left {
           margin-top: 0.125rem;
           margin-bottom: 0.125rem;
-          margin-left: 2rem;
+          margin-left: 1rem;
         }
 
         .modules-center {
@@ -160,7 +160,7 @@
         .modules-right {
           margin-top: 0.125rem;
           margin-bottom: 0.125rem;
-          margin-right: 2rem;
+          margin-right: 1rem;
         }
 
         tooltip {

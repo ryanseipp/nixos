@@ -24,7 +24,7 @@ in
         "$terminal" = "kitty";
         "$fileManager" = "dolphin";
         "$browser" = "brave";
-        "$menu" = "rofi -show combi";
+        "$menu" = "rofi -show run";
 
         monitor = ",highrr,auto,auto,vrr,1";
 
@@ -45,7 +45,7 @@ in
 
         general = {
           gaps_in = 4;
-          gaps_out = 16;
+          gaps_out = "24,16,16,16";
           border_size = 1;
           "col.active_border" = "0xee$blueAlpha 0xee$lavenderAlpha 45deg";
           "col.inactive_border" = "0xff$baseAlpha";
@@ -66,8 +66,6 @@ in
           pseudotile = true;
           preserve_split = true;
         };
-
-        # master = {new_status = "master";};
 
         gestures = {
           workspace_swipe = false;
@@ -100,6 +98,7 @@ in
           "$mainMod, R, exec, $menu"
           ''$mainMod, P, exec, grim -g "$(slurp -d)" - | wl-copy -t image/png''
           "$mainMod, T, toggleSplit,"
+          "ALT SHIFT Control, l, exec, loginctl lock-session"
 
           "$mainMod, h, movefocus, l"
           "$mainMod, j, movefocus, d"
@@ -173,46 +172,70 @@ in
           disable_loading_bar = true;
           grace = 30;
           hide_cursor = true;
-          no_fade_in = false;
         };
 
-        background = [
-          {
-            path = "${wallpaper}";
-            blur_passes = 2;
-            blur_size = 3;
-          }
-        ];
+        background = {
+          monitor = "";
+          path = "${wallpaper}";
+          blur_passes = 2;
+          blur_size = 3;
+          color = "$base";
+        };
 
         label = [
           {
             monitor = "";
-            position = "0, 0";
-            text = "Welcome back, $USER!";
-            font_size = 16;
-            font_family = "Inter";
-            color = "rgb(202, 211, 245)";
-            halign = "center";
-            valign = "center";
+            text = "$TIME";
+            color = "$text";
+            font_size = 90;
+            font_family = "$font";
+            position = "-30, 0";
+            halign = "right";
+            valign = "top";
+          }
+          {
+            monitor = "";
+            text = ''cmd[update:43200000] date +"%A, %d %B %Y"'';
+            color = "$text";
+            font_size = 25;
+            font_family = "$font";
+            position = "-30, -150";
+            halign = "right";
+            valign = "top";
           }
         ];
 
-        input-field = [
-          {
-            monitor = "";
-            size = "300, 32";
-            position = "0, -48";
-            dots_center = true;
-            fade_on_empty = false;
-            font_color = "rgb(202, 211, 245)";
-            inner_color = "rgb(91, 96, 120)";
-            outer_color = "rgb(24, 25, 38)";
-            outline_thickness = 2;
-            placeholder_text = "'<span foreground=\"##cad3f5\">Password...</span>'";
-            shadow_passes = 1;
-            rounding = 8;
-          }
-        ];
+        image = {
+          monitor = "";
+          path = "$HOME/.face";
+          size = "100";
+          border_color = "$accent";
+          position = "0, 75";
+          halign = "center";
+          valign = "center";
+        };
+
+        input-field = {
+          monitor = "";
+          size = "300, 40";
+          outline_thickness = 4;
+          dots_size = 0.2;
+          dots_spacing = 0.2;
+          dots_center = true;
+          outer_color = "$accent";
+          inner_color = "$surface0";
+          font_color = "$text";
+          fade_on_empty = false;
+          placeholder_text = ''<span foreground="##$textAlpha"><i>󰌾 Logged in as </i><span foreground="##$accentAlpha">$USER</span></span>'';
+          hide_input = false;
+          check_color = "$accent";
+          fail_color = "$red";
+          fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
+          capslock_color = "$yellow";
+          position = "0, -47";
+          halign = "center";
+          valign = "center";
+        };
       };
     };
 

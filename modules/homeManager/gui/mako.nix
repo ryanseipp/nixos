@@ -11,8 +11,12 @@
   config = lib.mkIf config.mako.enable {
     services.mako = {
       enable = true;
-      defaultTimeout = 3000;
+      defaultTimeout = 4000;
       font = "Iosevka Nerd Font 10";
+      borderRadius = 8;
+      margin = "24,16,8,8";
     };
+
+    catppuccin.mako.accent = "blue";
   };
 }

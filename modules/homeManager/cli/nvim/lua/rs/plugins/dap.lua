@@ -92,29 +92,29 @@ return {
 				command = "/usr/bin/kitty",
 			}
 
-			dap.adapters.firefox = {
-				type = "executable",
-				command = "node",
-				args = { os.getenv("HOME") .. "/.local/share/vscode-firefox-debug/dist/adapter.bundle.js" },
-			}
-			dap.configurations.typescript = {
-				name = "Debug with Firefox",
-				type = "firefox",
-				request = "launch",
-				reAttach = true,
-				url = "http://localhost:8000",
-				webRoot = "${workspaceFolder}",
-				firefoxExecutable = "/usr/bin/firefox",
-			}
-			dap.configurations.typescriptreact = {
-				name = "Debug with Firefox",
-				type = "firefox",
-				request = "launch",
-				reAttach = true,
-				url = "http://localhost:8000",
-				webRoot = "${workspaceFolder}",
-				firefoxExecutable = "/usr/bin/firefox",
-			}
+			-- dap.adapters.firefox = {
+			-- 	type = "executable",
+			-- 	command = "node",
+			-- 	args = { os.getenv("HOME") .. "/.local/share/vscode-firefox-debug/dist/adapter.bundle.js" },
+			-- }
+			-- dap.configurations.typescript = {
+			-- 	name = "Debug with Firefox",
+			-- 	type = "firefox",
+			-- 	request = "launch",
+			-- 	reAttach = true,
+			-- 	url = "http://localhost:8000",
+			-- 	webRoot = "${workspaceFolder}",
+			-- 	firefoxExecutable = "/usr/bin/firefox",
+			-- }
+			-- dap.configurations.typescriptreact = {
+			-- 	name = "Debug with Firefox",
+			-- 	type = "firefox",
+			-- 	request = "launch",
+			-- 	reAttach = true,
+			-- 	url = "http://localhost:8000",
+			-- 	webRoot = "${workspaceFolder}",
+			-- 	firefoxExecutable = "/usr/bin/firefox",
+			-- }
 
 			dap.listeners.after.event_initialized.dapui_config = function()
 				dapui.open()
