@@ -129,27 +129,27 @@ return {
 			end
 		end,
 	},
-	{
-		"rcarriga/nvim-dap-ui",
-		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-		keys = {
-			{
-				"<leader>de",
-				function()
-					require("dapui").eval()
-				end,
-				desc = "[DAP] eval",
-			},
-			{
-				"<leader>dE",
-				function()
-					require("dapui").eval(vim.fn.input("[DAP] Expression > "))
-				end,
-				desc = "[DAP] eval expression",
-			},
-		},
-		config = true,
-	},
+	-- {
+	-- 	"rcarriga/nvim-dap-ui",
+	-- 	dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>de",
+	-- 			function()
+	-- 				require("dapui").eval()
+	-- 			end,
+	-- 			desc = "[DAP] eval",
+	-- 		},
+	-- 		{
+	-- 			"<leader>dE",
+	-- 			function()
+	-- 				require("dapui").eval(vim.fn.input("[DAP] Expression > "))
+	-- 			end,
+	-- 			desc = "[DAP] eval expression",
+	-- 		},
+	-- 	},
+	-- 	config = true,
+	-- },
 	{
 		"leoluz/nvim-dap-go",
 		ft = { "go" },

@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  defaultBrowser = "brave.desktop";
+in
 {
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
@@ -24,6 +27,7 @@
       enable = true;
       accent = "light";
     };
+    gtk.enable = true;
   };
 
   home = {
@@ -75,11 +79,10 @@
     signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCycJpF3hp+BKw88FYMAfjhEtqC/1TkWqZjK1SScIVb rseipp@ryanseipp.com";
   };
 
+  brave.enable = true;
   btop.enable = true;
-  firefox.enable = true;
   hyprland.enable = true;
   kitty.enable = true;
-  ghostty.enable = true;
   podman.enable = true;
   mako.enable = true;
   rofi.enable = true;
@@ -94,6 +97,19 @@
         common.default = "*";
       };
       extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
+    };
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "text/html" = defaultBrowser;
+        "application/pdf" = defaultBrowser;
+        "x-scheme-handler/http" = defaultBrowser;
+        "x-scheme-handler/https" = defaultBrowser;
+        "x-scheme-handler/about" = defaultBrowser;
+        "x-scheme-handler/unknown" = defaultBrowser;
+        "x-scheme-handler/ror2mm" = "r2modman.desktop";
+        "x-scheme-handler/discord" = "vesktop.desktop";
+      };
     };
   };
 

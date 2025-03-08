@@ -37,8 +37,8 @@ in
   };
 
   networking = {
-    nftables.enable = true;
-    firewall.enable = true;
+    nftables.enable = false;
+    firewall.enable = false;
     nameservers = cloudflareNameservers;
     networkmanager.insertNameservers = cloudflareNameservers;
   };

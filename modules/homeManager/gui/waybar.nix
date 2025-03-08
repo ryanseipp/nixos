@@ -16,58 +16,47 @@
         mainBar = {
           layer = "top";
           position = "top";
-          height = 24;
-          margin-top = 8;
+          height = 32;
           margin-bottom = -8;
-          margin-left = 16;
-          margin-right = 16;
           mode = "dock";
-          modules-left = [ "hyprland/workspaces" ];
-          modules-center = [ "hyprland/window" ];
-          modules-right = [
-            "custom/media"
-            "idle_inhibitor"
-            "pulseaudio"
-            "network"
-            "cpu"
-            "memory"
-            "clock"
-            "tray"
+          modules-left = [
+            "custom/nixos-logo"
+            "hyprland/workspaces"
+            "custom/window-separator"
+            "hyprland/window"
           ];
+          modules-center = [ ];
+          modules-right = [
+            "tray"
+            "custom/separator"
+            "idle_inhibitor"
+            "custom/separator"
+            "network"
+            "custom/separator"
+            "cpu"
+            "custom/separator"
+            "memory"
+            "custom/separator"
+            "pulseaudio"
+            "custom/separator"
+            "pulseaudio#source"
+            "custom/separator"
+            "bluetooth"
+            "custom/separator"
+            "clock"
+          ];
+          "custom/nixos-logo" = {
+            format = "   ";
+            tooltip = false;
+          };
           "hyprland/workspaces" = {
             format = "{name}";
-          };
-          mpd = {
-            format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
-            format-disconnected = "Disconnected ";
-            format-stopped = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ";
-            unknown-tag = "N/A";
-            interval = 2;
-            consume-icons = {
-              on = " ";
-            };
-            random-icons = {
-              off = ''<span color="#f53c3c"></span> '';
-              on = " ";
-            };
-            repeat-icons = {
-              on = " ";
-            };
-            single-icons = {
-              on = "1 ";
-            };
-            state-icons = {
-              paused = "";
-              playing = "";
-            };
-            tooltip-format = "MPD (connected)";
-            tooltip-format-disconnected = "MPD (disconnected)";
           };
           idle_inhibitor = {
             format = "{icon}";
             format-icons = {
-              activated = "";
-              deactivated = "";
+              activated = " ";
+              deactivated = " ";
             };
           };
           tray = {
@@ -83,64 +72,58 @@
             tooltip = false;
           };
           cpu = {
-            format = "{usage}% ";
+            format = "  {usage}%";
             tooltip = false;
           };
           memory = {
-            format = "{}% ";
-          };
-          temperature = {
-            # thermal-zone = 2;
-            # hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
-            critical-threshold = 80;
-            # format-critical = "{temperatureC}°C {icon}";
-            format = "{temperatureC}°C {icon}";
-            format-icons = [
-              ""
-              ""
-              ""
-            ];
+            format = "  {percentage}%";
           };
           network = {
-            # interface = "wlp2*"; // (Optional) To force the use of this interface
-            format-wifi = "{essid} ({signalStrength}%) 󰖩";
-            format-ethernet = "{ipaddr}/{cidr} 󰈀";
-            format-linked = "{ifname} (No IP) 󱚵";
-            format-disconnected = "Disconnected 󰖪";
-            format-alt = "{ifname}: {ipaddr}/{cidr}";
+            family = "ipv6";
+            format-wifi = "{essid} ({signalStrength}%) 󰖩 ";
+            format-ethernet = "󰈀   {bandwidthUpBits}  {bandwidthDownBits}";
+            format-linked = "{ifname} (No IP) 󱚵 ";
+            format-disconnected = "Disconnected 󰖪 ";
+          };
+          bluetooth = {
+            format = " 󰂯 ";
+            format-disabled = " 󰂲 ";
+            on-click = "blueman-manager";
           };
           pulseaudio = {
-            # scroll-step = 1; // %, can be a float
-            format = "{volume}% {icon}   {format_source}";
-            format-bluetooth = "{volume}% {icon} {format_source}";
-            format-bluetooth-muted = "󰝟 {icon} {format_source}";
-            format-muted = "󰝟 {format_source}";
-            format-source = "{volume}% ";
-            format-source-muted = "";
+            scroll-step = 5;
+            format = "{icon} {volume}%";
+            format-muted = "{icon}";
             format-icons = {
-              headphone = "󰋋";
-              headset = "󰋎";
-              phone = "";
-              portable = "";
-              car = "";
+              headphone = "󰋋 ";
+              headset = "󰋎 ";
+              phone = " ";
+              portable = " ";
+              car = " ";
               default = [
-                ""
-                ""
-                ""
+                " "
+                " "
+                " "
               ];
+              default-muted = "󰝟 ";
             };
             on-click = "pavucontrol";
           };
-          "custom/media" = {
-            format = "{icon} {}";
-            return-type = "json";
-            max-length = 40;
-            format-icons = {
-              spotify = "";
-              default = "🎜";
-            };
-            escape = true;
-            exec = "$HOME/.config/waybar/mediaplayer.py 2> /dev/null"; # Script in resources folder
+          clock = {
+            interval = 1;
+          };
+          "pulseaudio#source" = {
+            format = "{format_source}";
+            format-source = "  ";
+            format-source-muted = "  ";
+          };
+          "custom/separator" = {
+            format = " | ";
+            tooltip = false;
+          };
+          "custom/window-separator" = {
+            format = " ";
+            tooltip = false;
           };
         };
       };
@@ -150,49 +133,76 @@
           border: none;
           font-family: "Iosevka Nerd Font";
           font-weight: bold;
-          font-size: 12px;
+          font-size: 12.5px;
           min-height: 0;
-          border-radius: 4px;
         }
 
         window#waybar {
-          background: alpha(@base, 0.914);
+          background: alpha(@base, 0.94);
           color: @text;
-          border-width: 1px;
+          border-bottom-width: 1px;
           border-color: @blue;
           border-style: solid;
-          border-radius: 8px;
+          border-radius: 0px;
+        }
+
+        .modules-left {
+          margin-top: 0.125rem;
+          margin-bottom: 0.125rem;
+          margin-left: 2rem;
+        }
+
+        .modules-center {
+          margin-top: 0.125rem;
+          margin-bottom: 0.125rem;
+        }
+
+        .modules-right {
+          margin-top: 0.125rem;
+          margin-bottom: 0.125rem;
+          margin-right: 2rem;
         }
 
         tooltip {
           background: @base;
-          opacity: 0.8;
+          opacity: 0.94;
+          box-shadow: 1px 1px 2px @crust;
           border-radius: 4px;
-          border-width: 2px;
+          border-width: 1px;
           border-style: solid;
           border-color: @blue;
+          margin: 10px
         }
 
         tooltip label {
           color: @text;
         }
 
-        .modules-left {
-          margin-left: 4px;
+        #custom-nixos-logo {
+          background-image: url('${../../../assets/nix-snowflake-colors.svg}');
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          margin-right: 1rem;
         }
 
-        .modules-right {
-          margin-right: 4px;
+        #workspaces {
+          padding: 0 0.5rem;
+          background-color: @surface0;
+          margin: 0.25rem;
+          border-radius: 4px;
+          border-width: 1px;
+          border-style: solid;
+          border-color: @surface1;
         }
 
         #workspaces button {
-          padding: 5px;
-          color: @surface2;
-          margin-right: 5px;
+          padding: 2px;
+          color: @subtext1;
         }
 
         #workspaces button.active {
-          color: @text;
+          color: @green;
         }
 
         #workspaces button.focused {
@@ -202,107 +212,55 @@
 
         #workspaces button.urgent {
           color: @overlay0;
-          background: @lavender;
+          background: @red;
           border-radius: 4px;
         }
 
-        #workspaces button:hover {
-          background: @surface1;
-          color: @subtext0;
-          border-radius: 4px;
-        }
-
-        #custom-launch_wofi,
-        #custom-lock_screen,
-        #custom-light_dark,
-        #custom-power_btm,
-        #custom-power_profile,
-        #custom-weather,
-        #window,
-        #cpu,
-        #disk,
-        #custom-updates,
-        #memory,
-        #clock,
-        #battery,
-        #pulseaudio,
-        #network,
-        #tray,
-        #temperature,
-        #workspaces,
-        #backlight,
-        #language {
-          padding: 0px 10px;
-          margin: 3px 0px;
-          border: 0px;
-        }
-
-        #tray,
-        #custom-lock_screen,
-        #temperature,
-        #backlight,
-        #custom-launch_wofi,
-        #cpu {
-          border-radius: 4px 0px 0px 4px;
-        }
-
-        #custom-light_dark,
-        #custom-power_btn,
-        #workspaces,
-        #pulseaudio.microphone,
-        #battery,
-        #disk {
-          border-radius: 0px 4px 4px 0px;
-          margin-right: 10px;
-        }
-
-        #temperature.critical {
-          color: #e92d4d;
-        }
-
-        #workspaces {
-          padding-right: 0px;
-          padding-left: 5px;
-        }
-
-        #custom-power_profile {
-          border-left: 0px;
-          border-right: 0px;
+        #custom-window-separator {
+          margin-left: 1rem;
+          margin-right: 0.5rem;
+          color: @mauve;
         }
 
         #window {
-          border-radius: 4px;
-          margin-left: 20px;
-          margin-right: 20px;
+          color: @peach;
         }
 
-        #custom-launch_wofi {
-          margin-left: 10px;
-          border-right: 20px;
+        #custom-separator {
+          padding: 0px 2px 0px 2px;
+          color: @surface2;
+        }
+
+        #bluetooth {
+          margin-left: -4px;
+          margin-right: -4px;
+          color: @blue;
+        }
+
+        #network {
+          color: @green;
+        }
+
+        #cpu {
+          color: @rosewater;
+        }
+
+        #memory {
+          color: @rosewater;
         }
 
         #pulseaudio {
-          border-left: 0px;
-          border-right: 0px;
+          color: @sky;
         }
 
-        #battery,
-        #temperature {
-          border-left: 0px;
+        #pulseaudio.source {
+          color: @sky;
+          margin-left: -4px;
+          margin-right: -4px;
         }
 
-        #disk {
-          margin-right: 0px;
-          margin-left: 0px;
-        }
-
-        #clock {
-          margin-right: 5px;
-        }
-
-        #pulseaudio,
-        #backlight {
-          color: #89dceb;
+        #idle_inhibitor.activated {
+          color: @maroon;
         }
 
         #custom-power_btn {
@@ -314,195 +272,6 @@
         #tray > .active {
           color: #cdd6f4;
         }
-      '';
-    };
-
-    home.file.".config/waybar/mediaplayer.py" = {
-      enable = true;
-      executable = true;
-      text = ''
-           #!/usr/bin/env python3
-           import gi
-           gi.require_version("Playerctl", "2.0")
-           from gi.repository import Playerctl, GLib
-           from gi.repository.Playerctl import Player
-           import argparse
-           import logging
-           import sys
-           import signal
-           import gi
-           import json
-           import os
-           from typing import List
-
-           logger = logging.getLogger(__name__)
-
-           def signal_handler(sig, frame):
-        logger.info("Received signal to stop, exiting")
-        sys.stdout.write("\n")
-        sys.stdout.flush()
-        # loop.quit()
-        sys.exit(0)
-
-
-           class PlayerManager:
-        def __init__(self, selected_player=None):
-            self.manager = Playerctl.PlayerManager()
-            self.loop = GLib.MainLoop()
-            self.manager.connect(
-         "name-appeared", lambda *args: self.on_player_appeared(*args))
-            self.manager.connect(
-         "player-vanished", lambda *args: self.on_player_vanished(*args))
-
-            signal.signal(signal.SIGINT, signal_handler)
-            signal.signal(signal.SIGTERM, signal_handler)
-            signal.signal(signal.SIGPIPE, signal.SIG_DFL)
-            self.selected_player = selected_player
-
-            self.init_players()
-
-        def init_players(self):
-            for player in self.manager.props.player_names:
-         if self.selected_player is not None and self.selected_player != player.name:
-             logger.debug(f"{player.name} is not the filtered player, skipping it")
-             continue
-         self.init_player(player)
-
-        def run(self):
-            logger.info("Starting main loop")
-            self.loop.run()
-
-        def init_player(self, player):
-            logger.info(f"Initialize new player: {player.name}")
-            player = Playerctl.Player.new_from_name(player)
-            player.connect("playback-status",
-             self.on_playback_status_changed, None)
-            player.connect("metadata", self.on_metadata_changed, None)
-            self.manager.manage_player(player)
-            self.on_metadata_changed(player, player.props.metadata)
-
-        def get_players(self) -> List[Player]:
-            return self.manager.props.players
-
-        def write_output(self, text, player):
-            logger.debug(f"Writing output: {text}")
-
-            output = {"text": text,
-        "class": "custom-" + player.props.player_name,
-        "alt": player.props.player_name}
-
-            sys.stdout.write(json.dumps(output) + "\n")
-            sys.stdout.flush()
-
-        def clear_output(self):
-            sys.stdout.write("\n")
-            sys.stdout.flush()
-
-        def on_playback_status_changed(self, player, status, _=None):
-            logger.debug(f"Playback status changed for player {player.props.player_name}: {status}")
-            self.on_metadata_changed(player, player.props.metadata)
-
-        def get_first_playing_player(self):
-            players = self.get_players()
-            logger.debug(f"Getting first playing player from {len(players)} players")
-            if len(players) > 0:
-         # if any are playing, show the first one that is playing
-         # reverse order, so that the most recently added ones are preferred
-         for player in players[::-1]:
-             if player.props.status == "Playing":
-          return player
-         # if none are playing, show the first one
-         return players[0]
-            else:
-         logger.debug("No players found")
-         return None
-
-        def show_most_important_player(self):
-            logger.debug("Showing most important player")
-            # show the currently playing player
-            # or else show the first paused player
-            # or else show nothing
-            current_player = self.get_first_playing_player()
-            if current_player is not None:
-         self.on_metadata_changed(current_player, current_player.props.metadata)
-            else:
-         self.clear_output()
-
-        def on_metadata_changed(self, player, metadata, _=None):
-            logger.debug(f"Metadata changed for player {player.props.player_name}")
-            player_name = player.props.player_name
-            artist = player.get_artist()
-            title = player.get_title()
-
-            track_info = ""
-            if player_name == "spotify" and "mpris:trackid" in metadata.keys() and ":ad:" in player.props.metadata["mpris:trackid"]:
-         track_info = "Advertisement"
-            elif artist is not None and title is not None:
-         track_info = f"{artist} - {title}"
-            else:
-         track_info = title
-
-            if track_info:
-         if player.props.status == "Playing":
-             track_info = "  " + track_info
-         else:
-             track_info = "  " + track_info
-            # only print output if no other player is playing
-            current_playing = self.get_first_playing_player()
-            if current_playing is None or current_playing.props.player_name == player.props.player_name:
-         self.write_output(track_info, player)
-            else:
-         logger.debug(f"Other player {current_playing.props.player_name} is playing, skipping")
-
-        def on_player_appeared(self, _, player):
-            logger.info(f"Player has appeared: {player.name}")
-            if player is not None and (self.selected_player is None or player.name == self.selected_player):
-         self.init_player(player)
-            else:
-         logger.debug(
-             "New player appeared, but it's not the selected player, skipping")
-
-        def on_player_vanished(self, _, player):
-            logger.info(f"Player {player.props.player_name} has vanished")
-            self.show_most_important_player()
-
-           def parse_arguments():
-        parser = argparse.ArgumentParser()
-
-        # Increase verbosity with every occurrence of -v
-        parser.add_argument("-v", "--verbose", action="count", default=0)
-
-        # Define for which player we"re listening
-        parser.add_argument("--player")
-
-        parser.add_argument("--enable-logging", action="store_true")
-
-        return parser.parse_args()
-
-
-           def main():
-        arguments = parse_arguments()
-
-        # Initialize logging
-        if arguments.enable_logging:
-            logfile = os.path.join(os.path.dirname(
-         os.path.realpath(__file__)), "media-player.log")
-            logging.basicConfig(filename=logfile, level=logging.DEBUG,
-        	  format="%(asctime)s %(name)s %(levelname)s:%(lineno)d %(message)s")
-
-        # Logging is set by default to WARN and higher.
-        # With every occurrence of -v it's lowered by one
-        logger.setLevel(max((3 - arguments.verbose) * 10, 0))
-
-        logger.info("Creating player manager")
-        if arguments.player:
-            logger.info(f"Filtering for player: {arguments.player}")
-        player = PlayerManager(arguments.player)
-        player.run()
-
-
-           if __name__ == "__main__":
-        main()
       '';
     };
   };

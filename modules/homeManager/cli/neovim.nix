@@ -4,6 +4,23 @@
   config,
   ...
 }:
+let
+  # remove next time vimPlugins is regenerated. We need v0.6
+  crates-nvim-custom = pkgs.vimUtils.buildVimPlugin {
+    pname = "crates.nvim";
+    version = "2025-02-19";
+    src = pkgs.fetchFromGitHub {
+      owner = "saecki";
+      repo = "crates.nvim";
+      rev = "1803c8b5516610ba7cdb759a4472a78414ee6cd4";
+      sha256 = "sha256-xuRth8gfX6ZTV3AUBaTM9VJr7ulsNFxtKEsFDZduDC8=";
+    };
+    dependencies = with pkgs.vimPlugins; [ plenary-nvim ];
+    checkInputs = with pkgs.vimPlugins; [ none-ls-nvim ];
+    meta.homepage = "https://github.com/saecki/crates.nvim/";
+    meta.hydraPlatforms = [ ];
+  };
+in
 {
   options = {
     neovim.enable = lib.mkEnableOption "enables neovim";
@@ -33,10 +50,10 @@
 
         # dap
         nvim-dap
-        nvim-dap-ui
+        # nvim-dap-ui
         nvim-dap-virtual-text
         nvim-dap-go
-        nvim-nio
+        # nvim-nio
 
         # editing
         nvim-autopairs
@@ -50,7 +67,7 @@
         none-ls-nvim
 
         rustaceanvim
-        crates-nvim
+        crates-nvim-custom
 
         elixir-tools-nvim
         typescript-tools-nvim
@@ -89,7 +106,7 @@
         # deno
         dockerfile-language-server-nodejs
         elixir-ls
-        eslint
+        # eslint
         fzf
         gopls
         # lldb
@@ -132,7 +149,7 @@
             }
           },
           dev = {
-            path = "${pkgs.vimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
+            path = "${pkgs.neovimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
             patterns = { "catppuccin", "catppuccin-nvim", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem", "nvim-neotest", "elixir-tools", "knubie" }
           },
           install = {
