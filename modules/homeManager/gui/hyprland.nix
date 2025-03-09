@@ -185,7 +185,7 @@ in
         label = [
           {
             monitor = "";
-            text = "$TIME";
+            text = "$TIME12";
             color = "$text";
             font_size = 90;
             font_family = "$font";

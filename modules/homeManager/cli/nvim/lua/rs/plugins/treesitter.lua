@@ -12,6 +12,7 @@ return {
 			sync_install = false,
 			auto_install = false,
 			ignore_install = {},
+			ensure_installed = {},
 			modules = {},
 			context_commentstring = { enable = true },
 			highlight = {

@@ -13,7 +13,6 @@ return {
 					},
 				},
 			},
-			{ "folke/neodev.nvim", opts = {} },
 		},
 		config = function()
 			local lspconfig = require("lspconfig")
@@ -44,5 +43,16 @@ return {
 				setup_server(server, config)
 			end
 		end,
+	},
+	{
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {
+			library = {
+				-- See the configuration section for more details
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
 	},
 }

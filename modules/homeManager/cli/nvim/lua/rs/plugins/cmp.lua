@@ -1,43 +1,27 @@
 return {
-	"hrsh7th/nvim-cmp",
-	event = { "BufReadPre", "BufNewFile" },
-	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-nvim-lua",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"l3mon4d3/luasnip",
+	"saghen/blink.cmp",
+	---@module 'blink.cmp'
+	---@type blink.cmp.Config
+	opts = {
+		keymap = { preset = "default" },
+		appearance = {
+			use_nvim_cmp_as_default = false,
+			nerd_font_variant = "normal",
+		},
+		sources = {
+			default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+			providers = {
+				lazydev = {
+					name = "LazyDev",
+					module = "lazydev.integrations.blink",
+					-- make lazydev completions top priority (see `:h blink.cmp`)
+					score_offset = 100,
+				},
+			},
+		},
+		fuzzy = {
+			implementation = "prefer_rust_with_warning",
+		},
 	},
-	opts = function()
-		local cmp = require("cmp")
-		return {
-			mapping = {
-				["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-				["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-				["<C-d>"] = cmp.mapping.scroll_docs(-4),
-				["<C-f>"] = cmp.mapping.scroll_docs(4),
-				["<C-e>"] = cmp.mapping.close(),
-				["<c-y>"] = cmp.mapping.confirm({
-					behavior = cmp.ConfirmBehavior.Insert,
-					select = true,
-				}),
-				["<c-Space>"] = cmp.mapping.complete(),
-			},
-			sources = {
-				{ name = "nvim_lua" },
-				{ name = "nvim_lsp" },
-				{ name = "crates" },
-				{ name = "path" },
-				{ name = "buffer", keyword_length = 5 },
-			},
-			snippet = {
-				expand = function(args)
-					require("luasnip").lsp_expand(args.body)
-				end,
-			},
-			experimental = {
-				native_menu = false,
-			},
-		}
-	end,
+	opts_extend = { "sources.default" },
 }

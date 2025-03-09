@@ -5,22 +5,22 @@
   ...
 }:
 let
-  # remove next time vimPlugins is regenerated. We need v0.6
-  crates-nvim-custom = pkgs.vimUtils.buildVimPlugin {
-    pname = "crates.nvim";
-    version = "2025-02-19";
-    src = pkgs.fetchFromGitHub {
-      owner = "saecki";
-      repo = "crates.nvim";
-      rev = "1803c8b5516610ba7cdb759a4472a78414ee6cd4";
-      sha256 = "sha256-xuRth8gfX6ZTV3AUBaTM9VJr7ulsNFxtKEsFDZduDC8=";
-    };
-    dependencies = with pkgs.vimPlugins; [ plenary-nvim ];
-    checkInputs = with pkgs.vimPlugins; [ none-ls-nvim ];
-    meta.homepage = "https://github.com/saecki/crates.nvim/";
-    meta.hydraPlatforms = [ ];
-  };
 in
+# remove next time vimPlugins is regenerated. We need v0.6
+# crates-nvim-custom = pkgs.vimUtils.buildVimPlugin {
+#   pname = "crates.nvim";
+#   version = "2025-02-19";
+#   src = pkgs.fetchFromGitHub {
+#     owner = "saecki";
+#     repo = "crates.nvim";
+#     rev = "1803c8b5516610ba7cdb759a4472a78414ee6cd4";
+#     sha256 = "sha256-xuRth8gfX6ZTV3AUBaTM9VJr7ulsNFxtKEsFDZduDC8=";
+#   };
+#   dependencies = with pkgs.vimPlugins; [ plenary-nvim ];
+#   checkInputs = with pkgs.vimPlugins; [ none-ls-nvim ];
+#   meta.homepage = "https://github.com/saecki/crates.nvim/";
+#   meta.hydraPlatforms = [ ];
+# };
 {
   options = {
     neovim.enable = lib.mkEnableOption "enables neovim";
@@ -40,59 +40,51 @@ in
       plugins = with pkgs.vimPlugins; [
         lazy-nvim
 
-        # cmp
-        nvim-cmp
-        cmp-nvim-lsp
-        cmp-nvim-lua
-        cmp-buffer
-        cmp-path
-        luasnip
+        # Completion
+        blink-cmp
 
-        # dap
-        nvim-dap
-        # nvim-dap-ui
-        nvim-dap-virtual-text
-        nvim-dap-go
-        # nvim-nio
-
-        # editing
+        # Editing tools
         nvim-autopairs
         nvim-ts-autotag
         comment-nvim
 
-        # lsp
+        # Language Server Protocol
         nvim-lspconfig
         fidget-nvim
-        neodev-nvim
-        none-ls-nvim
 
+        # Language specific tooling
         rustaceanvim
-        crates-nvim-custom
-
-        elixir-tools-nvim
+        crates-nvim
+        lazydev-nvim
         typescript-tools-nvim
 
-        # misc
-        plenary-nvim
-        conform-nvim
-        gitsigns-nvim
+        # Testing
+        neotest
 
-        # treesitter
+        # Debug Adapter Protocol
+        nvim-dap
+        nvim-dap-ui
+        nvim-dap-virtual-text
+        nvim-dap-go
+
+        # Misc.
+        snacks-nvim
+        plenary-nvim
+        nvim-nio
+        FixCursorHold-nvim
+
+        # Formatting
+        conform-nvim
+
+        # Treesitter
         nvim-treesitter.withAllGrammars
         nvim-treesitter-textobjects
         nvim-treesitter-context
 
-        # telescope
-        telescope-nvim
-        telescope-dap-nvim
-        telescope-fzf-native-nvim
-
-        # ui
+        # UI
         catppuccin-nvim
-        dashboard-nvim
-        dressing-nvim
         lualine-nvim
-        nvim-web-devicons
+        gitsigns-nvim
         noice-nvim
         nui-nvim
         nvim-notify
@@ -100,29 +92,26 @@ in
         vim-kitty-navigator
       ];
       extraPackages = with pkgs; [
+        astro-language-server
+        bash-language-server
         beautysh
         clang-tools
         csharpier
-        # deno
         dockerfile-language-server-nodejs
-        elixir-ls
-        # eslint
+        eslint
         fzf
         gopls
-        # lldb
         lua-language-server
         nixd
         nixfmt-rfc-style
-        nodePackages.bash-language-server
         nodePackages.prettier
-        nodePackages."@astrojs/language-server"
         ocamlformat
         rust-analyzer
         rustywind
         shfmt
         stylua
         yaml-language-server
-        # vscode-extensions.vadimcn.vscode-lldb
+        vscode-extensions.vadimcn.vscode-lldb
         vscode-langservers-extracted
         zls
       ];
@@ -133,7 +122,6 @@ in
         vim.g.mapleader = " "
         vim.keymap.set("x", "<leader>p", '"_dp')
 
-        vim.g.elixirls_path = '${pkgs.elixir-ls}/lib/language_server.sh'
         vim.g.markdown_fenced_languages = {
           "ts=typescript"
         }
@@ -150,7 +138,32 @@ in
           },
           dev = {
             path = "${pkgs.neovimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
-            patterns = { "catppuccin", "catppuccin-nvim", "hrsh7th", "l3mon4d3", "saadparwaiz1", "williamboman", "neovim", "nvim-lua", "nvim-lualine", "nvim-telescope", "nvim-tree", "nvimdev", "j-hui", "folke", "mfussenegger", "tastyep", "mrcjkb", "saecki", "nvimtools", "pmizio", "windwp", "numtostr", "numToStr", "stevearc", "lewis6991", "muniftanjim", "rcarriga", "christoomey", "thehamsta", "leoluz", "iabdelkareem", "nvim-neotest", "elixir-tools", "knubie" }
+            patterns = {
+              "antoinemadec",
+              "catppuccin",
+              "catppuccin-nvim",
+              "folke",
+              "j-hui",
+              "knubie",
+              "leoluz",
+              "lewis6991",
+              "mfussenegger",
+              "mrcjkb",
+              "muniftanjim",
+              "neovim",
+              "numtostr",
+              "nvim-lua",
+              "nvim-lualine",
+              "nvim-neotest",
+              "nvim-treesitter",
+              "pmizio",
+              "rcarriga",
+              "saecki",
+              "saghen",
+              "stevearc",
+              "thehamsta",
+              "windwp",
+            },
           },
           install = {
             missing = false

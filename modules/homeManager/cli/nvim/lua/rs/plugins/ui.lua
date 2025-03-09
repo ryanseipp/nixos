@@ -10,100 +10,50 @@ return {
 					fidget = true,
 					noice = true,
 					notify = true,
+					blink_cmp = true,
+					snacks = true,
 				},
 			})
 			vim.cmd.colorscheme("catppuccin-mocha")
 		end,
 	},
-	-- {
-	--     'rebelot/kanagawa.nvim',
-	--     lazy = false,
-	--     priority = 1000,
-	--     config = function()
-	--         vim.cmd.colorscheme('kanagawa')
-	--     end,
-	-- },
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
+		---@module 'lualine'
 		opts = {
 			options = {
 				theme = "catppuccin",
 			},
 		},
 	},
-	{
-		"nvimdev/dashboard-nvim",
-		event = "VimEnter",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = true,
-		init = function()
-			vim.api.nvim_set_hl(0, "DashboardProjectTitle", { link = "DashboardCenter" })
-			vim.api.nvim_set_hl(0, "DashboardProjectTitleIcon", { link = "DashboardIcon" })
-			vim.api.nvim_set_hl(0, "DashboardProjectIcon", { link = "DashboardIcon" })
-			vim.api.nvim_set_hl(0, "DashboardMruTitle", { link = "DashboardCenter" })
-			vim.api.nvim_set_hl(0, "DashboardMruIcon", { link = "DashboardIcon" })
-			vim.api.nvim_set_hl(0, "DashboardFiles", { link = "DashboardKey" })
-		end,
-		opts = {
-			theme = "hyper",
-			config = {
-				week_header = {
-					enable = true,
-				},
-				shortcut = {},
-				footer = {
-					"",
-					"  Sharp tools make good work.",
-				},
-			},
-		},
-	},
-	{
-		"folke/noice.nvim",
-		event = "VeryLazy",
-		dependencies = {
-			"muniftanjim/nui.nvim",
-			"rcarriga/nvim-notify",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		opts = {
-			lsp = {
-				override = {
-					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-					["vim.lsp.util.stylize_markdown"] = true,
-					["cmp.entry.get_documentation"] = true,
-				},
-			},
-			presets = {
-				bottom_search = true,
-				command_palette = true,
-				long_message_to_split = true,
-				inc_rename = false,
-				lsp_doc_border = true,
-			},
-		},
-	},
-	{
-		"stevearc/dressing.nvim",
-		opts = {},
-	},
-	{
-		"nvim-tree/nvim-tree.lua",
-		keys = {
-			{ "<leader>tt", "<cmd>NvimTreeToggle<cr>", desc = "NvimTreeToggle" },
-			{ "<leader>tf", "<cmd>NvimTreeFocus<cr>", desc = "NvimTreeFocus" },
-		},
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {
-			update_focused_file = {
-				enable = true,
-			},
-			view = {
-				width = 60,
-			},
-		},
-	},
+	-- {
+	-- 	"folke/noice.nvim",
+	-- 	event = "VeryLazy",
+	-- 	dependencies = {
+	-- 		"muniftanjim/nui.nvim",
+	-- 		"rcarriga/nvim-notify",
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 	},
+	-- 	---@module 'noice'
+	-- 	---@type NoiceConfig
+	-- 	opts = {
+	-- 		lsp = {
+	-- 			override = {
+	-- 				["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+	-- 				["vim.lsp.util.stylize_markdown"] = true,
+	-- 				["cmp.entry.get_documentation"] = true,
+	-- 			},
+	-- 		},
+	-- 		presets = {
+	-- 			bottom_search = true,
+	-- 			command_palette = true,
+	-- 			long_message_to_split = true,
+	-- 			inc_rename = false,
+	-- 			lsp_doc_border = true,
+	-- 		},
+	-- 	},
+	-- },
 	{
 		"knubie/vim-kitty-navigator",
 		cmd = {

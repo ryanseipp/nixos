@@ -88,6 +88,7 @@ in
   rofi.enable = true;
   waybar.enable = true;
   yazi.enable = true;
+  lazygit.enable = true;
 
   xdg = {
     enable = true;

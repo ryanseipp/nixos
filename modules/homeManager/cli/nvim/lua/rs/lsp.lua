@@ -1,7 +1,8 @@
+---@module 'lspconfig'
 local M = {}
 
 --- add commands to run when init every langserver
---- @param client lsp.Client
+--- @param client vim.lsp.Client
 M.custom_init = function(client)
 	client.config.flags = client.config.flags or {}
 	client.config.flags.allow_incremental_sync = true
@@ -61,7 +62,7 @@ local autocmd_csharp_fiximports = function()
 end
 
 -- add filetype specific commands here
---- @type table<string, fun(client:lsp.Client, bufnr:integer)>
+--- @type table<string, fun(client:vim.lsp.Client, bufnr:integer)>
 local filetype_attach = setmetatable({
 	csharp = function(_, bufnr)
 		autocmd_format(false)
@@ -151,29 +152,12 @@ local filetype_attach = setmetatable({
 	end,
 })
 
---- @param client lsp.Client
+--- @param client vim.lsp.Client
 --- @param bufnr integer
 M.custom_attach = function(client, bufnr)
 	local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
 
 	buf_set_keymaps(bufnr, {
-		{ "gd", "[LSP] Go to definition", vim.lsp.buf.definition },
-		{ "gD", "[LSP] Go to declaration", vim.lsp.buf.declaration },
-		{ "gT", "[LSP] Go to type definition", vim.lsp.buf.type_definition },
-		{
-			"gr",
-			"[LSP] Go to references",
-			function()
-				require("telescope.builtin")["lsp_references"]()
-			end,
-		},
-		{
-			"gi",
-			"[LSP] Go to implementations",
-			function()
-				require("telescope.builtin")["lsp_implementations"]()
-			end,
-		},
 		{ "K", "[LSP] Show more information", vim.lsp.buf.hover },
 		-- { "<c-k>", "[LSP] Show signature help", vim.lsp.buf.signature_help },
 		{ "<leader>rn", "[LSP] Rename", vim.lsp.buf.rename },
@@ -225,11 +209,7 @@ M.custom_attach = function(client, bufnr)
 	filetype_attach[filetype](client, bufnr)
 end
 
-local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
-updated_capabilities.textDocument.codeLens = { dynamicRegistration = false }
-updated_capabilities = require("cmp_nvim_lsp").default_capabilities(updated_capabilities)
-
-M.capabilities = updated_capabilities
+M.capabilities = require("blink.cmp").get_lsp_capabilities()
 
 local lua_runtime_path = vim.split(package.path, ";")
 table.insert(lua_runtime_path, "lua/?.lua")
@@ -350,6 +330,36 @@ M.servers = {
 		},
 	},
 	lua_ls = true,
+	-- lua_ls = {
+	-- 	on_init = function(client)
+	-- 		client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+	-- 			runtime = {
+	-- 				-- Tell the language server which version of Lua you're using
+	-- 				-- (most likely LuaJIT in the case of Neovim)
+	-- 				version = "LuaJIT",
+	-- 			},
+	-- 			-- Make the server aware of Neovim runtime files
+	-- 			workspace = {
+	-- 				checkThirdParty = false,
+	-- 				library = {
+	-- 					vim.env.VIMRUNTIME,
+	-- 					-- Depending on the usage, you might want to add additional paths here.
+	-- 					-- "${3rd}/luv/library"
+	-- 					-- "${3rd}/busted/library",
+	-- 				},
+	-- 				-- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+	-- 				-- library = vim.api.nvim_get_runtime_file("", true)
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- 	settings = {
+	-- 		Lua = {
+	-- 			hint = {
+	-- 				enable = true,
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 	yamlls = {
 		settings = {
 			yaml = {

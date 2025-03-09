@@ -57,6 +57,8 @@ return {
 						if ft == "markdown" then
 							return { "--prose-wrap", "always" }
 						end
+
+						return {}
 					end,
 				},
 			},
