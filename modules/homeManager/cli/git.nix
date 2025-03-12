@@ -79,9 +79,11 @@ in
         }
         // (lib.mkIf (cfg.signingKey != null) {
           commit.gpgsign = true;
-          gpg.format = "ssh";
-          ssh = {
-            allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
+          gpg = {
+            format = "ssh";
+            ssh = {
+              allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
+            };
           };
         });
 
