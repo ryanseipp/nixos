@@ -67,25 +67,22 @@ in
         st = "status";
       };
 
-      extraConfig =
-        {
-          init.defaultBranch = "main";
-          push.autoSetupRemote = true;
-          merge.autoStash = true;
-          rebase.autoStash = true;
-          log.abbrevCommit = true;
-          help.autoCorrect = "immediate";
-          diff.tool = "nvimdiff";
-        }
-        // (lib.mkIf (cfg.signingKey != null) {
-          commit.gpgsign = true;
-          gpg = {
-            format = "ssh";
+      extraConfig = {
+        init.defaultBranch = "main";
+        push.autoSetupRemote = true;
+        merge.autoStash = true;
+        rebase.autoStash = true;
+        log.abbrevCommit = true;
+        help.autoCorrect = "immediate";
+        diff.tool = "nvimdiff";
+        gpg = (
+          lib.mkIf (cfg.signingKey != null) {
             ssh = {
               allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
             };
-          };
-        });
+          }
+        );
+      };
 
       signing = lib.mkIf (cfg.signingKey != null) {
         key = cfg.signingKey;
