@@ -7,8 +7,14 @@ return {
 	opts = {
 		bigfile = { enabled = true },
 		dashboard = { enabled = true },
+		explorer = {
+			hidden = true,
+		},
 		input = { enabled = true },
-		picker = { enabled = true },
+		picker = {
+			enabled = true,
+			hidden = true,
+		},
 		notifier = { enabled = true },
 		statuscolumn = { enabled = true },
 	},

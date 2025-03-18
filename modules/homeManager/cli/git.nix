@@ -55,7 +55,8 @@ in
         ds = "diff --staged";
         m = "merge";
         new = "log origin.. --reverse";
-        plog = "log --graph --all --decorate --oneline";
+        lg = "log --graph --all --pretty=format:'%C(yellow)%h%Creset %C(cyan)%an%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr)%Creset'";
+        lgs = "log --graph --all --pretty=format:'%C(yellow)%h%Creset %C(cyan)%an [%G?]%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr)%Creset'";
         p = "pull -p";
         pu = "push";
         puf = "push --force-with-lease";
