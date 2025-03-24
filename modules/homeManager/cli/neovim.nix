@@ -96,7 +96,6 @@ in
         bash-language-server
         beautysh
         clang-tools
-        csharpier
         dockerfile-language-server-nodejs
         eslint
         fzf
@@ -106,6 +105,7 @@ in
         nixfmt-rfc-style
         nodePackages.prettier
         ocamlformat
+        omnisharp-roslyn
         rust-analyzer
         rustywind
         shfmt
@@ -117,7 +117,6 @@ in
       ];
 
       # Add this back if dotnet dev is necessary
-      # vim.g.omnisharp_path = '${pkgs.omnisharp-roslyn}/bin/OmniSharp'
       extraLuaConfig = ''
         vim.g.mapleader = " "
         vim.keymap.set("x", "<leader>p", '"_dp')
@@ -125,6 +124,7 @@ in
         vim.g.markdown_fenced_languages = {
           "ts=typescript"
         }
+        vim.g.omnisharp_path = '${pkgs.omnisharp-roslyn}/bin/OmniSharp'
 
         require("lazy").setup({
           spec = {
