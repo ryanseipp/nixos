@@ -14,6 +14,26 @@ return {
 				},
 			},
 		},
+		keys = {
+			{
+				"<leader>rn",
+				vim.lsp.buf.rename,
+				desc = "[LSP] Rename",
+				silent = true,
+			},
+			{
+				"<leader>ca",
+				vim.lsp.buf.code_action,
+				desc = "[LSP] View code actions",
+				silent = true,
+			},
+			{
+				"<leader>rr",
+				"<CMD>LspRestart<CR>",
+				desc = "[LSP] Restart LSP Server",
+				silent = true,
+			},
+		},
 		config = function()
 			local lspconfig = require("lspconfig")
 			local lsp = require("rs.lsp")

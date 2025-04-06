@@ -62,27 +62,11 @@ local autocmd_csharp_fiximports = function()
 end
 
 -- add filetype specific commands here
---- @type table<string, fun(client:vim.lsp.Client, bufnr:integer)>
+--- @type table<string, fun(client:vim.lsp.Client)>
 local filetype_attach = setmetatable({
-	csharp = function(_, bufnr)
+	csharp = function(_)
 		autocmd_format(false)
 		autocmd_csharp_fiximports()
-		buf_set_keymaps(bufnr, {
-			{
-				"<leader>dr",
-				"[DAP] Debugger runnables",
-				function()
-					require("csharp").debug_project()
-				end,
-			},
-			{
-				"gd",
-				"[LSP] Go to definition",
-				function()
-					require("csharp").go_to_definition()
-				end,
-			},
-		})
 	end,
 	javascript = function()
 		autocmd_eslint_fixall()
@@ -102,50 +86,6 @@ local filetype_attach = setmetatable({
 	["typescript.ts"] = function()
 		autocmd_eslint_fixall()
 	end,
-	--- @param bufnr integer
-	rust = function(_, bufnr)
-		buf_set_keymaps(bufnr, {
-			{
-				"<leader>dr",
-				"[DAP] Debugger runnables",
-				function()
-					vim.cmd.RustLsp("debuggables")
-				end,
-			},
-			{
-				"<leader>rr",
-				"[LSP] Run runnables",
-				function()
-					vim.cmd.RustLsp("runnables")
-				end,
-			},
-			{
-				"<leader>me",
-				"[LSP] Rust macro expand",
-				function()
-					vim.cmd.RustLsp("expandMacro")
-				end,
-			},
-			{
-				"<leader>mr",
-				"[LSP] Rust macro rebuild",
-				function()
-					vim.cmd.RustLsp("rebuildProcMacros")
-				end,
-			},
-		})
-	end,
-	go = function(_, bufnr)
-		buf_set_keymaps(bufnr, {
-			{
-				"<leader>dt",
-				"[DAP] Debug test under cursor",
-				function()
-					require("dap-go").debug_test()
-				end,
-			},
-		})
-	end,
 }, {
 	__index = function()
 		return function() end
@@ -156,22 +96,6 @@ local filetype_attach = setmetatable({
 --- @param bufnr integer
 M.custom_attach = function(client, bufnr)
 	local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
-
-	buf_set_keymaps(bufnr, {
-		{ "K", "[LSP] Show more information", vim.lsp.buf.hover },
-		-- { "<c-k>", "[LSP] Show signature help", vim.lsp.buf.signature_help },
-		{ "<leader>rn", "[LSP] Rename", vim.lsp.buf.rename },
-		{ "[d", "[LSP] Go to next diagnostic", vim.diagnostic.goto_next },
-		{ "]d", "[LSP] Go to previous diagnostic", vim.diagnostic.goto_prev },
-		{ "<leader>ca", "[LSP] View code actions", vim.lsp.buf.code_action },
-		{
-			"<leader>rr",
-			"[LSP] Restart LSP Server",
-			function()
-				vim.cmd([[ LspRestart ]])
-			end,
-		},
-	})
 
 	vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
 
@@ -209,7 +133,7 @@ M.custom_attach = function(client, bufnr)
 	filetype_attach[filetype](client, bufnr)
 end
 
-M.capabilities = require("blink.cmp").get_lsp_capabilities()
+M.capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
 
 local lua_runtime_path = vim.split(package.path, ";")
 table.insert(lua_runtime_path, "lua/?.lua")

@@ -60,6 +60,7 @@ in
       qalculate-qt
       qflipper
       ripgrep
+      slack
       spotify
       sops
       ssh-to-age

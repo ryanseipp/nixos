@@ -66,7 +66,7 @@ return {
 			vim.g.rustaceanvim = {
 				server = {
 					on_attach = lsp.custom_attach,
-					settings = {
+					default_settings = {
 						["rust-analyzer"] = {
 							cargo = {
 								buildScripts = {

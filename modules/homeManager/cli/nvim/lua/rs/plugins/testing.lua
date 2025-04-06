@@ -2,6 +2,7 @@ return {
 	{
 		"nvim-neotest/neotest",
 		dependencies = {
+			"mrcjkb/rustaceanvim",
 			"nvim-neotest/nvim-nio",
 			"nvim-lua/plenary.nvim",
 			"antoinemadec/FixCursorHold.nvim",
