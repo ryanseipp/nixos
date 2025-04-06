@@ -239,6 +239,8 @@ in
       };
     };
 
+    catppuccin.hyprlock.useDefaultConfig = false;
+
     services.hypridle = {
       enable = true;
       settings = {
