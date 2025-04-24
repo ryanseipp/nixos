@@ -9,7 +9,7 @@
 
   imports = [
     outputs.homeManagerModules.default
-    inputs.catppuccin.homeManagerModules.catppuccin
+    inputs.catppuccin.homeModules.catppuccin
   ];
 
   catppuccin = {
@@ -37,11 +37,10 @@
       docker-compose
       eza
       fd
+      gh
       jq
       just
       kcl
-      kclvm
-      kclvm_cli
       kind
       kubectl
       kubectl-tree

@@ -58,19 +58,20 @@
     enable = true;
     brews = [
       "azure-cli"
-      "docker"
-      "docker-credential-helper"
       "gnu-sed"
       "helm"
       "yarn"
+      "kcl-lang/tap/kcl-lsp"
     ];
     casks = [
-      "android-studio"
       "brave-browser"
-      "dbeaver-community"
       "kitty"
+      "spotify"
       "tidal"
       "netnewswire"
+    ];
+    taps = [
+      { name = "kcl-lang/tap"; }
     ];
     onActivation = {
       autoUpdate = true;
