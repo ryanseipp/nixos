@@ -27,6 +27,7 @@
     };
 
     packages = with pkgs; [
+      act
       cilium-cli
       crane
       cocoapods
@@ -38,6 +39,7 @@
       eza
       fd
       gh
+      git-filter-repo
       jq
       just
       kcl
