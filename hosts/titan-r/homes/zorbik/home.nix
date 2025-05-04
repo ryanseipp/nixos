@@ -5,6 +5,7 @@
   ...
 }:
 let
+  homeDirectory = "/home/zorbik";
   defaultBrowser = "brave.desktop";
 in
 {
@@ -32,7 +33,7 @@ in
 
   home = {
     username = "zorbik";
-    homeDirectory = "/home/zorbik";
+    inherit homeDirectory;
 
     preferXdgDirectories = true;
 
@@ -77,7 +78,8 @@ in
     enable = true;
     userName = "Ryan Seipp";
     userEmail = "rseipp@ryanseipp.com";
-    signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCycJpF3hp+BKw88FYMAfjhEtqC/1TkWqZjK1SScIVb rseipp@ryanseipp.com";
+    signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJRMSH0bp24l5UKhB+sUvevv4meZTjuwd7hYjBUhBSKV rseipp-signing-key";
+    signingKeyPath = "${homeDirectory}/.ssh/rseipp_id_ed25519";
   };
 
   brave.enable = true;
@@ -118,7 +120,7 @@ in
   programs = {
     home-manager.enable = true;
 
-    zsh.initExtra = ''
+    zsh.initContent = ''
       analyze_dump () {
         dump=$1
         info=$(coredumpctl info "$dump")
@@ -143,19 +145,31 @@ in
     };
 
     keychain = {
-      enable = true;
+      enable = false;
       keys = [
-        "id_rsa"
-        "id_ed25519"
-        "rseipp_id_ed25519"
-        "id_ed25519_sk"
+        "rseipp_id_ed25519_sk"
+        "rseipp_id_ed25519_sk2"
       ];
+      enableZshIntegration = true;
       enableBashIntegration = false;
       enableFishIntegration = false;
       enableNushellIntegration = false;
       enableXsessionIntegration = false;
     };
+
+    ssh = {
+      enable = true;
+      addKeysToAgent = "yes";
+      extraConfig = ''
+        IdentityFile ${homeDirectory}/.ssh/rseipp_id_ed25519_sk
+        IdentityFile ${homeDirectory}/.ssh/rseipp_id_ed25519_sk2
+        IdentitiesOnly yes
+      '';
+    };
   };
 
-  services.playerctld.enable = true;
+  services = {
+    ssh-agent.enable = true;
+    playerctld.enable = true;
+  };
 }
