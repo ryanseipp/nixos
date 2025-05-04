@@ -82,7 +82,7 @@
     k9s.enable = true;
     lazygit.enable = true;
 
-    zsh.initExtra = ''
+    zsh.initContent = ''
       eval "$(/opt/homebrew/bin/brew shellenv)"
     '';
 

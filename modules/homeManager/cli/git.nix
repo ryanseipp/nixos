@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -26,12 +27,26 @@ in
       example = "ssh-ed25519 <ssh-key-public-hash> comment";
       default = null;
     };
+
+    git.signingKeyPath = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      description = ''
+        Path to SSH key used for commit signing.
+        Necessary to preload a signing key protected by a password into the ssh-agent.
+      '';
+      example = "ssh-ed25519 <ssh-key-public-hash> comment";
+      default = null;
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.shellAliases = {
       g = "git";
       gbm = ''g br --merged | rg -v "(^\*|main|master|develop)" | xargs g brd'';
+    };
+
+    programs.gh = {
+      enable = true;
     };
 
     programs.git = {
@@ -89,12 +104,23 @@ in
         key = cfg.signingKey;
         signByDefault = true;
         format = "ssh";
+        signer = "${config.home.homeDirectory}/.ssh/preload-signing-key.sh";
       };
     };
 
     home.file.".ssh/allowed_signers" = {
       enable = cfg.signingKey != null;
       text = ''${cfg.userEmail} namespaces="git" ${cfg.signingKey}'';
+    };
+
+    home.file.".ssh/preload-signing-key.sh" = {
+      enable = cfg.signingKeyPath != null;
+      executable = true;
+      source = pkgs.writeShellScript "preload-signing-key.sh" ''
+        set -euo pipefail
+        ssh-add -T ${cfg.signingKeyPath} 2>&- || ssh-add ${cfg.signingKeyPath}
+        exec ${lib.getExe' pkgs.openssh "ssh-keygen"} "$@"
+      '';
     };
   };
 }

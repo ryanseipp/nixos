@@ -4,6 +4,9 @@
   outputs,
   ...
 }:
+let
+  kernel = pkgs.linuxKernel.packages.linux_6_14;
+in
 {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
@@ -47,14 +50,19 @@
   home-manager.users.zorbik = import ./homes/zorbik/home.nix { inherit pkgs inputs outputs; };
 
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [
-    man-pages
-    man-pages-posix
-    r2modman
-    liburing
-    networkmanagerapplet
-    winbox4
-  ];
+  environment.systemPackages =
+    [ kernel.perf ]
+    ++ (with pkgs; [
+      man-pages
+      man-pages-posix
+      r2modman
+      liburing
+      networkmanagerapplet
+      winbox4
+      yubikey-manager
+      yubikey-personalization
+      yubikey-personalization-gui
+    ]);
 
   programs = {
     git.enable = true;
@@ -67,13 +75,13 @@
       ];
     };
 
-    ssh = {
-      startAgent = true;
-      extraConfig = ''
-        Host *
-          AddKeysToAgent yes
-      '';
-    };
+    # ssh = {
+    #   startAgent = true;
+    #   extraConfig = ''
+    #     Host *
+    #       AddKeysToAgent yes
+    #   '';
+    # };
   };
   security.polkit.enable = true;
 
@@ -93,7 +101,7 @@
 
   boot = {
     kernelParams = [ "pcie_port_pm=off" ];
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
+    kernelPackages = kernel;
 
     binfmt.emulatedSystems = [
       "aarch64-linux"
