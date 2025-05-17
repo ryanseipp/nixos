@@ -5,7 +5,7 @@
   ...
 }:
 let
-  kernel = pkgs.linuxKernel.packages.linux_6_14;
+  kernel = pkgs.linuxKernel.packages.linux_6_12;
 in
 {
   imports = [
