@@ -82,6 +82,7 @@ in
     signingKeyPath = "${homeDirectory}/.ssh/rseipp_id_ed25519";
   };
 
+  gc-hm.enable = true;
   brave.enable = true;
   btop.enable = true;
   hyprland.enable = true;

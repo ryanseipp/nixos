@@ -60,6 +60,8 @@
       "azure-cli"
       "gnu-sed"
       "helm"
+      "libfido2"
+      "openssh"
       "yarn"
       "kcl-lang/tap/kcl-lsp"
     ];
@@ -93,7 +95,7 @@
 
   environment.systemPackages = with pkgs; [
     android-tools
-    nodejs_22
+    nodejs_24
     postgresql
   ];
 
@@ -109,6 +111,7 @@
 
   system = {
     stateVersion = 4;
+    primaryUser = "ryanseipp";
     defaults = {
       ".GlobalPreferences"."com.apple.mouse.scaling" = -1.0;
       ActivityMonitor.IconType = 5;
