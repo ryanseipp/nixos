@@ -62,18 +62,12 @@
       "helm"
       "libfido2"
       "openssh"
-      "yarn"
-      "kcl-lang/tap/kcl-lsp"
     ];
     casks = [
       "brave-browser"
       "kitty"
       "spotify"
-      "tidal"
       "netnewswire"
-    ];
-    taps = [
-      { name = "kcl-lang/tap"; }
     ];
     onActivation = {
       autoUpdate = true;

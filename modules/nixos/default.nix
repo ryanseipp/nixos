@@ -36,9 +36,29 @@ in
     ];
   };
 
+  services = {
+    fstrim.enable = true;
+    nscd.enableNsncd = false;
+    resolved = {
+      enable = true;
+      dnssec = "true";
+      dnsovertls = "true";
+    };
+  };
+
+  security.polkit.enable = true;
+  systemd.coredump.enable = true;
+  documentation = {
+    enable = true;
+    dev.enable = true;
+    man.enable = true;
+    info.enable = true;
+    doc.enable = true;
+  };
+
   networking = {
-    nftables.enable = false;
-    firewall.enable = false;
+    nftables.enable = true;
+    firewall.enable = true;
     nameservers = cloudflareNameservers;
     networkmanager.insertNameservers = cloudflareNameservers;
   };
@@ -46,5 +66,9 @@ in
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+    nix-ld.enable = true;
+    git.enable = true;
+  };
 }

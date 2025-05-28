@@ -20,7 +20,7 @@ end
 local augroup_highlight = vim.api.nvim_create_augroup("custom-lsp-references", { clear = true })
 local augroup_codelens = vim.api.nvim_create_augroup("custom-lsp-codelens", { clear = true })
 local augroup_format = vim.api.nvim_create_augroup("custom-lsp-format", { clear = true })
-local augroup_eslint_fixall = vim.api.nvim_create_augroup("custom-lsp-format", { clear = true })
+-- local augroup_eslint_fixall = vim.api.nvim_create_augroup("custom-lsp-format", { clear = true })
 local augroup_csharp_fiximports = vim.api.nvim_create_augroup("custom-lsp-fiximports", { clear = true })
 
 local autocmd_format = function(async, filter)
@@ -34,21 +34,21 @@ local autocmd_format = function(async, filter)
 	})
 end
 
-local autocmd_eslint_fixall = function()
-	vim.api.nvim_clear_autocmds({ buffer = 0, group = augroup_eslint_fixall })
-	vim.api.nvim_create_autocmd("BufWritePre", {
-		group = augroup_eslint_fixall,
-		buffer = 0,
-		callback = function()
-			local clients = vim.lsp.get_active_clients()
-			for _, v in pairs(clients) do
-				if v.name == "eslint" then
-					vim.cmd([[ EslintFixAll ]])
-				end
-			end
-		end,
-	})
-end
+-- local autocmd_eslint_fixall = function()
+-- 	vim.api.nvim_clear_autocmds({ buffer = 0, group = augroup_eslint_fixall })
+-- 	vim.api.nvim_create_autocmd("BufWritePre", {
+-- 		group = augroup_eslint_fixall,
+-- 		buffer = 0,
+-- 		callback = function()
+-- 			local clients = vim.lsp.get_active_clients()
+-- 			for _, v in pairs(clients) do
+-- 				if v.name == "eslint" then
+-- 					vim.cmd([[ EslintFixAll ]])
+-- 				end
+-- 			end
+-- 		end,
+-- 	})
+-- end
 
 local autocmd_csharp_fiximports = function()
 	vim.api.nvim_clear_autocmds({ buffer = 0, group = augroup_csharp_fiximports })
@@ -69,22 +69,22 @@ local filetype_attach = setmetatable({
 		autocmd_csharp_fiximports()
 	end,
 	javascript = function()
-		autocmd_eslint_fixall()
+		-- autocmd_eslint_fixall()
 	end,
 	javascriptreact = function()
-		autocmd_eslint_fixall()
+		-- autocmd_eslint_fixall()
 	end,
 	["javascript.jsx"] = function()
-		autocmd_eslint_fixall()
+		-- autocmd_eslint_fixall()
 	end,
 	typescript = function()
-		autocmd_eslint_fixall()
+		-- autocmd_eslint_fixall()
 	end,
 	typescriptreact = function()
-		autocmd_eslint_fixall()
+		-- autocmd_eslint_fixall()
 	end,
 	["typescript.ts"] = function()
-		autocmd_eslint_fixall()
+		-- autocmd_eslint_fixall()
 	end,
 }, {
 	__index = function()
@@ -234,12 +234,13 @@ M.servers = {
 			clangdFileStatus = true,
 		},
 	},
-	eslint = {
-		settings = {
-			packageManager = "pnpm",
-			format = false,
-		},
-	},
+	biome = true,
+	-- eslint = {
+	-- 	settings = {
+	-- 		-- packageManager = "pnpm",
+	-- 		format = false,
+	-- 	},
+	-- },
 	omnisharp = {
 		cmd = { vim.g.omnisharp_path },
 		settings = {
@@ -289,7 +290,6 @@ M.servers = {
 			yaml = {
 				keyOrdering = false,
 				schemas = {
-					kubernetes = "*.yaml",
 					["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
 					["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
 					["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",

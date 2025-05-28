@@ -95,15 +95,16 @@ in
         astro-language-server
         bash-language-server
         beautysh
+        biome
         clang-tools
         dockerfile-language-server-nodejs
-        eslint
+        # eslint
         fzf
         gopls
         lua-language-server
         nixd
         nixfmt-rfc-style
-        nodePackages.prettier
+        # nodePackages.prettier
         ocamlformat
         omnisharp-roslyn
         rust-analyzer

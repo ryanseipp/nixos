@@ -43,7 +43,7 @@ return {
 		}
 
 		for _, value in ipairs(prettier_fts) do
-			formatters_by_ft[value] = { "prettier", "rustywind" }
+			formatters_by_ft[value] = { "biome", "rustywind" }
 		end
 
 		conform.setup({

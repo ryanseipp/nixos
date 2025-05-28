@@ -19,33 +19,17 @@ in
 
   networking = {
     hostName = "titan-r";
-    domain = "home.ryanseipp.com";
-
-    networkmanager = {
-      enable = true;
-      wifi.scanRandMacAddress = false;
-    };
-
-    hosts = {
-      "10.0.0.10" = [
-        "kube-host-1.home.ryanseipp.com"
-        "kube-host-1"
-      ];
-      "2601:547:e01:8c0:cafe::10" = [
-        "kube-host-1.home.ryanseipp.com"
-        "kube-host-1"
-      ];
-    };
+    domain = "home.ryanseipp.local";
+    networkmanager.enable = true;
   };
 
   users.users.zorbik = {
     isNormalUser = true;
+    shell = pkgs.zsh;
     extraGroups = [
       "wheel"
-      "incus-admin"
       "networkmanager"
     ];
-    shell = pkgs.zsh;
   };
   home-manager.users.zorbik = import ./homes/zorbik/home.nix { inherit pkgs inputs outputs; };
 
@@ -55,7 +39,6 @@ in
     ++ (with pkgs; [
       man-pages
       man-pages-posix
-      r2modman
       liburing
       networkmanagerapplet
       winbox4
@@ -65,39 +48,17 @@ in
     ]);
 
   programs = {
-    git.enable = true;
-    zsh.enable = true;
-
     steam = {
       enable = true;
       extraCompatPackages = with pkgs; [
         proton-ge-bin
       ];
     };
-
-    # ssh = {
-    #   startAgent = true;
-    #   extraConfig = ''
-    #     Host *
-    #       AddKeysToAgent yes
-    #   '';
-    # };
   };
-  security.polkit.enable = true;
 
   desktop.enable = true;
   podmanHost.enable = true;
-  # incusHost.enable = true;
   gc.enable = true;
-
-  systemd.coredump.enable = true;
-  documentation = {
-    enable = true;
-    dev.enable = true;
-    man.enable = true;
-    info.enable = true;
-    doc.enable = true;
-  };
 
   boot = {
     kernelParams = [ "pcie_port_pm=off" ];
