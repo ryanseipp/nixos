@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  inputs',
   ...
 }:
 let
@@ -60,7 +61,7 @@ in
       withPython3 = true;
       withNodeJs = true;
       plugins =
-        [ pkgs.inputs.mcphub-nvim.default ]
+        [ inputs'.mcphub-nvim.packages.default ]
         ++ (with pkgs.vimPlugins; [
           lazy-nvim
 
@@ -133,7 +134,7 @@ in
         fzf
         gh
         gopls
-        inputs.mcphub.default
+        inputs'.mcphub.packages.default
         lua-language-server
         nixd
         nixfmt-rfc-style
@@ -159,7 +160,7 @@ in
           "ts=typescript"
         }
         vim.g.omnisharp_path = '${pkgs.omnisharp-roslyn}/bin/OmniSharp'
-        vim.g.mcphub_path = '${pkgs.inputs.mcphub.default}/bin/mcp-hub'
+        vim.g.mcphub_path = '${inputs'.mcphub.packages.default}/bin/mcp-hub'
 
         local lsp = require("rs.lsp")
 

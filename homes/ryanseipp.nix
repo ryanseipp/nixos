@@ -1,17 +1,15 @@
 {
   pkgs,
   inputs,
-  outputs,
   ...
 }:
 let
+  inherit (inputs) self;
   homeDirectory = "/Users/ryanseipp";
 in
 {
-  nixpkgs.config.allowUnfree = true;
-
   imports = [
-    outputs.homeManagerModules.default
+    self.homeModules.ryanseipp
     inputs.catppuccin.homeModules.catppuccin
   ];
 

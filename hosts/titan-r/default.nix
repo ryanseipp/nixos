@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  outputs,
   ...
 }:
 let
@@ -36,7 +35,6 @@ in
       "networkmanager"
     ];
   };
-  home-manager.users.zorbik = import ./homes/zorbik/home.nix { inherit pkgs inputs outputs; };
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages =

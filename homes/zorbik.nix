@@ -1,23 +1,16 @@
 {
   inputs,
-  outputs,
   pkgs,
   ...
 }:
 let
+  inherit (inputs) self;
   homeDirectory = "/home/zorbik";
   defaultBrowser = "brave.desktop";
 in
 {
-  nixpkgs = {
-    overlays = builtins.attrValues outputs.overlays;
-    config = {
-      allowUnfree = true;
-    };
-  };
-
   imports = [
-    outputs.homeManagerModules.default
+    self.homeModules.ryanseipp
     inputs.catppuccin.homeModules.catppuccin
   ];
 

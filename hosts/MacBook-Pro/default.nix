@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  outputs,
   ...
 }:
 {
@@ -52,7 +51,6 @@
     isHidden = false;
     shell = pkgs.zsh;
   };
-  home-manager.users.ryanseipp = import ./homes/ryanseipp/home.nix { inherit pkgs inputs outputs; };
 
   homebrew = {
     enable = true;
@@ -66,8 +64,9 @@
     casks = [
       "brave-browser"
       "kitty"
-      "spotify"
+      "microsoft-teams"
       "netnewswire"
+      "spotify"
     ];
     onActivation = {
       autoUpdate = true;

@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     hardware.url = "github:nixos/nixos-hardware";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -26,78 +27,86 @@
 
     mcphub = {
       url = "github:ravitemer/mcp-hub";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
     };
     mcphub-nvim = {
       url = "github:ravitemer/mcphub.nvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
     };
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      darwin,
-      home-manager,
-      catppuccin,
-      treefmt-nix,
-      ...
-    }@inputs:
-    let
-      inherit (self) outputs;
-      lib = nixpkgs.lib;
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
-      pkgsFor = lib.genAttrs systems (
-        system:
-        import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { self, withSystem, ... }:
+      {
+        imports = [
+          inputs.home-manager.flakeModules.home-manager
+          inputs.treefmt-nix.flakeModule
+        ];
+        flake = {
           overlays = import ./overlays { inherit inputs; };
-        }
-      );
-      forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
+          nixosModules.ryanseipp = ./modules/nixos;
+          homeModules.ryanseipp = ./modules/home;
 
-      treefmtEval = forEachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-    in
-    {
-      overlays = import ./overlays { inherit inputs; };
-      formatter = forEachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+          nixosConfigurations = {
+            titan-r = withSystem "x86_64-linux" (
+              { config, inputs', ... }:
+              inputs.nixpkgs.lib.nixosSystem rec {
+                specialArgs = {
+                  inherit inputs inputs';
+                  packages = config.packages;
+                };
+                modules = [
+                  ./hosts/titan-r
+                  self.nixosModules.ryanseipp
+                  inputs.catppuccin.nixosModules.catppuccin
+                  inputs.home-manager.nixosModules.home-manager
+                  {
+                    home-manager.useGlobalPkgs = true;
+                    home-manager.useUserPackages = true;
+                    home-manager.extraSpecialArgs = specialArgs;
+                    home-manager.users.zorbik = import ./homes/zorbik.nix;
+                  }
+                ];
+              }
+            );
+          };
 
-      nixosModules.default = ./modules/nixos;
-      homeManagerModules.default = ./modules/homeManager;
-
-      nixosConfigurations = {
-        titan-r = lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/titan-r
-            self.nixosModules.default
-            home-manager.nixosModules.home-manager
-            catppuccin.nixosModules.catppuccin
-          ];
-          specialArgs = { inherit inputs outputs; };
+          darwinConfigurations = {
+            Ryan-Seipps-MBP = withSystem "aarch64-darwin" (
+              { config, inputs', ... }:
+              inputs.darwin.lib.darwinSystem rec {
+                specialArgs = {
+                  inherit inputs inputs';
+                  packages = config.packages;
+                };
+                modules = [
+                  ./hosts/MacBook-Pro
+                  inputs.home-manager.darwinModules.home-manager
+                  {
+                    home-manager.useGlobalPkgs = true;
+                    home-manager.useUserPackages = true;
+                    home-manager.extraSpecialArgs = specialArgs;
+                    home-manager.users.ryanseipp = import ./homes/ryanseipp.nix;
+                  }
+                ];
+              }
+            );
+          };
         };
-      };
-
-      darwinConfigurations = {
-        Ryan-Seipps-MBP = darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          pkgs = pkgsFor.aarch64-darwin;
-          modules = [
-            ./hosts/MacBook-Pro
-            home-manager.darwinModules.home-manager
-          ];
-          specialArgs = { inherit inputs outputs; };
-        };
-      };
-
-      checks = forEachSystem (pkgs: {
-        formatting = treefmtEval.${pkgs.system}.config.build.check self;
-      });
-    };
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "x86_64-darwin"
+          "aarch64-darwin"
+        ];
+      }
+    );
 }
