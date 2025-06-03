@@ -67,6 +67,7 @@
       "microsoft-teams"
       "netnewswire"
       "spotify"
+      "zulu@17"
     ];
     onActivation = {
       autoUpdate = true;

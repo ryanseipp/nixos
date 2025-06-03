@@ -143,6 +143,7 @@ in
         omnisharp-roslyn
         rust-analyzer
         rustywind
+        tailwindcss-language-server
         shfmt
         stylua
         yaml-language-server

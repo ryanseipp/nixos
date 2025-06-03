@@ -21,11 +21,22 @@ in
   home = {
     username = "ryanseipp";
     inherit homeDirectory;
+    preferXdgDirectories = true;
 
     shellAliases = {
       ls = "eza -l";
       la = "eza -la";
     };
+
+    sessionVariables = {
+      JAVA_HOME = "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home";
+      ANDROID_HOME = "${homeDirectory}/Library/Android/sdk";
+    };
+
+    sessionPath = [
+      "\${ANDROID_HOME}/emulator"
+      "\${ANDROID_HOME}/platform-tools"
+    ];
 
     packages = with pkgs; [
       act
@@ -37,6 +48,7 @@ in
       dive
       docker
       docker-compose
+      eas-cli
       eza
       fd
       gh
