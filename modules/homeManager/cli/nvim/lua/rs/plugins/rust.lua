@@ -60,28 +60,6 @@ return {
 				silent = true,
 			},
 		},
-		init = function()
-			local lsp = require("rs.lsp")
-
-			vim.g.rustaceanvim = {
-				server = {
-					on_attach = lsp.custom_attach,
-					default_settings = {
-						["rust-analyzer"] = {
-							cargo = {
-								buildScripts = {
-									enable = true,
-								},
-								features = "all",
-							},
-							checkOnSave = {
-								command = "clippy",
-							},
-						},
-					},
-				},
-			}
-		end,
 	},
 	{
 		"saecki/crates.nvim",

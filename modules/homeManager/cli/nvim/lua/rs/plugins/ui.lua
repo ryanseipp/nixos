@@ -69,4 +69,18 @@ return {
 			{ "<c-l>", "<cmd><C-U>KittyNavigateRight<cr>" },
 		},
 	},
+	{
+		"meanderingprogrammer/render-markdown.nvim",
+		ft = { "markdown", "codecompanion" },
+	},
+	{
+		"echasnovski/mini.diff",
+		config = function()
+			local diff = require("mini.diff")
+			diff.setup({
+				-- Disabled by default
+				source = diff.gen_source.none(),
+			})
+		end,
+	},
 }

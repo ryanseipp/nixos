@@ -23,6 +23,11 @@ in
     networkmanager.enable = true;
   };
 
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
+
   users.users.zorbik = {
     isNormalUser = true;
     shell = pkgs.zsh;

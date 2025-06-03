@@ -144,6 +144,7 @@ M.servers = {
 	-- ansiblels = true,
 	astro = true,
 	bashls = true,
+	buf_ls = true,
 	dockerls = true,
 	gopls = true,
 	ocamllsp = true,

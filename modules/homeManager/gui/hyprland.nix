@@ -246,7 +246,7 @@ in
     catppuccin.hyprlock.useDefaultConfig = false;
 
     services.hypridle = {
-      enable = true;
+      enable = false;
       settings = {
         general = {
           lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${hyprlockPkg}/bin/hyprlock";

@@ -79,5 +79,6 @@ return {
 				},
 			},
 		})
+		vim.treesitter.language.register("rust_with_rstml", "rust")
 	end,
 }

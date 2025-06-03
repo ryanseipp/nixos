@@ -172,5 +172,6 @@ in
   services = {
     ssh-agent.enable = true;
     playerctld.enable = true;
+    trayscale.enable = true;
   };
 }

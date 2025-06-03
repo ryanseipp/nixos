@@ -23,6 +23,15 @@
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    mcphub = {
+      url = "github:ravitemer/mcp-hub";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mcphub-nvim = {
+      url = "github:ravitemer/mcphub.nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -48,6 +57,7 @@
         import nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          overlays = import ./overlays { inherit inputs; };
         }
       );
       forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});

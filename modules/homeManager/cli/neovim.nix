@@ -5,6 +5,28 @@
   ...
 }:
 let
+  treesitter-rstml =
+    (pkgs.tree-sitter.buildGrammar {
+      version = "2.0.0";
+      generate = false;
+      location = "rust_with_rstml";
+      language = "rust_with_rstml";
+      src = pkgs.fetchFromGitHub {
+        owner = "rayliwell";
+        repo = "tree-sitter-rstml";
+        rev = "07a8e3b9bda09b648a6ccaca09e15dea3adf956f";
+        sha256 = "sha256-q66XIPssd8b3kjL1SDq8p23Zyo2BMBARPAXZ2TiAXPU=";
+      };
+    }).overrideAttrs
+      (
+        final: prev: {
+          postInstall = ''
+            rm -r $out/queries
+            mkdir $out/queries
+            cp -r ../queries/rust_with_rstml/. $out/queries
+          '';
+        }
+      );
 in
 # remove next time vimPlugins is regenerated. We need v0.6
 # crates-nvim-custom = pkgs.vimUtils.buildVimPlugin {
@@ -37,70 +59,81 @@ in
       vimdiffAlias = true;
       withPython3 = true;
       withNodeJs = true;
-      plugins = with pkgs.vimPlugins; [
-        lazy-nvim
+      plugins =
+        [ pkgs.inputs.mcphub-nvim.default ]
+        ++ (with pkgs.vimPlugins; [
+          lazy-nvim
 
-        # Completion
-        blink-cmp
+          # Completion
+          blink-cmp
 
-        # Editing tools
-        nvim-autopairs
-        nvim-ts-autotag
-        comment-nvim
+          # Editing tools
+          nvim-autopairs
+          nvim-ts-autotag
+          comment-nvim
 
-        # Language Server Protocol
-        nvim-lspconfig
-        fidget-nvim
+          # Language Server Protocol
+          nvim-lspconfig
+          fidget-nvim
 
-        # Language specific tooling
-        rustaceanvim
-        crates-nvim
-        lazydev-nvim
-        typescript-tools-nvim
+          # AI Plugins
+          copilot-lua
+          codecompanion-nvim
+          render-markdown-nvim
+          mini-diff
 
-        # Testing
-        neotest
+          # Language specific tooling
+          rustaceanvim
+          crates-nvim
+          lazydev-nvim
+          typescript-tools-nvim
 
-        # Debug Adapter Protocol
-        nvim-dap
-        nvim-dap-ui
-        nvim-dap-virtual-text
-        nvim-dap-go
+          # Testing
+          neotest
 
-        # Misc.
-        snacks-nvim
-        plenary-nvim
-        nvim-nio
-        FixCursorHold-nvim
+          # Debug Adapter Protocol
+          nvim-dap
+          nvim-dap-ui
+          nvim-dap-virtual-text
+          nvim-dap-go
 
-        # Formatting
-        conform-nvim
+          # Misc.
+          snacks-nvim
+          plenary-nvim
+          nvim-nio
+          FixCursorHold-nvim
 
-        # Treesitter
-        nvim-treesitter.withAllGrammars
-        nvim-treesitter-textobjects
-        nvim-treesitter-context
+          # Formatting
+          conform-nvim
 
-        # UI
-        catppuccin-nvim
-        lualine-nvim
-        gitsigns-nvim
-        noice-nvim
-        nui-nvim
-        nvim-notify
-        nvim-tree-lua
-        vim-kitty-navigator
-      ];
+          # Treesitter
+          (nvim-treesitter.withPlugins (_: nvim-treesitter.allGrammars ++ [ treesitter-rstml ]))
+          nvim-treesitter-textobjects
+          nvim-treesitter-context
+
+          # UI
+          catppuccin-nvim
+          lualine-nvim
+          gitsigns-nvim
+          noice-nvim
+          nui-nvim
+          nvim-notify
+          nvim-tree-lua
+          vim-kitty-navigator
+        ]);
       extraPackages = with pkgs; [
         astro-language-server
         bash-language-server
         beautysh
         biome
+        buf
         clang-tools
         dockerfile-language-server-nodejs
         # eslint
         fzf
+        gh
         gopls
+        inputs.mcphub.default
         lua-language-server
         nixd
         nixfmt-rfc-style
@@ -126,6 +159,26 @@ in
           "ts=typescript"
         }
         vim.g.omnisharp_path = '${pkgs.omnisharp-roslyn}/bin/OmniSharp'
+        vim.g.mcphub_path = '${pkgs.inputs.mcphub.default}/bin/mcp-hub'
+
+        local lsp = require("rs.lsp")
+
+        vim.g.rustaceanvim = {
+            server = {
+                on_attach = lsp.custom_attach,
+                default_settings = {
+                    ["rust-analyzer"] = {
+                        cargo = {
+                            buildScripts = {
+                                enable = true,
+                            },
+                            features = "all",
+                        },
+                        checkOnSave = true,
+                    },
+                },
+            },
+        }
 
         require("lazy").setup({
           spec = {
@@ -143,11 +196,13 @@ in
               "antoinemadec",
               "catppuccin",
               "catppuccin-nvim",
+              "echasnovski",
               "folke",
               "j-hui",
               "knubie",
               "leoluz",
               "lewis6991",
+              "meanderingprogrammer",
               "mfussenegger",
               "mrcjkb",
               "muniftanjim",
@@ -157,13 +212,16 @@ in
               "nvim-lualine",
               "nvim-neotest",
               "nvim-treesitter",
+              "olimorris",
               "pmizio",
+              "ravitemer",
               "rcarriga",
               "saecki",
               "saghen",
               "stevearc",
               "thehamsta",
               "windwp",
+              "zbirenbaum",
             },
           },
           install = {
