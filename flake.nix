@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     hardware.url = "github:nixos/nixos-hardware";
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -50,8 +51,13 @@
           inputs.home-manager.flakeModules.home-manager
           inputs.treefmt-nix.flakeModule
         ];
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "x86_64-darwin"
+          "aarch64-darwin"
+        ];
         flake = {
-          overlays = import ./overlays { inherit inputs; };
           nixosModules.ryanseipp = ./modules/nixos;
           homeModules.ryanseipp = ./modules/home;
 
@@ -101,12 +107,6 @@
             );
           };
         };
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-          "x86_64-darwin"
-          "aarch64-darwin"
-        ];
       }
     );
 }

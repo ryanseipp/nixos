@@ -37,8 +37,10 @@ in
 
     packages = with pkgs; [
       age
+      awscli2
       bitwarden-desktop
       chromium
+      claude-code
       curl
       dig
       ethtool

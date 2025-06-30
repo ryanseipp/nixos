@@ -47,7 +47,6 @@ in
       winbox4
       yubikey-manager
       yubikey-personalization
-      yubikey-personalization-gui
     ]);
 
   programs = {
