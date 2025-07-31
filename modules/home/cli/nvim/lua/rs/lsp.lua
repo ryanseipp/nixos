@@ -235,13 +235,13 @@ M.servers = {
 			clangdFileStatus = true,
 		},
 	},
-	biome = true,
-	-- eslint = {
-	-- 	settings = {
-	-- 		-- packageManager = "pnpm",
-	-- 		format = false,
-	-- 	},
-	-- },
+	biome = false,
+	eslint = {
+		settings = {
+			-- packageManager = "pnpm",
+			format = false,
+		},
+	},
 	omnisharp = {
 		cmd = { vim.g.omnisharp_path },
 		settings = {

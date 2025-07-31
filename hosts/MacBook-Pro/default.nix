@@ -10,6 +10,7 @@
   };
 
   nix = {
+    enable = true;
     package = pkgs.nix;
     nixPath =
       let
@@ -63,12 +64,15 @@
     ];
     casks = [
       "brave-browser"
+      "github"
+      "isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400"
       "kitty"
       "microsoft-teams"
       "netnewswire"
       "spotify"
       "zulu@17"
     ];
+    taps = [ "isen-ng/dotnet-sdk-versions" ];
     onActivation = {
       autoUpdate = true;
       upgrade = true;
@@ -101,7 +105,13 @@
     nerd-fonts.symbols-only
   ];
 
-  programs.zsh.enable = true;
+  services = {
+    nix-daemon.enableSocketListener = true;
+  };
+
+  programs = {
+    zsh.enable = true;
+  };
 
   system = {
     stateVersion = 4;
@@ -132,10 +142,9 @@
           { app = "/Applications/Brave Browser.app"; }
           { app = "/Applications/Slack.app"; }
           { app = "/Applications/1Password.app"; }
-          { app = "/Applications/TIDAL.app"; }
+          { app = "/Applications/Spotify.app"; }
           { app = "/Applications/NetNewsWire.app"; }
           { app = "/Applications/Docker.app/Contents/MacOS/Docker Desktop.app"; }
-          { app = "/Applications/Azure VPN Client.app"; }
           { app = "/System/Applications/System Settings.app"; }
           { spacer.small = true; }
         ];

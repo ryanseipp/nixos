@@ -21,11 +21,9 @@ in
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
 
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
+      history.path = "${config.xdg.dataHome}/zsh/zsh_history";
       completionInit = "autoload -U compinit && compinit -d ${config.xdg.cacheHome}/zsh/zcompdump";
-      history = {
-        path = "${config.xdg.dataHome}/zsh/zsh_history";
-      };
 
       initContent = ''
         autoload -U up-line-or-beginning-search
