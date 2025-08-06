@@ -50,6 +50,9 @@ in
     ]);
 
   programs = {
+    _1password.enable = true;
+    _1password-gui.enable = true;
+
     steam = {
       enable = true;
       extraCompatPackages = with pkgs; [

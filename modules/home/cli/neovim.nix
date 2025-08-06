@@ -135,6 +135,7 @@ in
         gh
         gopls
         inputs'.mcphub.packages.default
+        leptosfmt
         lua-language-server
         nixd
         nixfmt-rfc-style

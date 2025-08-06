@@ -36,7 +36,7 @@ return {
 			lua = { "stylua" },
 			nix = { "nixfmt" },
 			ocaml = { "ocamlformat" },
-			rust = { "leptosfmt", "rustfmt", "rustywind" },
+			rust = { "leptosfmt", "rustywind" },
 			sh = { "beautysh" },
 			bash = { "beautysh" },
 			zsh = { "beautysh" },
