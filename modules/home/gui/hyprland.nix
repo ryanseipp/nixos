@@ -5,7 +5,7 @@
   ...
 }:
 let
-  wallpaper = ../../../assets/shop.jpg;
+  wallpaper = ../../../assets/dc2.png;
   hyprlandPkg = config.wayland.windowManager.hyprland.package;
   hyprlockPkg = config.programs.hyprlock.package;
 in

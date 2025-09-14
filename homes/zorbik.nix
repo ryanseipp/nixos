@@ -21,7 +21,6 @@ in
       enable = true;
       accent = "light";
     };
-    gtk.enable = true;
   };
 
   home = {
@@ -49,10 +48,14 @@ in
       gdb
       gimp
       hoppscotch
+      zoom-us
       hyprpaper
       lynis
+      obsidian
       pavucontrol
       pulsemixer
+      protonmail-desktop
+      proton-pass
       qalculate-qt
       qflipper
       ripgrep
@@ -82,7 +85,7 @@ in
   btop.enable = true;
   hyprland.enable = true;
   kitty.enable = true;
-  podman.enable = true;
+  docker.enable = true;
   mako.enable = true;
   rofi.enable = true;
   waybar.enable = true;

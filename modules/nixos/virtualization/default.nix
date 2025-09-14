@@ -1,6 +1,7 @@
 { lib, ... }:
 {
   imports = [
+    ./dockerHost.nix
     ./podmanHost.nix
     ./incusHost.nix
   ];

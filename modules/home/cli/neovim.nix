@@ -60,68 +60,69 @@ in
       vimdiffAlias = true;
       withPython3 = true;
       withNodeJs = true;
-      plugins =
-        [ inputs'.mcphub-nvim.packages.default ]
-        ++ (with pkgs.vimPlugins; [
-          lazy-nvim
+      plugins = [
+        inputs'.mcphub-nvim.packages.default
+      ]
+      ++ (with pkgs.vimPlugins; [
+        lazy-nvim
 
-          # Completion
-          blink-cmp
+        # Completion
+        blink-cmp
 
-          # Editing tools
-          nvim-autopairs
-          nvim-ts-autotag
-          comment-nvim
+        # Editing tools
+        nvim-autopairs
+        nvim-ts-autotag
+        comment-nvim
 
-          # Language Server Protocol
-          nvim-lspconfig
-          fidget-nvim
+        # Language Server Protocol
+        nvim-lspconfig
+        fidget-nvim
 
-          # AI Plugins
-          copilot-lua
-          codecompanion-nvim
-          render-markdown-nvim
-          mini-diff
+        # AI Plugins
+        copilot-lua
+        codecompanion-nvim
+        render-markdown-nvim
+        mini-diff
 
-          # Language specific tooling
-          rustaceanvim
-          crates-nvim
-          lazydev-nvim
-          typescript-tools-nvim
+        # Language specific tooling
+        rustaceanvim
+        crates-nvim
+        lazydev-nvim
+        typescript-tools-nvim
 
-          # Testing
-          neotest
+        # Testing
+        neotest
 
-          # Debug Adapter Protocol
-          nvim-dap
-          nvim-dap-ui
-          nvim-dap-virtual-text
-          nvim-dap-go
+        # Debug Adapter Protocol
+        nvim-dap
+        nvim-dap-ui
+        nvim-dap-virtual-text
+        nvim-dap-go
 
-          # Misc.
-          snacks-nvim
-          plenary-nvim
-          nvim-nio
-          FixCursorHold-nvim
+        # Misc.
+        snacks-nvim
+        plenary-nvim
+        nvim-nio
+        FixCursorHold-nvim
 
-          # Formatting
-          conform-nvim
+        # Formatting
+        conform-nvim
 
-          # Treesitter
-          (nvim-treesitter.withPlugins (_: nvim-treesitter.allGrammars ++ [ treesitter-rstml ]))
-          nvim-treesitter-textobjects
-          nvim-treesitter-context
+        # Treesitter
+        (nvim-treesitter.withPlugins (_: nvim-treesitter.allGrammars ++ [ treesitter-rstml ]))
+        nvim-treesitter-textobjects
+        nvim-treesitter-context
 
-          # UI
-          catppuccin-nvim
-          lualine-nvim
-          gitsigns-nvim
-          noice-nvim
-          nui-nvim
-          nvim-notify
-          nvim-tree-lua
-          vim-kitty-navigator
-        ]);
+        # UI
+        catppuccin-nvim
+        lualine-nvim
+        gitsigns-nvim
+        noice-nvim
+        nui-nvim
+        nvim-notify
+        nvim-tree-lua
+        vim-kitty-navigator
+      ]);
       extraPackages = with pkgs; [
         astro-language-server
         bash-language-server
@@ -142,9 +143,11 @@ in
         # nodePackages.prettier
         ocamlformat
         omnisharp-roslyn
+        opentofu
         rust-analyzer
         rustywind
         tailwindcss-language-server
+        tofu-ls
         shfmt
         stylua
         yaml-language-server

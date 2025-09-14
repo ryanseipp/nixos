@@ -3,6 +3,7 @@
   imports = [
     ./bat.nix
     ./btop.nix
+    ./docker.nix
     ./git.nix
     ./lazygit.nix
     ./neovim.nix

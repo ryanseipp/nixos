@@ -148,6 +148,7 @@ M.servers = {
 	dockerls = true,
 	gopls = true,
 	ocamllsp = true,
+	tofu_ls = true,
 	nixd = {
 		-- settings = {
 		-- 	nixd = {

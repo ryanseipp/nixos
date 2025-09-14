@@ -33,21 +33,23 @@ in
     extraGroups = [
       "wheel"
       "networkmanager"
+      "docker"
     ];
   };
 
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages =
-    [ kernel.perf ]
-    ++ (with pkgs; [
-      man-pages
-      man-pages-posix
-      liburing
-      networkmanagerapplet
-      winbox4
-      yubikey-manager
-      yubikey-personalization
-    ]);
+  environment.systemPackages = [
+    kernel.perf
+  ]
+  ++ (with pkgs; [
+    man-pages
+    man-pages-posix
+    liburing
+    networkmanagerapplet
+    winbox4
+    yubikey-manager
+    yubikey-personalization
+  ]);
 
   programs = {
     _1password.enable = true;
@@ -62,7 +64,7 @@ in
   };
 
   desktop.enable = true;
-  podmanHost.enable = true;
+  dockerHost.enable = true;
   gc.enable = true;
 
   boot = {
