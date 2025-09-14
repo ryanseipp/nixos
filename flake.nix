@@ -105,6 +105,26 @@
                 ];
               }
             );
+
+            "hyperion-r" = withSystem "aarch64-darwin" (
+              { config, inputs', ... }:
+              inputs.darwin.lib.darwinSystem rec {
+                specialArgs = {
+                  inherit inputs inputs';
+                  packages = config.packages;
+                };
+                modules = [
+                  ./hosts/hyperion-r
+                  inputs.home-manager.darwinModules.home-manager
+                  {
+                    home-manager.useGlobalPkgs = true;
+                    home-manager.useUserPackages = true;
+                    home-manager.extraSpecialArgs = specialArgs;
+                    home-manager.users.ryanseipp = import ./homes/zorbik-mbp.nix;
+                  }
+                ];
+              }
+            );
           };
         };
       }
