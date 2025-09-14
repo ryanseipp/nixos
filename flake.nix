@@ -120,7 +120,7 @@
                     home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
                     home-manager.extraSpecialArgs = specialArgs;
-                    home-manager.users.ryanseipp = import ./homes/zorbik-mbp.nix;
+                    home-manager.users.zorbik = import ./homes/zorbik-mbp.nix;
                   }
                 ];
               }

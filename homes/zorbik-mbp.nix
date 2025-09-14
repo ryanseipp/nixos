@@ -5,7 +5,7 @@
 }:
 let
   inherit (inputs) self;
-  homeDirectory = "/Users/ryanseipp";
+  homeDirectory = "/Users/zorbik";
 in
 {
   imports = [
@@ -19,7 +19,7 @@ in
   };
 
   home = {
-    username = "ryanseipp";
+    username = "zorbik";
     inherit homeDirectory;
     preferXdgDirectories = true;
 
@@ -53,7 +53,7 @@ in
       yq-go
     ];
 
-    stateVersion = "25.04";
+    stateVersion = "25.11";
   };
 
   gc-hm.enable = true;
@@ -70,8 +70,8 @@ in
     enable = true;
     userName = "Ryan Seipp";
     userEmail = "rseipp@ryanseipp.com";
-    # signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO8HLVTAaUeBJmSVZ2+E1cJdgFA4AI0dbCTFbvA8ymOt rseipp@truefit.io-signing";
-    # signingKeyPath = "${homeDirectory}/.ssh/rseipp_ed25519";
+    signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH3zMo59N1hukphn9i0jvSdUN9ng3AmaP22gYbzk5HOK zorbik@hyperion-r.local";
+    signingKeyPath = "${homeDirectory}/.ssh/id_ed25519";
   };
 
   programs = {
@@ -88,12 +88,25 @@ in
 
     ssh = {
       enable = true;
-      addKeysToAgent = "yes";
-      # extraConfig = ''
-      #   IdentityFile ${homeDirectory}/.ssh/rseipp_ed25519_sk
-      #   IdentityFile ${homeDirectory}/.ssh/rseipp_ed25519_sk2
-      #   IdentitiesOnly yes
-      # '';
+      enableDefaultConfig = false;
+      matchBlocks = {
+        "*" = {
+          forwardAgent = false;
+          addKeysToAgent = "no";
+          compression = false;
+          serverAliveInterval = 0;
+          serverAliveCountMax = 3;
+          hashKnownHosts = false;
+          userKnownHostsFile = "~/.ssh/known_hosts";
+          controlMaster = "no";
+          controlPath = "~/.ssh/master-%r@%n:%p";
+          controlPersist = "no";
+        };
+      };
+      extraConfig = ''
+        IdentityFile ${homeDirectory}/.ssh/id_ed25519
+        IdentitiesOnly yes
+      '';
     };
 
     direnv = {

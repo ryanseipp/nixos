@@ -10,7 +10,7 @@
   };
 
   nix = {
-    enable = true;
+    enable = false;
     package = pkgs.nix;
     nixPath =
       let
@@ -28,7 +28,7 @@
     ];
 
     optimise = {
-      automatic = true;
+      automatic = false;
       interval = {
         Minute = 10;
         Hour = 9;
@@ -37,7 +37,7 @@
     };
 
     gc = {
-      automatic = true;
+      automatic = false;
       options = "--delete-older-than 7d";
       interval = {
         Minute = 0;
@@ -63,9 +63,13 @@
     casks = [
       "1password"
       "brave-browser"
+      "claude"
       "kitty"
       "proton-mail"
       "spotify"
+      "tailscale-app"
+      "vesktop"
+      "zen"
     ];
     onActivation = {
       autoUpdate = true;
@@ -84,6 +88,7 @@
   };
 
   security.pam.services.sudo_local.touchIdAuth = true;
+  services.tailscale.enable = true;
 
   fonts.packages = with pkgs; [
     inter
