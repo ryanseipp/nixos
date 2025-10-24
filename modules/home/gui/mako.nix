@@ -13,7 +13,7 @@
       enable = true;
       settings = {
         defaultTimeout = "4000";
-        font = "Iosevka Nerd Font 10";
+        font = "CaskaydiaMono Nerd Font 10";
         borderRadius = "8";
         margin = "24,16,8,8";
       };

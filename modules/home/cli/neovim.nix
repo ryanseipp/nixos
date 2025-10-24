@@ -89,9 +89,15 @@ in
         crates-nvim
         lazydev-nvim
         typescript-tools-nvim
+        nvim-java
+        nvim-java-core
+        nvim-java-dap
+        nvim-java-test
+        nvim-java-refactor
 
         # Testing
         neotest
+        neotest-java
 
         # Debug Adapter Protocol
         nvim-dap
@@ -130,21 +136,25 @@ in
         biome
         buf
         clang-tools
-        dockerfile-language-server-nodejs
+        dockerfile-language-server
         # eslint
         fzf
         gh
+        google-java-format
         gopls
         inputs'.mcphub.packages.default
+        jdk21_headless
+        jdt-language-server
         leptosfmt
         lua-language-server
         nixd
         nixfmt-rfc-style
-        # nodePackages.prettier
-        ocamlformat
+        prettier
+        # ocamlformat
         omnisharp-roslyn
         opentofu
         rust-analyzer
+        rustfmt
         rustywind
         tailwindcss-language-server
         tofu-ls

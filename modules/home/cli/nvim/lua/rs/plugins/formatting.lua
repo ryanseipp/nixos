@@ -32,12 +32,13 @@ return {
 
 		local formatters_by_ft = {
 			c = { "clang_format" },
-			cs = { "csharpier" },
+			-- cs = { "csharpier" },
+			java = { "google-java-format" },
 			lua = { "stylua" },
 			nix = { "nixfmt" },
-			ocaml = { "ocamlformat" },
+			-- ocaml = { "ocamlformat" },
 			opentofu = { "tofu_fmt" },
-			rust = { "leptosfmt", "rustywind" },
+			rust = { "rustfmt", "leptosfmt", "rustywind" },
 			terraform = { "tofu_fmt" },
 			sh = { "beautysh" },
 			bash = { "beautysh" },
@@ -62,6 +63,11 @@ return {
 
 						return {}
 					end,
+				},
+				["google-java-format"] = {
+					command = "google-java-format",
+					args = { "-" },
+					stdin = true,
 				},
 			},
 			formatters_by_ft = formatters_by_ft,

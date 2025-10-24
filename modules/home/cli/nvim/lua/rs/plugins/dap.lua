@@ -156,4 +156,6 @@ return {
 		dependencies = { "mfussenegger/nvim-dap" },
 		opts = {},
 	},
+	-- Java DAP configuration is handled by nvim-java-dap
+	-- See lua/rs/plugins/java.lua for Java debugging setup
 }

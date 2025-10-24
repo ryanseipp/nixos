@@ -7,6 +7,7 @@ return {
 			"nvim-lua/plenary.nvim",
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
+			"rcasia/neotest-java",
 		},
 		keys = {
 			{
@@ -71,6 +72,11 @@ return {
 		opts = {
 			adapters = {
 				require("rustaceanvim.neotest"),
+				require("neotest-java")({
+					-- Set the Maven executable path, uses Maven by default
+					-- You can also use Gradle: gradle_test = "test"
+					junit_jar = nil, -- Auto-detect JUnit jar
+				}),
 			},
 		},
 	},

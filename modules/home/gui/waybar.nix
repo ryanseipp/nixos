@@ -131,7 +131,7 @@
       style = ''
         * {
           border: none;
-          font-family: "Iosevka Nerd Font";
+          font-family: "CaskaydiaMono Nerd Font";
           font-weight: bold;
           font-size: 12.5px;
           min-height: 0;

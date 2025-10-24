@@ -33,9 +33,12 @@ in
       crane
       devbox
       dive
+      docker
+      docker-compose
       eza
       fd
       gh
+      graalvm-ce
       jq
       just
       kind
@@ -43,7 +46,9 @@ in
       kubectl-tree
       kubectl-cnpg
       kubectx
+      maven
       opentofu
+      quarkus
       ripgrep
       slsa-verifier
       subnetcalc
@@ -62,7 +67,7 @@ in
 
   kitty = {
     enable = true;
-    font = "Iosevka Nerd Font";
+    font = "CaskaydiaMono Nerd Font Mono";
     fontSize = 12;
   };
 

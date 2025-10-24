@@ -84,7 +84,7 @@ in
 
   kitty = {
     enable = true;
-    font = "Iosevka Nerd Font";
+    font = "CaskaydiaMono Nerd Font";
     fontSize = 12;
   };
 
