@@ -62,14 +62,17 @@
     ];
     casks = [
       "1password"
+      "balenaetcher"
       "brave-browser"
       "claude"
+      "claude-code"
       "docker-desktop"
       "kitty"
       "proton-mail"
       "slack"
       "spotify"
       "tailscale-app"
+      "winbox"
       "vesktop"
       "zen"
     ];

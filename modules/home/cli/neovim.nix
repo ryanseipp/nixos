@@ -60,10 +60,7 @@ in
       vimdiffAlias = true;
       withPython3 = true;
       withNodeJs = true;
-      plugins = [
-        inputs'.mcphub-nvim.packages.default
-      ]
-      ++ (with pkgs.vimPlugins; [
+      plugins = with pkgs.vimPlugins; [
         lazy-nvim
 
         # Completion
@@ -77,11 +74,6 @@ in
         # Language Server Protocol
         nvim-lspconfig
         fidget-nvim
-
-        # AI Plugins
-        copilot-lua
-        codecompanion-nvim
-        render-markdown-nvim
         mini-diff
 
         # Language specific tooling
@@ -128,27 +120,26 @@ in
         nvim-notify
         nvim-tree-lua
         vim-kitty-navigator
-      ]);
+      ];
       extraPackages = with pkgs; [
         astro-language-server
         bash-language-server
         beautysh
-        biome
         buf
         clang-tools
         dockerfile-language-server
+        deno
         # eslint
         fzf
         gh
         google-java-format
         gopls
-        inputs'.mcphub.packages.default
         jdk21_headless
         jdt-language-server
         leptosfmt
         lua-language-server
         nixd
-        nixfmt-rfc-style
+        nixfmt
         prettier
         # ocamlformat
         omnisharp-roslyn
@@ -157,7 +148,7 @@ in
         rustfmt
         rustywind
         tailwindcss-language-server
-        tofu-ls
+        terraform-ls
         shfmt
         stylua
         yaml-language-server
@@ -166,8 +157,7 @@ in
         zls
       ];
 
-      # Add this back if dotnet dev is necessary
-      extraLuaConfig = ''
+      initLua = ''
         vim.g.mapleader = " "
         vim.keymap.set("x", "<leader>p", '"_dp')
 
@@ -175,7 +165,6 @@ in
           "ts=typescript"
         }
         vim.g.omnisharp_path = '${pkgs.omnisharp-roslyn}/bin/OmniSharp'
-        vim.g.mcphub_path = '${inputs'.mcphub.packages.default}/bin/mcp-hub'
 
         local lsp = require("rs.lsp")
 
@@ -207,7 +196,7 @@ in
             }
           },
           dev = {
-            path = "${pkgs.neovimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
+            path = "${config.xdg.dataHome}/nvim/site/pack/hm/start",
             patterns = {
               "antoinemadec",
               "catppuccin",

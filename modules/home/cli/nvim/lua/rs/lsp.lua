@@ -148,25 +148,9 @@ M.servers = {
 	dockerls = true,
 	gopls = true,
 	ocamllsp = true,
-	tofu_ls = true,
-	nixd = {
-		-- settings = {
-		-- 	nixd = {
-		-- 		options = {
-		-- 			nixos = {
-		-- 				expr = "",
-		-- 			},
-		-- 		},
-		-- 	},
-		-- },
-	},
-	-- denols = {
-	-- 	settings = {
-	-- 		deno = {
-	-- 			enable = vim.fs.root(0, "deno.json") ~= nil,
-	-- 		},
-	-- 	},
-	-- },
+	terraform_ls = true,
+	nixd = true,
+	denols = true,
 	tailwindcss = {
 		filetypes = {
 			"aspnetcorerazor",
@@ -236,13 +220,13 @@ M.servers = {
 			clangdFileStatus = true,
 		},
 	},
-	biome = false,
-	eslint = {
-		settings = {
-			-- packageManager = "pnpm",
-			format = false,
-		},
-	},
+	-- biome = false,
+	-- eslint = {
+	-- 	settings = {
+	-- 		-- packageManager = "pnpm",
+	-- 		format = false,
+	-- 	},
+	-- },
 	omnisharp = {
 		cmd = { vim.g.omnisharp_path },
 		settings = {

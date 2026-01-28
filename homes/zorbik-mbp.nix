@@ -29,7 +29,6 @@ in
     };
 
     packages = with pkgs; [
-      claude-code
       crane
       devbox
       dive
@@ -38,7 +37,7 @@ in
       eza
       fd
       gh
-      graalvm-ce
+      graalvmPackages.graalvm-ce
       jq
       just
       kind
@@ -46,6 +45,7 @@ in
       kubectl-tree
       kubectl-cnpg
       kubectx
+      kubescape
       maven
       opentofu
       quarkus
@@ -82,6 +82,7 @@ in
   programs = {
     k9s.enable = true;
     lazygit.enable = true;
+    obsidian.enable = true;
 
     zsh.initContent = ''
       eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -125,7 +126,7 @@ in
     aerospace = {
       enable = true;
       launchd.enable = true;
-      userSettings = {
+      settings = {
         accordion-padding = 30;
         after-startup-command = [ ];
         automatically-unhide-macos-hidden-apps = true;

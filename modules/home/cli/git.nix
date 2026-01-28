@@ -55,38 +55,38 @@ in
     programs.git = {
       enable = true;
 
-      userName = cfg.userName;
-      userEmail = cfg.userEmail;
+      settings = {
+        user.name = cfg.userName;
+        user.email = cfg.userEmail;
 
-      aliases = {
-        a = "add";
-        br = "branch";
-        brd = "branch -d";
-        brl = "branch -l";
-        c = "commit";
-        cm = "commit -m";
-        co = "checkout";
-        cob = "checkout -b";
-        com = "checkout main";
-        conf = "config";
-        d = "diff";
-        ds = "diff --staged";
-        m = "merge";
-        new = "log origin.. --reverse";
-        lg = "log --graph --all --pretty=format:'%C(yellow)%h%Creset %C(cyan)%an%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr)%Creset'";
-        lgs = "log --graph --all --pretty=format:'%C(yellow)%h%Creset %C(cyan)%an [%G?]%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr)%Creset'";
-        p = "pull -p";
-        pu = "push";
-        puf = "push --force-with-lease";
-        rb = "rebase";
-        rba = "rebase --abort";
-        rbc = "rebase --continue";
-        rs = "restore";
-        rss = "restore --staged";
-        st = "status";
-      };
+        alias = {
+          a = "add";
+          br = "branch";
+          brd = "branch -d";
+          brl = "branch -l";
+          c = "commit";
+          cm = "commit -m";
+          co = "checkout";
+          cob = "checkout -b";
+          com = "checkout main";
+          conf = "config";
+          d = "diff";
+          ds = "diff --staged";
+          m = "merge";
+          new = "log origin.. --reverse";
+          lg = "log --graph --all --pretty=format:'%C(yellow)%h%Creset %C(cyan)%an%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr)%Creset'";
+          lgs = "log --graph --all --pretty=format:'%C(yellow)%h%Creset %C(cyan)%an [%G?]%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr)%Creset'";
+          p = "pull -p";
+          pu = "push";
+          puf = "push --force-with-lease";
+          rb = "rebase";
+          rba = "rebase --abort";
+          rbc = "rebase --continue";
+          rs = "restore";
+          rss = "restore --staged";
+          st = "status";
+        };
 
-      extraConfig = {
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
         merge.autoStash = true;
