@@ -2,8 +2,9 @@
   description = "Nixos config flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/70801e06d9730c4f1704fbd3bbf5b8e11c03a2a7";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
     hardware.url = "github:nixos/nixos-hardware";
 
     treefmt-nix = {
@@ -43,90 +44,11 @@
   };
 
   outputs =
-    inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, withSystem, ... }:
-      {
-        imports = [
-          inputs.home-manager.flakeModules.home-manager
-          inputs.treefmt-nix.flakeModule
-        ];
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-          "x86_64-darwin"
-          "aarch64-darwin"
-        ];
-        flake = {
-          nixosModules.ryanseipp = ./modules/nixos;
-          homeModules.ryanseipp = ./modules/home;
-
-          nixosConfigurations = {
-            titan-r = withSystem "x86_64-linux" (
-              { config, inputs', ... }:
-              inputs.nixpkgs.lib.nixosSystem rec {
-                specialArgs = {
-                  inherit inputs inputs';
-                  packages = config.packages;
-                };
-                modules = [
-                  ./hosts/titan-r
-                  self.nixosModules.ryanseipp
-                  inputs.catppuccin.nixosModules.catppuccin
-                  inputs.home-manager.nixosModules.home-manager
-                  {
-                    home-manager.useGlobalPkgs = true;
-                    home-manager.useUserPackages = true;
-                    home-manager.extraSpecialArgs = specialArgs;
-                    home-manager.users.zorbik = import ./homes/zorbik.nix;
-                  }
-                ];
-              }
-            );
-          };
-
-          darwinConfigurations = {
-            Ryan-Seipps-MBP = withSystem "aarch64-darwin" (
-              { config, inputs', ... }:
-              inputs.darwin.lib.darwinSystem rec {
-                specialArgs = {
-                  inherit inputs inputs';
-                  packages = config.packages;
-                };
-                modules = [
-                  ./hosts/MacBook-Pro
-                  inputs.home-manager.darwinModules.home-manager
-                  {
-                    home-manager.useGlobalPkgs = true;
-                    home-manager.useUserPackages = true;
-                    home-manager.extraSpecialArgs = specialArgs;
-                    home-manager.users.ryanseipp = import ./homes/ryanseipp.nix;
-                  }
-                ];
-              }
-            );
-
-            "hyperion-r" = withSystem "aarch64-darwin" (
-              { config, inputs', ... }:
-              inputs.darwin.lib.darwinSystem rec {
-                specialArgs = {
-                  inherit inputs inputs';
-                  packages = config.packages;
-                };
-                modules = [
-                  ./hosts/hyperion-r
-                  inputs.home-manager.darwinModules.home-manager
-                  {
-                    home-manager.useGlobalPkgs = true;
-                    home-manager.useUserPackages = true;
-                    home-manager.extraSpecialArgs = specialArgs;
-                    home-manager.users.zorbik = import ./homes/zorbik-mbp.nix;
-                  }
-                ];
-              }
-            );
-          };
-        };
-      }
-    );
+    inputs@{ flake-parts, import-tree, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.home-manager.flakeModules.home-manager
+        (import-tree ./modules)
+      ];
+    };
 }

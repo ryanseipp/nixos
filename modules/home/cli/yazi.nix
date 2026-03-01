@@ -1,17 +1,18 @@
+{ ... }:
 {
-  lib,
-  config,
-  ...
-}:
-{
-  options = {
-    yazi.enable = lib.mkEnableOption "enables yazi";
-  };
+  flake.homeModules.yazi =
+    { lib, config, ... }:
+    {
+      options = {
+        yazi.enable = lib.mkEnableOption "enables yazi";
+      };
 
-  config = lib.mkIf config.yazi.enable {
-    programs.yazi = {
-      enable = true;
-      enableZshIntegration = true;
+      config = lib.mkIf config.yazi.enable {
+        programs.yazi = {
+          enable = true;
+          enableZshIntegration = true;
+          shellWrapperName = "y";
+        };
+      };
     };
-  };
 }

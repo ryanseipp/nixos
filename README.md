@@ -20,9 +20,7 @@ The following commands will setup everything on the system:
 ## Structure
 
 - `hosts/<hostname>` contains configuration for all systems running NixOS
-- `homes/<username>` contains the home-manager module for each user on the
-    host
+- `homes/<username>` contains the home-manager module for each user on the host
 - `modules/` contains reusable modules, split by type
   - `home/` contains home-manager modules split by category & program
   - `nixos/` contains nixos modules split by category & program
-

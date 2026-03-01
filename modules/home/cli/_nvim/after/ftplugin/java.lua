@@ -131,15 +131,50 @@ local function set_java_keymaps()
 	local opts = { buffer = 0, silent = true }
 
 	if is_quarkus_project() then
-		vim.keymap.set("n", "<leader>qd", "<cmd>QuarkusDev<cr>", vim.tbl_extend("force", opts, { desc = "[Quarkus] Start dev mode" }))
-		vim.keymap.set("n", "<leader>qb", "<cmd>QuarkusBuild<cr>", vim.tbl_extend("force", opts, { desc = "[Quarkus] Build application" }))
+		vim.keymap.set(
+			"n",
+			"<leader>qd",
+			"<cmd>QuarkusDev<cr>",
+			vim.tbl_extend("force", opts, { desc = "[Quarkus] Start dev mode" })
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>qb",
+			"<cmd>QuarkusBuild<cr>",
+			vim.tbl_extend("force", opts, { desc = "[Quarkus] Build application" })
+		)
 	elseif is_maven_project() then
-		vim.keymap.set("n", "<leader>mc", "<cmd>MavenCompile<cr>", vim.tbl_extend("force", opts, { desc = "[Maven] Compile" }))
-		vim.keymap.set("n", "<leader>mp", "<cmd>MavenPackage<cr>", vim.tbl_extend("force", opts, { desc = "[Maven] Package" }))
-		vim.keymap.set("n", "<leader>mt", "<cmd>MavenTest<cr>", vim.tbl_extend("force", opts, { desc = "[Maven] Test" }))
+		vim.keymap.set(
+			"n",
+			"<leader>mc",
+			"<cmd>MavenCompile<cr>",
+			vim.tbl_extend("force", opts, { desc = "[Maven] Compile" })
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mp",
+			"<cmd>MavenPackage<cr>",
+			vim.tbl_extend("force", opts, { desc = "[Maven] Package" })
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mt",
+			"<cmd>MavenTest<cr>",
+			vim.tbl_extend("force", opts, { desc = "[Maven] Test" })
+		)
 	elseif is_gradle_project() then
-		vim.keymap.set("n", "<leader>gb", "<cmd>GradleBuild<cr>", vim.tbl_extend("force", opts, { desc = "[Gradle] Build" }))
-		vim.keymap.set("n", "<leader>gt", "<cmd>GradleTest<cr>", vim.tbl_extend("force", opts, { desc = "[Gradle] Test" }))
+		vim.keymap.set(
+			"n",
+			"<leader>gb",
+			"<cmd>GradleBuild<cr>",
+			vim.tbl_extend("force", opts, { desc = "[Gradle] Build" })
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>gt",
+			"<cmd>GradleTest<cr>",
+			vim.tbl_extend("force", opts, { desc = "[Gradle] Test" })
+		)
 	end
 end
 
