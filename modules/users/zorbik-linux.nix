@@ -32,7 +32,6 @@ in
           awscli2
           bitwarden-desktop
           chromium
-          claude-code
           curl
           dig
           ethtool
@@ -58,7 +57,7 @@ in
           ssh-to-age
           subnetcalc
           tidal-hifi
-          vesktop
+          discord
           wl-clipboard
         ];
 
@@ -73,6 +72,7 @@ in
         signingKeyPath = "${homeDirectory}/.ssh/rseipp_id_ed25519";
       };
 
+      claude-code.enable = true;
       gc-hm.enable = true;
       neovim.enable = true;
       bat.enable = true;
@@ -110,7 +110,7 @@ in
             "x-scheme-handler/about" = defaultBrowser;
             "x-scheme-handler/unknown" = defaultBrowser;
             "x-scheme-handler/ror2mm" = "r2modman.desktop";
-            "x-scheme-handler/discord" = "vesktop.desktop";
+            "x-scheme-handler/discord" = "discord.desktop";
           };
         };
       };
@@ -140,6 +140,7 @@ in
           enableBashIntegration = false;
           enableFishIntegration = false;
           enableNushellIntegration = false;
+          config.global.hide_env_diff = true;
         };
 
         keychain = {

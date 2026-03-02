@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.hyprland =
-    { lib, config, pkgs, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     let
       wallpaper = ../../../assets/dc2.png;
       hyprlandPkg = config.wayland.windowManager.hyprland.package;

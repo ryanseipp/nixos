@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.docker =
-    { pkgs, lib, config, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     {
       options = {
         docker.enable = lib.mkEnableOption "enables docker";

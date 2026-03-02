@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.nixosModules.prettyFonts =
-    { lib, config, pkgs, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     {
       options = {
         prettyFonts.enable = lib.mkEnableOption "enable custom fonts";

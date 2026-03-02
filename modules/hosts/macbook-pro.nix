@@ -183,7 +183,13 @@ in
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.users.ryanseipp = {
               imports =
-                builtins.attrValues (removeAttrs homeModules [ "zorbik-darwin" "zorbik-linux" "ryanseipp" ])
+                builtins.attrValues (
+                  removeAttrs homeModules [
+                    "zorbik-darwin"
+                    "zorbik-linux"
+                    "ryanseipp"
+                  ]
+                )
                 ++ [
                   inputs.catppuccin.homeModules.catppuccin
                   homeModules.ryanseipp

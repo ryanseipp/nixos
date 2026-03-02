@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.kitty =
-    { lib, config, pkgs, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.kitty;
     in
@@ -23,6 +28,7 @@
       config = lib.mkIf cfg.enable {
         programs.kitty = {
           enable = true;
+          package = if pkgs.stdenv.isDarwin then null else pkgs.kitty;
           font = lib.mkIf (cfg.font != null) {
             name = cfg.font;
             size = cfg.fontSize;
@@ -43,10 +49,10 @@
             "ctrl+alt+l" = "launch --location=vsplit --cwd=current";
             "ctrl+shift+r" = "layout_action rotate";
 
-            "ctrl+shift+h" = "move_window left";
-            "ctrl+shift+l" = "move_window right";
-            "ctrl+shift+k" = "move_window up";
-            "ctrl+shift+j" = "move_window down";
+            "ctrl+shift+h" = "neighboring_window left";
+            "ctrl+shift+l" = "neighboring_window right";
+            "ctrl+shift+k" = "neighboring_window up";
+            "ctrl+shift+j" = "neighboring_window down";
 
             "ctrl+h" = "kitten pass_keys.py left ctrl+h";
             "ctrl+l" = "kitten pass_keys.py right ctrl+l";

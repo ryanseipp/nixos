@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.podman =
-    { pkgs, lib, config, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     {
       options = {
         podman.enable = lib.mkEnableOption "enables podman";

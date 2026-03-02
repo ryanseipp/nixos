@@ -54,6 +54,10 @@ in
         stateVersion = "25.11";
       };
 
+      claude-code = {
+        enable = true;
+        github.pat = "op://Dev/GitHub PAT - Claude Code MCP/credential";
+      };
       gc-hm.enable = true;
       neovim.enable = true;
       bat.enable = true;
@@ -65,6 +69,12 @@ in
       starship.enable = true;
 
       kitty = {
+        enable = true;
+        font = "CaskaydiaMono Nerd Font Mono";
+        fontSize = 12;
+      };
+
+      ghostty = {
         enable = true;
         font = "CaskaydiaMono Nerd Font Mono";
         fontSize = 12;
@@ -120,6 +130,7 @@ in
           enableBashIntegration = false;
           enableFishIntegration = false;
           enableNushellIntegration = false;
+          config.global.hide_env_diff = true;
         };
 
         aerospace = {
@@ -216,6 +227,13 @@ in
                 "mode main"
               ];
             };
+
+            on-window-detected = [
+              {
+                "if".app-id = "com.mitchellh.ghostty";
+                run = [ "layout floating" ];
+              }
+            ];
 
             workspace-to-monitor-force-assignment = {
               "1" = "main";

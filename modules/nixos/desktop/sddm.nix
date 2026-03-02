@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.nixosModules.sddm =
-    { lib, config, pkgs, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     {
       options = {
         sddm.enable = lib.mkEnableOption "enables sddm";

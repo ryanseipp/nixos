@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.tmux =
-    { pkgs, lib, config, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     {
       options = {
         tmux.enable = lib.mkEnableOption "enables tmux";

@@ -1,7 +1,13 @@
 { ... }:
 {
   flake.homeModules.neovim =
-    { pkgs, lib, config, inputs', ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      inputs',
+      ...
+    }:
     let
       treesitter-rstml =
         (pkgs.tree-sitter.buildGrammar {

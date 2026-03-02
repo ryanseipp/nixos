@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.git =
-    { lib, config, pkgs, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.git;
     in

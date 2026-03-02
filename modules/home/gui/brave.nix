@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.brave =
-    { pkgs, lib, config, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     let
       cfg = config.brave;
     in

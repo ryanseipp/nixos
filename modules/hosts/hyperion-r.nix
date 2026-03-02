@@ -84,13 +84,14 @@ in
                 "claude"
                 "claude-code"
                 "docker-desktop"
+                "ghostty"
                 "kitty"
                 "proton-mail"
                 "slack"
                 "spotify"
                 "tailscale-app"
                 "winbox"
-                "vesktop"
+                "discord"
                 "zen"
               ];
               onActivation = {
@@ -144,6 +145,7 @@ in
             };
 
             programs = {
+              _1password.enable = true;
               zsh.enable = true;
             };
 
@@ -174,8 +176,9 @@ in
                   persistent-apps = [
                     { app = "/Applications/Zen.app"; }
                     { app = "/Applications/kitty.app"; }
+                    { app = "/Applications/Ghostty.app"; }
                     { app = "/Applications/Claude.app"; }
-                    { app = "/Applications/Vesktop.app"; }
+                    { app = "/Applications/Discord.app"; }
                     { app = "/Applications/Proton Mail.app"; }
                     { app = "/Applications/Spotify.app"; }
                     { app = "/Applications/1Password.app"; }
@@ -200,7 +203,13 @@ in
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.users.zorbik = {
               imports =
-                builtins.attrValues (removeAttrs homeModules [ "zorbik-darwin" "zorbik-linux" "ryanseipp" ])
+                builtins.attrValues (
+                  removeAttrs homeModules [
+                    "zorbik-darwin"
+                    "zorbik-linux"
+                    "ryanseipp"
+                  ]
+                )
                 ++ [
                   inputs.catppuccin.homeModules.catppuccin
                   homeModules.zorbik-darwin

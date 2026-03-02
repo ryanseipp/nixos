@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.rofi =
-    { pkgs, lib, config, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     let
       inherit (config.lib.formats.rasi) mkLiteral;
       fontFamily = "Inter";
