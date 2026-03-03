@@ -57,6 +57,13 @@ in
       claude-code = {
         enable = true;
         github.pat = "op://Dev/GitHub PAT - Claude Code MCP/credential";
+        lspPlugins = [
+          "typescript"
+          "rust"
+          "java"
+          "go"
+          "python"
+        ];
       };
       gc-hm.enable = true;
       neovim.enable = true;
