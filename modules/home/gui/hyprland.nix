@@ -20,6 +20,7 @@
       config = lib.mkIf config.hyprland.enable {
         wayland.windowManager.hyprland = {
           enable = true;
+          configType = "hyprlang";
           xwayland.enable = true;
           systemd = {
             enable = true;
@@ -28,16 +29,16 @@
 
           settings = {
             "$mainMod" = "SUPER";
-            "$terminal" = "kitty";
+            "$terminal" = "ghostty";
             "$fileManager" = "dolphin";
-            "$browser" = "brave";
+            "$browser" = "zen";
             "$menu" = "rofi -show run";
 
             monitor = ",highrr,auto,auto,vrr,1";
 
             exec-once = [
-              "hypridle"
               "waybar"
+              # hypridle removed - managed by systemd service with restart-on-failure
             ];
 
             input = {
@@ -70,12 +71,7 @@
             animations.enabled = false;
 
             dwindle = {
-              pseudotile = true;
               preserve_split = true;
-            };
-
-            gestures = {
-              workspace_swipe = false;
             };
 
             workspace = [
@@ -91,10 +87,6 @@
               "10, monitor:DP-2"
             ];
 
-            windowrulev2 = [
-              "suppressevent maximize, class:.*"
-            ];
-
             bind = [
               "$mainMod, RETURN, exec, $terminal"
               "$mainMod, Q, killactive,"
@@ -104,7 +96,6 @@
               "$mainMod, V, toggleFloating,"
               "$mainMod, R, exec, $menu"
               ''$mainMod, P, exec, grim -g "$(slurp -d)" - | wl-copy -t image/png''
-              "$mainMod, T, toggleSplit,"
               "ALT SHIFT Control, l, exec, loginctl lock-session"
 
               "$mainMod, h, movefocus, l"
@@ -249,7 +240,7 @@
         catppuccin.hyprlock.useDefaultConfig = false;
 
         services.hypridle = {
-          enable = false;
+          enable = true;
           settings = {
             general = {
               lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${hyprlockPkg}/bin/hyprlock";
@@ -259,14 +250,14 @@
 
             listener = [
               {
-                timeout = 900; # 15 minutes
+                timeout = 600; # 10 minutes - lock screen
                 on-timeout = "loginctl lock-session";
               }
               {
-                timeout = 960; # 16 minutes
-                on-timeout = "${hyprlandPkg}/bin/hyprctl dispatch dpms off";
-                on-resume = "${hyprlandPkg}/bin/hyprctl dispatch dpms on";
+                timeout = 900; # 15 minutes - suspend system
+                on-timeout = "systemctl suspend";
               }
+              # DPMS off removed - causes AMD GPU crashes with hyprlock
             ];
           };
         };

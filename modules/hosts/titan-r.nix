@@ -28,7 +28,7 @@ in
         (
           { pkgs, ... }:
           let
-            kernel = pkgs.linuxKernel.packages.linux_6_12;
+            kernel = pkgs.linuxKernel.packages.linux_7_0;
           in
           {
             networking = {
@@ -54,7 +54,7 @@ in
 
             nixpkgs.config.allowUnfree = true;
             environment.systemPackages = [
-              kernel.perf
+              pkgs.perf
             ]
             ++ (with pkgs; [
               man-pages
@@ -83,7 +83,15 @@ in
             gc.enable = true;
 
             boot = {
-              kernelParams = [ "pcie_port_pm=off" ];
+              kernelParams = [
+                # MT7922 wifi/BT and Intel I225-V ethernet on this board (ASUS X670E-F)
+                # both misbehave with PCIe power management. Disable ASPM globally and
+                # belt-and-suspenders at the mt7921e driver level.
+                "pcie_port_pm=off"
+                "pcie_aspm=off"
+                "mt7921e.disable_aspm=1"
+                "mem_sleep_default=deep" # Use S3 deep sleep for stable AMD suspend
+              ];
               kernelPackages = kernel;
 
               binfmt.emulatedSystems = [
@@ -98,11 +106,7 @@ in
             };
 
             hardware = {
-              graphics = {
-                extraPackages = [ pkgs.amdvlk ];
-                extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
-              };
-
+              graphics.enable = true;
               flipperzero.enable = true;
             };
 

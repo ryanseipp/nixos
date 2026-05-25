@@ -87,6 +87,8 @@ in
         fontSize = 12;
       };
 
+      zen-browser.enable = true;
+
       git = {
         enable = true;
         userName = "Ryan Seipp";

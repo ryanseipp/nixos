@@ -24,7 +24,7 @@
 
         programs.rofi = {
           enable = true;
-          package = pkgs.rofi-wayland;
+          package = pkgs.rofi;
           font = mkFont (12);
           terminal = "kitty";
           extraConfig = {

@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   homeDirectory = "/home/zorbik";
-  defaultBrowser = "brave.desktop";
+  defaultBrowser = "zen.desktop";
 in
 {
   flake.homeModules.zorbik-linux =
@@ -28,37 +28,64 @@ in
         };
 
         packages = with pkgs; [
+          # System utilities
           age
           awscli2
-          bitwarden-desktop
-          chromium
           curl
           dig
           ethtool
           eza
           fd
           gdb
+          ripgrep
+          sops
+          ssh-to-age
+          subnetcalc
+          unzip
+          wl-clipboard
+
+          # Kubernetes tooling
+          kubectl
+          kubectl-tree
+          kubectl-cnpg
+          kubectx
+          kubescape
+          kind
+
+          # Development tools
+          crane
+          devbox
+          dive
+          docker-compose
+          gh
+          jq
+          just
+          maven
+          opentofu
+          quarkus
+          slsa-verifier
+          watchman
+          yq-go
+
+          # Desktop apps
+          bitwarden-desktop
+          chromium
+          discord
           gimp
           hoppscotch
-          zoom-us
           hyprpaper
           lynis
           obsidian
           pavucontrol
-          pulsemixer
-          protonmail-desktop
           proton-pass
+          protonmail-desktop
+          pulsemixer
           qalculate-qt
-          qflipper
-          ripgrep
+          qFlipper
           slack
           spotify
-          sops
-          ssh-to-age
-          subnetcalc
           tidal-hifi
-          discord
-          wl-clipboard
+          zoom-us
         ];
 
         stateVersion = "23.11";
@@ -72,15 +99,34 @@ in
         signingKeyPath = "${homeDirectory}/.ssh/rseipp_id_ed25519";
       };
 
-      claude-code.enable = true;
+      claude-code = {
+        enable = true;
+        lspPlugins = [
+          "typescript"
+          "rust"
+          "java"
+          "go"
+          "python"
+        ];
+      };
       gc-hm.enable = true;
       neovim.enable = true;
       bat.enable = true;
       brave.enable = true;
       btop.enable = true;
       hyprland.enable = true;
-      kitty.enable = true;
+      kitty = {
+        enable = true;
+        font = "CaskaydiaMono Nerd Font Mono";
+        fontSize = 12;
+      };
+      ghostty = {
+        enable = true;
+        font = "CaskaydiaMono Nerd Font Mono";
+        fontSize = 12;
+      };
       tmux.enable = true;
+      zen-browser.enable = true;
       zsh.enable = true;
       zsh.enableFzf = true;
       starship.enable = true;
@@ -117,6 +163,7 @@ in
 
       programs = {
         home-manager.enable = true;
+        k9s.enable = true;
 
         zsh.initContent = ''
           analyze_dump () {
@@ -158,12 +205,15 @@ in
 
         ssh = {
           enable = true;
-          addKeysToAgent = "yes";
-          extraConfig = ''
-            IdentityFile ${homeDirectory}/.ssh/rseipp_id_ed25519_sk
-            IdentityFile ${homeDirectory}/.ssh/rseipp_id_ed25519_sk2
-            IdentitiesOnly yes
-          '';
+          enableDefaultConfig = false;
+          settings."*" = {
+            AddKeysToAgent = "yes";
+            IdentityFile = [
+              "${homeDirectory}/.ssh/rseipp_id_ed25519_sk"
+              "${homeDirectory}/.ssh/rseipp_id_ed25519_sk2"
+            ];
+            IdentitiesOnly = "yes";
+          };
         };
       };
 

@@ -4,8 +4,8 @@
     { pkgs, inputs, ... }:
     let
       cloudflareNameservers = [
-        "2606:4700:4700::1111"
-        "2606:4700:4700::1001"
+        # "2606:4700:4700::1111"
+        # "2606:4700:4700::1001"
         "1.1.1.1"
         "1.0.0.1"
       ];
@@ -33,8 +33,18 @@
         nscd.enableNsncd = false;
         resolved = {
           enable = true;
-          dnssec = "true";
-          dnsovertls = "true";
+          settings.Resolve = {
+            DNSSEC = "true";
+            DNSOverTLS = "true";
+          };
+        };
+
+        # Power management - fallback suspend on idle
+        logind.settings.Login = {
+          HandleLidSwitch = "suspend";
+          HandlePowerKey = "suspend";
+          IdleAction = "suspend";
+          IdleActionSec = "20min";
         };
       };
 

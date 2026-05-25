@@ -92,7 +92,6 @@ in
                 "tailscale-app"
                 "winbox"
                 "discord"
-                "zen"
               ];
               onActivation = {
                 autoUpdate = true;

@@ -305,6 +305,7 @@
           # ── Settings (permissions + preferences) ─────────────────
           settings = {
             alwaysThinkingEnabled = true;
+            editorMode = "vim";
 
             permissions = {
               allow = [

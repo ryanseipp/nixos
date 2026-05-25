@@ -18,6 +18,8 @@
           iosevka
           nerd-fonts.iosevka
           nerd-fonts.iosevka-term
+          nerd-fonts.caskaydia-mono
+          nerd-fonts.symbols-only
         ];
       };
     };
