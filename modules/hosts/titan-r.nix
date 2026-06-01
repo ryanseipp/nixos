@@ -68,7 +68,10 @@ in
 
             programs = {
               _1password.enable = true;
-              _1password-gui.enable = true;
+              _1password-gui = {
+                enable = true;
+                polkitPolicyOwners = [ "zorbik" ];
+              };
 
               steam = {
                 enable = true;
@@ -76,6 +79,15 @@ in
                   proton-ge-bin
                 ];
               };
+            };
+
+            # Trust Zen so the 1Password app exposes its native-messaging host to it.
+            environment.etc."1password/custom_allowed_browsers" = {
+              text = ''
+                .zen-beta-wrapped
+                .zen-wrapped
+              '';
+              mode = "0755";
             };
 
             desktop.enable = true;
@@ -114,6 +126,9 @@ in
 
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # Back up (rather than fail on) pre-existing unmanaged dotfiles when
+            # Home Manager starts managing them — e.g. Zen's own profiles.ini.
+            home-manager.backupFileExtension = "hm-bak";
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.users.zorbik = {
               imports =

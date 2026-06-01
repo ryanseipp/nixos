@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   homeDirectory = "/home/zorbik";
-  defaultBrowser = "zen.desktop";
+  defaultBrowser = "zen-beta.desktop";
 in
 {
   flake.homeModules.zorbik-linux =
@@ -9,6 +9,7 @@ in
     {
       catppuccin = {
         enable = true;
+        autoEnable = true;
         flavor = "mocha";
         cursors = {
           enable = true;

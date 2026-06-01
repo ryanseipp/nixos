@@ -22,10 +22,16 @@
             "nixos-config=${path}"
           ];
         channel.enable = false;
-        settings.experimental-features = [
-          "nix-command"
-          "flakes"
-        ];
+        settings = {
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
+          substituters = [ "https://claude-code.cachix.org" ];
+          trusted-public-keys = [
+            "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
+          ];
+        };
       };
 
       services = {
@@ -68,10 +74,17 @@
       time.timeZone = "America/New_York";
       i18n.defaultLocale = "en_US.UTF-8";
 
+      environment.variables = {
+        EDITOR = "nvim";
+        VISUAL = "nvim";
+      };
+
       programs = {
         zsh.enable = true;
         nix-ld.enable = true;
         git.enable = true;
+        # We never use nano; disabling it also removes its EDITOR=nano default.
+        nano.enable = false;
       };
     };
 }

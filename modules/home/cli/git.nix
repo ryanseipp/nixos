@@ -90,6 +90,7 @@
               st = "status";
             };
 
+            core.editor = "nvim";
             init.defaultBranch = "main";
             push.autoSetupRemote = true;
             merge.autoStash = true;

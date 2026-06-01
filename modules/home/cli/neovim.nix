@@ -20,6 +20,13 @@
       config = lib.mkIf config.neovim.enable {
         home.shellAliases.n = "nvim";
 
+        # Make neovim the default editor for git, claude-code, and anything
+        # that respects $EDITOR/$VISUAL.
+        home.sessionVariables = {
+          EDITOR = "nvim";
+          VISUAL = "nvim";
+        };
+
         catppuccin.nvim.enable = false;
 
         programs.nvf = {

@@ -11,6 +11,28 @@
       wallpaper = ../../../assets/dc2.png;
       hyprlandPkg = config.wayland.windowManager.hyprland.package;
       hyprlockPkg = config.programs.hyprlock.package;
+
+      inherit (lib.generators) mkLuaInline;
+
+      # Build `hl.bind("<keys>", <dispatch>[, <opts>])`.
+      # `keys` and `dispatch` are raw Lua expressions; `opts` is an optional attrset.
+      mkBind = keys: dispatch: opts: {
+        _args = [
+          (mkLuaInline keys)
+          (mkLuaInline dispatch)
+        ]
+        ++ lib.optional (opts != null) opts;
+      };
+
+      modBind = key: dispatch: mkBind ''mainMod .. " + ${key}"'' dispatch null;
+      modShiftBind = key: dispatch: mkBind ''mainMod .. " + SHIFT + ${key}"'' dispatch null;
+      keyBind = key: dispatch: mkBind ''"${key}"'' dispatch null;
+      mouseBind = key: dispatch: mkBind ''mainMod .. " + ${key}"'' dispatch { mouse = true; };
+
+      focusBind = key: dir: modBind key ''hl.dsp.focus({ direction = "${dir}" })'';
+      moveBind = key: dir: modShiftBind key ''hl.dsp.window.move({ direction = "${dir}" })'';
+      wsFocus = key: n: modBind key "hl.dsp.focus({ workspace = ${toString n} })";
+      wsMove = key: n: modShiftBind key "hl.dsp.window.move({ workspace = ${toString n} })";
     in
     {
       options = {
@@ -20,127 +42,174 @@
       config = lib.mkIf config.hyprland.enable {
         wayland.windowManager.hyprland = {
           enable = true;
-          configType = "hyprlang";
+          configType = "lua";
           xwayland.enable = true;
           systemd = {
             enable = true;
             enableXdgAutostart = true;
           };
 
+          # catppuccin's home-manager module injects
+          #   colors._var = mkLuaInline "require('themes.catppuccin')"
+          # which renders as `local colors = require('themes.catppuccin')`,
+          # giving us colors.blueAlpha / lavenderAlpha / baseAlpha below.
           settings = {
-            "$mainMod" = "SUPER";
-            "$terminal" = "ghostty";
-            "$fileManager" = "dolphin";
-            "$browser" = "zen";
-            "$menu" = "rofi -show run";
+            mainMod._var = "SUPER";
+            terminal._var = "ghostty";
+            fileManager._var = "dolphin";
+            browser._var = "zen-beta";
+            menu._var = "rofi -show run";
 
-            monitor = ",highrr,auto,auto,vrr,1";
+            monitor = {
+              output = "";
+              mode = "highrr";
+              position = "auto";
+              scale = "auto";
+              vrr = 1;
+            };
 
-            exec-once = [
-              "waybar"
-              # hypridle removed - managed by systemd service with restart-on-failure
-            ];
+            on = {
+              _args = [
+                "hyprland.start"
+                (mkLuaInline ''
+                  function()
+                    hl.exec_cmd("waybar")
+                  end'')
+              ];
+            };
 
-            input = {
-              kb_layout = "us";
-              follow_mouse = 1;
-              touchpad = {
-                natural_scroll = "false";
+            config = {
+              input = {
+                kb_layout = "us";
+                follow_mouse = 1;
+                touchpad.natural_scroll = false;
+                sensitivity = 0;
               };
 
-              sensitivity = 0;
+              general = {
+                gaps_in = 4;
+                gaps_out = {
+                  top = 24;
+                  right = 16;
+                  bottom = 16;
+                  left = 16;
+                };
+                border_size = 1;
+                col = {
+                  active_border = mkLuaInline ''{ colors = { "0xee" .. colors.blueAlpha, "0xee" .. colors.lavenderAlpha }, angle = 45 }'';
+                  inactive_border = mkLuaInline ''"0xff" .. colors.baseAlpha'';
+                };
+                layout = "dwindle";
+                allow_tearing = false;
+              };
+
+              decoration = {
+                rounding = 8;
+                blur.enabled = true;
+                shadow.enabled = true;
+              };
+
+              animations.enabled = false;
+              dwindle.preserve_split = true;
             };
 
-            general = {
-              gaps_in = 4;
-              gaps_out = "24,16,16,16";
-              border_size = 1;
-              "col.active_border" = "0xee$blueAlpha 0xee$lavenderAlpha 45deg";
-              "col.inactive_border" = "0xff$baseAlpha";
-
-              layout = "dwindle";
-              allow_tearing = false;
-            };
-
-            decoration = {
-              rounding = 8;
-              blur.enabled = true;
-              shadow.enabled = true;
-            };
-
-            animations.enabled = false;
-
-            dwindle = {
-              preserve_split = true;
-            };
-
-            workspace = [
-              "1, monitor:DP-1, default:true"
-              "2, monitor:DP-2, default:true"
-              "3, monitor:DP-1"
-              "4, monitor:DP-2"
-              "5, monitor:DP-1"
-              "6, monitor:DP-2"
-              "7, monitor:DP-1"
-              "8, monitor:DP-2"
-              "9, monitor:DP-1"
-              "10, monitor:DP-2"
+            workspace_rule = [
+              {
+                workspace = "1";
+                monitor = "DP-1";
+                default = true;
+              }
+              {
+                workspace = "2";
+                monitor = "DP-2";
+                default = true;
+              }
+              {
+                workspace = "3";
+                monitor = "DP-1";
+              }
+              {
+                workspace = "4";
+                monitor = "DP-2";
+              }
+              {
+                workspace = "5";
+                monitor = "DP-1";
+              }
+              {
+                workspace = "6";
+                monitor = "DP-2";
+              }
+              {
+                workspace = "7";
+                monitor = "DP-1";
+              }
+              {
+                workspace = "8";
+                monitor = "DP-2";
+              }
+              {
+                workspace = "9";
+                monitor = "DP-1";
+              }
+              {
+                workspace = "10";
+                monitor = "DP-2";
+              }
             ];
 
             bind = [
-              "$mainMod, RETURN, exec, $terminal"
-              "$mainMod, Q, killactive,"
-              "$mainMod SHIFT, Q, exit,"
-              "$mainMod, F, fullscreen"
-              "$mainMod, B, exec, $browser"
-              "$mainMod, V, toggleFloating,"
-              "$mainMod, R, exec, $menu"
-              ''$mainMod, P, exec, grim -g "$(slurp -d)" - | wl-copy -t image/png''
-              "ALT SHIFT Control, l, exec, loginctl lock-session"
+              (modBind "RETURN" "hl.dsp.exec_cmd(terminal)")
+              (modBind "Q" "hl.dsp.window.close()")
+              (modShiftBind "Q" "hl.dsp.exit()")
+              (modBind "F" "hl.dsp.window.fullscreen()")
+              (modBind "B" "hl.dsp.exec_cmd(browser)")
+              (modBind "V" ''hl.dsp.window.float({ action = "toggle" })'')
+              (modBind "R" "hl.dsp.exec_cmd(menu)")
+              (modBind "P" ''hl.dsp.exec_cmd([[grim -g "$(slurp -d)" - | wl-copy -t image/png]])'')
+              (mkBind ''"ALT + SHIFT + CONTROL + l"'' ''hl.dsp.exec_cmd("loginctl lock-session")'' null)
 
-              "$mainMod, h, movefocus, l"
-              "$mainMod, j, movefocus, d"
-              "$mainMod, k, movefocus, u"
-              "$mainMod, l, movefocus, r"
+              (focusBind "h" "left")
+              (focusBind "j" "down")
+              (focusBind "k" "up")
+              (focusBind "l" "right")
 
-              "$mainMod SHIFT, h, movewindow, l"
-              "$mainMod SHIFT, j, movewindow, d"
-              "$mainMod SHIFT, k, movewindow, u"
-              "$mainMod SHIFT, l, movewindow, r"
+              (moveBind "h" "left")
+              (moveBind "j" "down")
+              (moveBind "k" "up")
+              (moveBind "l" "right")
 
-              "$mainMod, 1, workspace, 1"
-              "$mainMod, 2, workspace, 2"
-              "$mainMod, 3, workspace, 3"
-              "$mainMod, 4, workspace, 4"
-              "$mainMod, 5, workspace, 5"
-              "$mainMod, 6, workspace, 6"
-              "$mainMod, 7, workspace, 7"
-              "$mainMod, 8, workspace, 8"
-              "$mainMod, 9, workspace, 9"
-              "$mainMod, 0, workspace, 10"
+              (wsFocus "1" 1)
+              (wsFocus "2" 2)
+              (wsFocus "3" 3)
+              (wsFocus "4" 4)
+              (wsFocus "5" 5)
+              (wsFocus "6" 6)
+              (wsFocus "7" 7)
+              (wsFocus "8" 8)
+              (wsFocus "9" 9)
+              (wsFocus "0" 10)
 
-              "$mainMod SHIFT, 1, movetoworkspace, 1"
-              "$mainMod SHIFT, 2, movetoworkspace, 2"
-              "$mainMod SHIFT, 3, movetoworkspace, 3"
-              "$mainMod SHIFT, 4, movetoworkspace, 4"
-              "$mainMod SHIFT, 5, movetoworkspace, 5"
-              "$mainMod SHIFT, 6, movetoworkspace, 6"
-              "$mainMod SHIFT, 7, movetoworkspace, 7"
-              "$mainMod SHIFT, 8, movetoworkspace, 8"
-              "$mainMod SHIFT, 9, movetoworkspace, 9"
-              "$mainMod SHIFT, 0, movetoworkspace, 10"
+              (wsMove "1" 1)
+              (wsMove "2" 2)
+              (wsMove "3" 3)
+              (wsMove "4" 4)
+              (wsMove "5" 5)
+              (wsMove "6" 6)
+              (wsMove "7" 7)
+              (wsMove "8" 8)
+              (wsMove "9" 9)
+              (wsMove "0" 10)
 
-              ",XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%"
-              ",XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5%"
-              ",XF86AudioMute, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle"
-              ",XF86AudioPlay, exec, playerctl play-pause"
-              ",XF86AudioNext, exec, playerctl next"
-              ",XF86AudioPrev, exec, playerctl previous"
-            ];
+              (keyBind "XF86AudioRaiseVolume" ''hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ +5%")'')
+              (keyBind "XF86AudioLowerVolume" ''hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ -5%")'')
+              (keyBind "XF86AudioMute" ''hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ toggle")'')
+              (keyBind "XF86AudioPlay" ''hl.dsp.exec_cmd("playerctl play-pause")'')
+              (keyBind "XF86AudioNext" ''hl.dsp.exec_cmd("playerctl next")'')
+              (keyBind "XF86AudioPrev" ''hl.dsp.exec_cmd("playerctl previous")'')
 
-            bindm = [
-              "$mainMod, mouse:272, movewindow"
-              "$mainMod, mouse:273, resizewindow"
+              (mouseBind "mouse:272" "hl.dsp.window.drag()")
+              (mouseBind "mouse:273" "hl.dsp.window.resize()")
             ];
           };
         };

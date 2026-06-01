@@ -10,6 +10,7 @@
       config = lib.mkIf config.theme.enable {
         catppuccin = {
           enable = true;
+          autoEnable = true;
           flavor = "mocha";
         };
       };
