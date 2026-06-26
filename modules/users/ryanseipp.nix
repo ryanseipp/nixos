@@ -63,7 +63,6 @@ in
           trivy
           slsa-verifier
           subnetcalc
-          watchman
           yubikey-manager
           yubikey-personalization
           yq-go

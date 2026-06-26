@@ -65,7 +65,6 @@ in
           opentofu
           quarkus
           slsa-verifier
-          watchman
           yq-go
 
           # Desktop apps

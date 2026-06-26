@@ -46,7 +46,6 @@ in
           ripgrep
           slsa-verifier
           subnetcalc
-          watchman
           yubikey-manager
           yubikey-personalization
           yq-go
