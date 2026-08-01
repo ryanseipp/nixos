@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   flake.homeModules.neovim =
     {
       pkgs,
@@ -529,6 +528,15 @@
               lightbulb.enable = true;
               trouble.enable = true;
               servers = {
+                # rust-analyzer settings; init_options is auto-populated from
+                # settings["rust-analyzer"], so don't set it here
+                rust-analyzer.settings."rust-analyzer" = {
+                  cargo = {
+                    buildScripts.enable = true;
+                    features = "all";
+                  };
+                  checkOnSave = true;
+                };
                 # Protobuf — no nvf language module exists
                 buf_ls = {
                   cmd = [
@@ -675,15 +683,7 @@
                 enable = true;
                 extensions.crates-nvim.enable = true;
                 dap.enable = true;
-                lsp = {
-                  enable = true;
-                  opts = ''
-                    ['rust-analyzer'] = {
-                      cargo = { buildScripts = { enable = true }, features = "all" },
-                      checkOnSave = true,
-                    },
-                  '';
-                };
+                lsp.enable = true;
               };
               go = {
                 enable = true;
@@ -734,7 +734,7 @@
               html.enable = true;
               css.enable = true;
               json.enable = true;
-              astro.enable = true;
+              # astro.enable = true;
               zig.enable = true;
               clang.enable = true;
               markdown.enable = true;
