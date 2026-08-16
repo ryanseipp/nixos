@@ -68,7 +68,6 @@ in
           yq-go
 
           # Desktop apps
-          bitwarden-desktop
           chromium
           discord
           gimp
