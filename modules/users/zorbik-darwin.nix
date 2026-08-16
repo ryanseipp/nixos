@@ -40,6 +40,7 @@ in
         kubescape
         maven
         opentofu
+        poppler-utils
         quarkus
         ripgrep
         slsa-verifier
