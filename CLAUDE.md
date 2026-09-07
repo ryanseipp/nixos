@@ -23,34 +23,48 @@ nix-darwin (macOS) systems with a unified configuration approach.
   titan-r)
 - `darwin-rebuild switch --flake ./#hyperion-r` - Rebuild macOS system (macOS
   host: hyperion-r)
-- `home-manager switch --flake ./#zorbik@titan-r` - Apply home-manager
-  configuration for Linux
-- `home-manager switch --flake ./#zorbik@hyperion-r` - Apply home-manager
-  configuration for macOS
+
+There are no `homeConfigurations` outputs. Home-manager is activated as a
+submodule of each system configuration, so the two commands above are the only
+way to apply user configuration.
 
 ### Code Formatting
 
-- `nix fmt` - Format all Nix files using treefmt (nixfmt, stylua, prettier)
+- `nix fmt` - Format all Nix files using treefmt (nixfmt, prettier)
 - `nix flake check` - Validate flake and run formatting checks
 
 ## Architecture
 
-### Configuration Structure
+This is a **dendritic** flake-parts configuration. `flake.nix` holds nothing but
+inputs and a two-line `imports`; every output is produced by a file under
+`modules/`, which `import-tree` discovers automatically. Adding a file is enough
+to register it — there is no central import list. Files and directories whose
+name starts with `_` are skipped, which is how `modules/hosts/_hardware/` stays
+out of the tree.
 
-- **`flake.nix`** - Main flake entry point defining inputs, outputs, and system
-  configurations
-- **`hosts/`** - Host-specific configurations:
-  - `titan-r/` - NixOS desktop system (AMD hardware, gaming setup)
-  - `hyperion-r/` - macOS system (Apple Silicon, development setup)
-  - `MacBook-Pro/` - Alternative macOS configuration
-- **`homes/`** - User-specific home-manager configurations:
-  - `zorbik.nix` - Linux user configuration
-  - `zorbik-mbp.nix` - macOS user configuration
-  - `ryanseipp.nix` - Alternative user configuration
-  - `common.nix` - Shared user configuration
-- **`modules/`** - Reusable configuration modules:
-  - `home/` - Home-manager modules (CLI tools, GUI apps, development setup)
-  - `nixos/` - NixOS system modules (desktop, server, virtualization)
+Each module file's job is to register an attribute:
+
+- `modules/home/**` → `flake.homeModules.<name>`
+- `modules/nixos/**` → `flake.nixosModules.<name>`
+- `modules/darwin/**` → `flake.darwinModules.<name>`
+- `modules/users/*.nix` → `flake.homeProfiles.<name>` (per-user profiles, kept
+  out of `homeModules` so hosts can import every feature module wholesale)
+- `modules/hosts/*.nix` → `flake.nixosConfigurations.*` /
+  `flake.darwinConfigurations.*`
+
+`flake.darwinConfigurations`, `flake.darwinModules` and `flake.homeProfiles` are
+not flake-parts built-ins; they are declared in `modules/flake/outputs.nix`.
+
+**The most important thing to know before editing:** hosts import _every_ module
+— `builtins.attrValues nixosModules`, `builtins.attrValues homeModules` — and
+select behaviour via each module's own `enable` option. A new module is
+therefore inert until some host or profile sets `<name>.enable = true`, and a
+module's `config` must be wrapped in `lib.mkIf` or it will apply everywhere.
+
+Current machines:
+
+- `titan-r` - NixOS desktop (AMD hardware, gaming setup), user `zorbik-linux`
+- `hyperion-r` - macOS (Apple Silicon, development setup), user `zorbik-darwin`
 
 ### Key Technologies
 
@@ -58,14 +72,7 @@ nix-darwin (macOS) systems with a unified configuration approach.
 - **home-manager** - User environment and dotfiles management
 - **nix-darwin** - macOS system configuration
 - **Catppuccin** - Consistent theming across applications
-- **flake-parts** - Flake organization and composition
-
-### Host Configurations
-
-- **titan-r** (NixOS): AMD desktop with gaming support, Docker, desktop
-  environment
-- **hyperion-r** (macOS): Development machine with Homebrew integration, tiling
-  WM (Aerospace)
+- **flake-parts** + **import-tree** - Flake organization and composition
 
 ### Module System
 
@@ -73,8 +80,9 @@ The configuration uses a modular approach where functionality is split into
 focused modules:
 
 - CLI tools (neovim, git, zsh, etc.) in `modules/home/cli/`
-- GUI applications (kitty, browsers, etc.) in `modules/home/gui/`
+- GUI applications (ghostty, browsers, etc.) in `modules/home/gui/`
 - System services and hardware in `modules/nixos/`
+- Shared macOS system defaults in `modules/darwin/`
 
 ### Special Features
 

@@ -32,7 +32,7 @@
           ];
 
           extraConfig = ''
-            set-option -sa terminal-features ',xterm-kitty:RGB'
+            set-option -sa terminal-features ',xterm-ghostty:RGB'
 
             # Shift arrow to switch windows
             bind -n S-Left previous-window

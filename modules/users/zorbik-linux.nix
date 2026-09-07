@@ -1,10 +1,10 @@
-{ inputs, ... }:
+{ ... }:
 let
   homeDirectory = "/home/zorbik";
   defaultBrowser = "zen-beta.desktop";
 in
 {
-  flake.homeModules.zorbik-linux =
+  flake.homeProfiles.zorbik-linux =
     { pkgs, ... }:
     {
       catppuccin = {
@@ -111,17 +111,10 @@ in
       gc-hm.enable = true;
       neovim.enable = true;
       bat.enable = true;
-      brave.enable = true;
       btop.enable = true;
       hyprland.enable = true;
-      kitty = {
-        enable = true;
-        font = "CaskaydiaMono Nerd Font Mono";
-        fontSize = 12;
-      };
       ghostty = {
         enable = true;
-        font = "CaskaydiaMono Nerd Font Mono";
         fontSize = 12;
       };
       tmux.enable = true;
@@ -134,7 +127,6 @@ in
       rofi.enable = true;
       waybar.enable = true;
       yazi.enable = true;
-      lazygit.enable = true;
 
       xdg = {
         enable = true;
@@ -160,9 +152,14 @@ in
         };
       };
 
+      # home-manager's manpage build emits an uncontexted-store-path warning
+      # upstream; we don't use `man home-configuration.nix`.
+      manual.manpages.enable = false;
+
       programs = {
         home-manager.enable = true;
         k9s.enable = true;
+        lazygit.enable = true;
 
         zsh.initContent = ''
           analyze_dump () {
@@ -187,19 +184,6 @@ in
           enableFishIntegration = false;
           enableNushellIntegration = false;
           config.global.hide_env_diff = true;
-        };
-
-        keychain = {
-          enable = false;
-          keys = [
-            "rseipp_id_ed25519_sk"
-            "rseipp_id_ed25519_sk2"
-          ];
-          enableZshIntegration = true;
-          enableBashIntegration = false;
-          enableFishIntegration = false;
-          enableNushellIntegration = false;
-          enableXsessionIntegration = false;
         };
 
         ssh = {

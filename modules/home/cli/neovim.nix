@@ -724,10 +724,10 @@
               terraform.enable = true;
               lua = {
                 enable = true;
-                # nvf's first-class lazydev integration — added to startPlugins
-                # and set up before LSP servers so blink-cmp's lazydev provider
-                # finds it on the first InsertEnter.
-                lsp.lazydev.enable = true;
+                # nvf's first-class lazydev integration — lazy-loaded on
+                # `ft = "lua"`, which is exactly when blink-cmp's lazydev
+                # provider is used.
+                extensions.lazydev.enable = true;
               };
               docker.enable = true;
               helm.enable = true;
@@ -785,7 +785,7 @@
               enable = true;
               # "auto" derives colors from the active colorscheme; avoids a
               # load-order race with catppuccin's lualine theme module.
-              theme = "auto";
+              setupOpts.options.theme = "auto";
             };
 
             git.gitsigns.enable = true;

@@ -15,7 +15,7 @@
         ghostty.enable = lib.mkEnableOption "enable ghostty";
         ghostty.font = lib.mkOption {
           type = lib.types.str;
-          default = "Iosevka";
+          default = "CaskaydiaMono Nerd Font Mono";
           description = "Default ghostty font";
         };
         ghostty.fontSize = lib.mkOption {
@@ -28,7 +28,7 @@
       config = lib.mkIf cfg.enable {
         programs.ghostty = {
           enable = true;
-          package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
+          package = if pkgs.stdenv.hostPlatform.isDarwin then null else pkgs.ghostty;
           enableZshIntegration = true;
 
           settings = {
@@ -39,7 +39,7 @@
             macos-option-as-alt = true;
 
             keybind = [
-              # Split creation (matching kitty's ctrl+alt+k/l)
+              # Split creation
               "ctrl+alt+k=new_split:down"
               "ctrl+alt+l=new_split:right"
 

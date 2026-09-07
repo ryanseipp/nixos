@@ -1,28 +1,21 @@
-{
-  inputs,
-  config,
-  withSystem,
-  ...
-}:
+{ inputs, config, ... }:
 let
   homeModules = config.flake.homeModules;
+  homeProfiles = config.flake.homeProfiles;
+  darwinModules = config.flake.darwinModules;
+  specialArgs = {
+    inputs = removeAttrs inputs [ "self" ];
+  };
 in
 {
-  flake.darwinConfigurations.hyperion-r = withSystem "aarch64-darwin" (
-    {
-      config,
-      inputs',
-      ...
-    }:
-    inputs.darwin.lib.darwinSystem rec {
-      specialArgs = {
-        inputs = removeAttrs inputs [ "self" ];
-        inherit inputs';
-        packages = config.packages;
-      };
-      modules = [
-        inputs.home-manager.darwinModules.home-manager
-        ({ pkgs, ... }: {
+  flake.darwinConfigurations.hyperion-r = inputs.darwin.lib.darwinSystem {
+    inherit specialArgs;
+    modules = [
+      inputs.home-manager.darwinModules.home-manager
+      darwinModules.base
+      (
+        { pkgs, ... }:
+        {
           nixpkgs = {
             hostPlatform = "aarch64-darwin";
             config.allowUnfree = true;
@@ -31,59 +24,12 @@ in
                 direnv = prev.direnv.overrideAttrs (_: {
                   doCheck = false;
                 });
-                statix = prev.statix.overrideAttrs (_: {
-                  doCheck = false;
-                });
-                mise = prev.mise.overrideAttrs (_: {
-                  doCheck = false;
-                });
               })
             ];
           };
 
-          nix = {
-            enable = false;
-            package = pkgs.nix;
-            nixPath =
-              let
-                path = toString ./../..;
-              in
-              [
-                "nixpkgs=${inputs.nixpkgs}"
-                "nixos-config=${path}"
-              ];
-
-            channel.enable = false;
-            settings = {
-              experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-              substituters = [ "https://claude-code.cachix.org" ];
-              trusted-public-keys = [
-                "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
-              ];
-            };
-
-            optimise = {
-              automatic = false;
-              interval = {
-                Minute = 10;
-                Hour = 9;
-                Weekday = 1;
-              };
-            };
-
-            gc = {
-              automatic = false;
-              options = "--delete-older-than 7d";
-              interval = {
-                Minute = 0;
-                Hour = 9;
-                Weekday = 1;
-              };
-            };
-          };
+          # Nix is managed outside of nix-darwin on this host.
+          nix.enable = false;
 
           users.users.zorbik = {
             home = "/Users/zorbik";
@@ -92,7 +38,6 @@ in
           };
 
           homebrew = {
-            enable = true;
             brews = [
               "gnu-sed"
               "libfido2"
@@ -101,11 +46,11 @@ in
             casks = [
               "1password"
               "balenaetcher"
-              "brave-browser"
               "claude"
               "docker-desktop"
               "ghostty"
               "libreoffice"
+              "proton-drive"
               "proton-mail"
               "slack"
               "spotify"
@@ -115,14 +60,6 @@ in
               "discord"
               "zen"
             ];
-            onActivation = {
-              autoUpdate = true;
-              upgrade = true;
-              cleanup = "zap";
-            };
-            global = {
-              autoUpdate = false;
-            };
           };
 
           networking = {
@@ -139,17 +76,7 @@ in
             };
           };
 
-          security.pam.services.sudo_local.touchIdAuth = true;
           services.tailscale.enable = true;
-
-          fonts.packages = with pkgs; [
-            inter
-            source-sans
-            nerd-fonts.iosevka
-            nerd-fonts.sauce-code-pro
-            nerd-fonts.caskaydia-mono
-            nerd-fonts.symbols-only
-          ];
 
           environment = {
             systemPackages = with pkgs; [
@@ -173,72 +100,31 @@ in
           system = {
             stateVersion = 6;
             primaryUser = "zorbik";
-            defaults = {
-              ".GlobalPreferences"."com.apple.mouse.scaling" = -1.0;
-              ActivityMonitor.IconType = 5;
-              NSGlobalDomain = {
-                AppleInterfaceStyle = "Dark";
-                AppleShowAllFiles = true;
-                AppleShowAllExtensions = true;
-              };
-              controlcenter = {
-                AirDrop = false;
-                BatteryShowPercentage = true;
-                Bluetooth = true;
-                Display = false;
-                FocusModes = false;
-                NowPlaying = true;
-                Sound = true;
-              };
-              dock = {
-                autohide = true;
-                mru-spaces = false;
-                orientation = "bottom";
-                persistent-apps = [
-                  { app = "/Applications/Zen.app"; }
-                  { app = "/Applications/kitty.app"; }
-                  { app = "/Applications/Ghostty.app"; }
-                  { app = "/Applications/Claude.app"; }
-                  { app = "/Applications/Discord.app"; }
-                  { app = "/Applications/Proton Mail.app"; }
-                  { app = "/Applications/Spotify.app"; }
-                  { app = "/Applications/1Password.app"; }
-                  { app = "/System/Applications/System Settings.app"; }
-                  { spacer.small = true; }
-                ];
-                show-recents = false;
-              };
-              finder = {
-                AppleShowAllFiles = true;
-                AppleShowAllExtensions = true;
-                FXPreferredViewStyle = "Nslv";
-                FXRemoveOldTrashItems = true;
-                ShowPathbar = true;
-                _FXSortFoldersFirst = true;
-              };
-            };
+            defaults.dock.persistent-apps = [
+              { app = "/Applications/Zen.app"; }
+              { app = "/Applications/Ghostty.app"; }
+              { app = "/Applications/Claude.app"; }
+              { app = "/Applications/Discord.app"; }
+              { app = "/Applications/Proton Mail.app"; }
+              { app = "/Applications/Spotify.app"; }
+              { app = "/Applications/1Password.app"; }
+              { app = "/System/Applications/System Settings.app"; }
+              { spacer.small = true; }
+            ];
           };
 
           home-manager.useGlobalPkgs = true;
-          home-manager.backupFileExtension = ".hm.bak";
           home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "hm-bak";
           home-manager.extraSpecialArgs = specialArgs;
           home-manager.users.zorbik = {
-            imports =
-              builtins.attrValues (
-                removeAttrs homeModules [
-                  "zorbik-darwin"
-                  "zorbik-linux"
-                  "ryanseipp"
-                ]
-              )
-              ++ [
-                inputs.catppuccin.homeModules.catppuccin
-                homeModules.zorbik-darwin
-              ];
+            imports = builtins.attrValues homeModules ++ [
+              inputs.catppuccin.homeModules.catppuccin
+              homeProfiles.zorbik-darwin
+            ];
           };
-        })
-      ];
-    }
-  );
+        }
+      )
+    ];
+  };
 }

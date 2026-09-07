@@ -11,16 +11,22 @@ A nix shell is provided, so clone the repository, and
 nix-shell
 ```
 
-The following commands will setup everything on the system:
+The following commands will setup everything on the system. Home-manager is
+activated as a submodule of the system configuration, so these also rebuild
+dotfiles and install user programs:
 
-- `nixos-rebuild switch --flake ./#titan-r` - rebuild the OS (if using NixOS)
-- `home-manager switch --flake ./#zorbik@titan-r` - rebuild dotfiles and install
-  programs
+- `nixos-rebuild switch --flake ./#titan-r` - rebuild the OS (NixOS)
+- `darwin-rebuild switch --flake ./#hyperion-r` - rebuild the system (macOS)
 
 ## Structure
 
-- `hosts/<hostname>` contains configuration for all systems running NixOS
-- `homes/<username>` contains the home-manager module for each user on the host
-- `modules/` contains reusable modules, split by type
-  - `home/` contains home-manager modules split by category & program
-  - `nixos/` contains nixos modules split by category & program
+Everything lives under `modules/`. `import-tree` loads every `.nix` file it
+finds there, so adding a file is all it takes to register it — there is no
+central import list. Paths beginning with `_` are skipped.
+
+- `flake/` declares extra flake outputs and configures treefmt
+- `home/` home-manager modules, split by category & program
+- `nixos/` NixOS modules, split by category & program
+- `darwin/` shared nix-darwin modules
+- `users/` the per-user home-manager profile for each account
+- `hosts/` one file per machine; `_hardware/` holds generated hardware config

@@ -121,7 +121,7 @@
       mcpServers = {
         aws-docs = {
           type = "stdio";
-          command = "uvx";
+          command = "${pkgs.uv}/bin/uvx";
           args = [ "awslabs.aws-documentation-mcp-server@latest" ];
           env = {
             FASTMCP_LOG_LEVEL = "ERROR";
@@ -130,7 +130,7 @@
 
         nixos = {
           type = "stdio";
-          command = "uvx";
+          command = "${pkgs.uv}/bin/uvx";
           args = [ "mcp-nixos" ];
         };
 
@@ -168,7 +168,7 @@
           args = [
             "run"
             "--"
-            "npx"
+            "${pkgs.nodejs}/bin/npx"
             "-y"
             "@modelcontextprotocol/server-gitlab"
           ];
@@ -185,7 +185,7 @@
           args = [
             "run"
             "--"
-            "uvx"
+            "${pkgs.uv}/bin/uvx"
             "mcp-grafana"
           ];
           env = {
@@ -260,18 +260,11 @@
       };
 
       config = lib.mkIf cfg.enable {
-        # Runtime dependencies for MCP servers (uvx for Python-based, npx for Node-based)
-        home.packages =
-          with pkgs;
-          [
-            uv
-            nodejs
-          ]
-          ++ lspPackages;
+        home.packages = lspPackages;
 
         programs.claude-code = {
           enable = true;
-          package = inputs.claude-code-nix.packages.${pkgs.system}.default;
+          package = inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
           # ── MCP servers (managed .mcp.json via --plugin-dir) ─────
           inherit mcpServers;

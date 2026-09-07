@@ -26,7 +26,7 @@
           enable = true;
           package = pkgs.rofi;
           font = mkFont (12);
-          terminal = "kitty";
+          terminal = "ghostty";
           extraConfig = {
             modes = [ "run" ];
             icon-theme = "Papirus";

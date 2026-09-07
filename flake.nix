@@ -27,21 +27,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mcphub = {
-      url = "github:ravitemer/mcp-hub";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
-    mcphub-nvim = {
-      url = "github:ravitemer/mcphub.nvim";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
-
     nvf = {
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
