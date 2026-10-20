@@ -1,47 +1,10 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.darwinModules.base =
+    { pkgs, ... }:
     {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
-    {
-      nix = lib.mkIf config.nix.enable {
-        nixPath = [
-          "nixpkgs=${inputs.nixpkgs}"
-        ];
-
-        channel.enable = false;
-
-        settings = {
-          experimental-features = [
-            "nix-command"
-            "flakes"
-          ];
-          substituters = [ "https://claude-code.cachix.org" ];
-          trusted-public-keys = [
-            "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
-          ];
-        };
-
-        optimise.interval = {
-          Minute = 10;
-          Hour = 9;
-          Weekday = 1;
-        };
-
-        gc = {
-          options = "--delete-older-than 7d";
-          interval = {
-            Minute = 0;
-            Hour = 9;
-            Weekday = 1;
-          };
-        };
-      };
-
+      # Nix itself (daemon, nix.conf, GC) is managed by Determinate Nix via
+      # `determinateNix.*` in the host config, not by nix-darwin's `nix.*`.
       security.pam.services.sudo_local.touchIdAuth = true;
 
       fonts.packages = with pkgs; [
@@ -55,10 +18,14 @@
 
       homebrew = {
         enable = true;
+        # Keep activation fast and deterministic: no network on every
+        # `darwin-rebuild switch`. Run `brew update && brew upgrade` by hand.
+        # "uninstall" removes formulae/casks not in the Brewfile but keeps
+        # their app data (unlike "zap").
         onActivation = {
-          autoUpdate = true;
-          upgrade = true;
-          cleanup = "zap";
+          autoUpdate = false;
+          upgrade = false;
+          cleanup = "uninstall";
         };
         global.autoUpdate = false;
       };

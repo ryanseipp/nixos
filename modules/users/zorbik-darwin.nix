@@ -3,118 +3,79 @@ let
   homeDirectory = "/Users/zorbik";
 in
 {
-  flake.homeProfiles.zorbik-darwin = { pkgs, ... }: {
-    catppuccin = {
-      enable = true;
-      autoEnable = true;
-      flavor = "mocha";
-    };
+  # macOS-specific half of the zorbik profile; see zorbik-common.nix.
+  flake.homeProfiles.zorbik-darwin =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    {
+      # home-manager's nh module appends clean.extraArgs to the launchd
+      # ProgramArguments as ONE string (no shell to split it), so nh would see
+      # a single bogus argument. Split it ourselves.
+      launchd.agents.nh-clean.config.ProgramArguments = lib.mkForce (
+        [
+          (lib.getExe config.programs.nh.package)
+          "clean"
+          "user"
+        ]
+        ++ lib.splitString " " config.programs.nh.clean.extraArgs
+      );
 
-    home = {
-      username = "zorbik";
-      inherit homeDirectory;
-      preferXdgDirectories = true;
+      home = {
+        inherit homeDirectory;
 
-      shellAliases = {
-        ls = "eza -l";
-        la = "eza -la";
+        packages = with pkgs; [
+          graalvmPackages.graalvm-ce
+          poppler-utils
+          yubikey-manager
+          yubikey-personalization
+        ];
+
+        stateVersion = "25.11";
       };
 
-      packages = with pkgs; [
-        crane
-        devbox
-        dive
-        docker
-        docker-compose
-        eza
-        fd
-        gh
-        graalvmPackages.graalvm-ce
-        jq
-        just
-        kind
-        kubectl
-        kubectl-tree
-        kubectl-cnpg
-        kubectx
-        kubescape
-        maven
-        opentofu
-        poppler-utils
-        quarkus
-        ripgrep
-        slsa-verifier
-        subnetcalc
-        yubikey-manager
-        yubikey-personalization
-        yq-go
-      ];
+      claude-code.github.pat = "op://Dev/GitHub PAT - Claude Code MCP/credential";
 
-      stateVersion = "25.11";
-    };
-
-    claude-code = {
-      enable = true;
-      github.pat = "op://Dev/GitHub PAT - Claude Code MCP/credential";
-      lspPlugins = [
-        "typescript"
-        "rust"
-        "java"
-        "go"
-        "python"
-      ];
-    };
-    gc-hm.enable = true;
-    neovim.enable = true;
-    bat.enable = true;
-    btop.enable = true;
-    tmux.enable = true;
-    yazi.enable = true;
-    zsh.enable = true;
-    zsh.enableFzf = true;
-    starship.enable = true;
-
-    ghostty = {
-      enable = true;
-      fontSize = 14;
-    };
-
-    aerospace = {
-      enable = true;
-      floatingAppIds = [ "com.mitchellh.ghostty" ];
-    };
-
-    zen-browser.enable = true;
-
-    git = {
-      enable = true;
-      userName = "Ryan Seipp";
-      userEmail = "rseipp@ryanseipp.com";
-      signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH3zMo59N1hukphn9i0jvSdUN9ng3AmaP22gYbzk5HOK zorbik@hyperion-r.local";
-      signingKeyPath = "${homeDirectory}/.ssh/id_ed25519";
-    };
-
-    # home-manager's manpage build emits an uncontexted-store-path warning
-    # upstream; we don't use `man home-configuration.nix`.
-    manual.manpages.enable = false;
-
-    programs = {
-      k9s.enable = true;
-      lazygit.enable = true;
-      obsidian.enable = true;
-
-      zsh.initContent = ''
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-
-        # eval $(/opt/homebrew/bin/ssh-agent)
-        # export SSH_ASKPASS=/usr/local/bin/ssh-askpass
-        # export DISPLAY=":0"
-      '';
-
-      ssh = {
+      ghostty = {
         enable = true;
-        enableDefaultConfig = false;
-        settings."*" = {
+        fontSize = 14;
+      };
+
+      aerospace = {
+        enable = true;
+        floatingAppIds = [ "com.mitchellh.ghostty" ];
+      };
+
+      git = {
+        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH3zMo59N1hukphn9i0jvSdUN9ng3AmaP22gYbzk5HOK zorbik@hyperion-r.local";
+        signingKeyPath = "${homeDirectory}/.ssh/id_ed25519";
+      };
+
+      programs = {
+        # Determinate Nixd handles disk-pressure GC; nh prunes old generations
+        # of this user's profiles on a schedule (launchd agent).
+        nh = {
+          enable = true;
+          darwinFlake = "${homeDirectory}/nixos";
+          clean = {
+            enable = true;
+            dates = "weekly";
+            extraArgs = "--keep-since 7d --keep 5";
+          };
+        };
+
+        zsh.initContent = ''
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+
+          # eval $(/opt/homebrew/bin/ssh-agent)
+          # export SSH_ASKPASS=/usr/local/bin/ssh-askpass
+          # export DISPLAY=":0"
+        '';
+
+        ssh.settings."*" = {
           ForwardAgent = false;
           AddKeysToAgent = "no";
           Compression = false;
@@ -129,16 +90,5 @@ in
           IdentitiesOnly = "yes";
         };
       };
-
-      direnv = {
-        enable = true;
-        nix-direnv.enable = true;
-        enableBashIntegration = false;
-        enableFishIntegration = false;
-        enableNushellIntegration = false;
-        config.global.hide_env_diff = true;
-      };
     };
-    catppuccin.mako.enable = false;
-  };
 }

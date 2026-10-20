@@ -4,29 +4,17 @@ let
   defaultBrowser = "zen-beta.desktop";
 in
 {
+  # Linux-specific half of the zorbik profile; see zorbik-common.nix.
   flake.homeProfiles.zorbik-linux =
     { pkgs, ... }:
     {
-      catppuccin = {
+      catppuccin.cursors = {
         enable = true;
-        autoEnable = true;
-        flavor = "mocha";
-        cursors = {
-          enable = true;
-          accent = "light";
-        };
+        accent = "light";
       };
 
       home = {
-        username = "zorbik";
         inherit homeDirectory;
-
-        preferXdgDirectories = true;
-
-        shellAliases = {
-          ls = "eza -l";
-          la = "eza -la";
-        };
 
         packages = with pkgs; [
           # System utilities
@@ -35,37 +23,11 @@ in
           curl
           dig
           ethtool
-          eza
-          fd
           gdb
-          ripgrep
           sops
           ssh-to-age
-          subnetcalc
           unzip
           wl-clipboard
-
-          # Kubernetes tooling
-          kubectl
-          kubectl-tree
-          kubectl-cnpg
-          kubectx
-          kubescape
-          kind
-
-          # Development tools
-          crane
-          devbox
-          dive
-          docker-compose
-          gh
-          jq
-          just
-          maven
-          opentofu
-          quarkus
-          slsa-verifier
-          yq-go
 
           # Desktop apps
           chromium
@@ -74,7 +36,6 @@ in
           hoppscotch
           hyprpaper
           lynis
-          obsidian
           pavucontrol
           proton-pass
           protonmail-desktop
@@ -91,45 +52,20 @@ in
       };
 
       git = {
-        enable = true;
-        userName = "Ryan Seipp";
-        userEmail = "rseipp@ryanseipp.com";
         signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJRMSH0bp24l5UKhB+sUvevv4meZTjuwd7hYjBUhBSKV rseipp-signing-key";
         signingKeyPath = "${homeDirectory}/.ssh/rseipp_id_ed25519";
       };
 
-      claude-code = {
-        enable = true;
-        lspPlugins = [
-          "typescript"
-          "rust"
-          "java"
-          "go"
-          "python"
-        ];
-      };
-      gc-hm.enable = true;
-      neovim.enable = true;
-      bat.enable = true;
-      btop.enable = true;
-      hyprland.enable = true;
       ghostty = {
         enable = true;
         fontSize = 12;
       };
-      tmux.enable = true;
-      zen-browser.enable = true;
-      zsh.enable = true;
-      zsh.enableFzf = true;
-      starship.enable = true;
-      docker.enable = true;
+      hyprland.enable = true;
       mako.enable = true;
       rofi.enable = true;
       waybar.enable = true;
-      yazi.enable = true;
 
       xdg = {
-        enable = true;
         portal = {
           enable = true;
           config = {
@@ -152,14 +88,8 @@ in
         };
       };
 
-      # home-manager's manpage build emits an uncontexted-store-path warning
-      # upstream; we don't use `man home-configuration.nix`.
-      manual.manpages.enable = false;
-
       programs = {
         home-manager.enable = true;
-        k9s.enable = true;
-        lazygit.enable = true;
 
         zsh.initContent = ''
           analyze_dump () {
@@ -177,26 +107,13 @@ in
           }
         '';
 
-        direnv = {
-          enable = true;
-          nix-direnv.enable = true;
-          enableBashIntegration = false;
-          enableFishIntegration = false;
-          enableNushellIntegration = false;
-          config.global.hide_env_diff = true;
-        };
-
-        ssh = {
-          enable = true;
-          enableDefaultConfig = false;
-          settings."*" = {
-            AddKeysToAgent = "yes";
-            IdentityFile = [
-              "${homeDirectory}/.ssh/rseipp_id_ed25519_sk"
-              "${homeDirectory}/.ssh/rseipp_id_ed25519_sk2"
-            ];
-            IdentitiesOnly = "yes";
-          };
+        ssh.settings."*" = {
+          AddKeysToAgent = "yes";
+          IdentityFile = [
+            "${homeDirectory}/.ssh/rseipp_id_ed25519_sk"
+            "${homeDirectory}/.ssh/rseipp_id_ed25519_sk2"
+          ];
+          IdentitiesOnly = "yes";
         };
       };
 

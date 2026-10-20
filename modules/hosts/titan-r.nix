@@ -104,7 +104,11 @@ in
             ];
 
             loader = {
-              systemd-boot.enable = true;
+              systemd-boot = {
+                enable = true;
+                # Keep /boot (vfat ESP) from filling up with old generations.
+                configurationLimit = 10;
+              };
               efi.canTouchEfiVariables = true;
             };
           };
@@ -125,6 +129,7 @@ in
           home-manager.users.zorbik = {
             imports = builtins.attrValues homeModules ++ [
               inputs.catppuccin.homeModules.catppuccin
+              homeProfiles.zorbik-common
               homeProfiles.zorbik-linux
             ];
           };

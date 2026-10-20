@@ -79,6 +79,8 @@
               clipboard = "unnamedplus";
               inccommand = "split";
               mouse = "a";
+              # Neovim 0.11+: default border for LSP hover/signature floats.
+              winborder = "rounded";
             };
 
             luaConfigPost = ''
@@ -322,13 +324,22 @@
               }
               {
                 mode = "n";
+                key = "<leader>uh";
+                lua = true;
+                action = "function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 }) end";
+                desc = "Toggle inlay hints";
+              }
+              {
+                mode = "n";
                 key = "<c-/>";
                 lua = true;
                 action = "function() Snacks.terminal() end";
                 desc = "Terminal";
               }
 
-              # LSP via snacks.picker
+              # LSP via snacks.picker. `grr` is Neovim's built-in references
+              # key; overriding it (rather than `gr` with nowait) keeps the
+              # rest of the built-in `gr*` family (grn/gra/gri/grt) reachable.
               {
                 mode = "n";
                 key = "gd";
@@ -345,11 +356,10 @@
               }
               {
                 mode = "n";
-                key = "gr";
+                key = "grr";
                 lua = true;
                 action = "function() Snacks.picker.lsp_references() end";
                 desc = "References";
-                nowait = true;
               }
               {
                 mode = "n";
@@ -388,7 +398,7 @@
                 ];
                 key = "<leader>rf";
                 lua = true;
-                action = "function() require('conform').format({ lsp_fallback = true, async = false }) end";
+                action = "function() require('conform').format({ lsp_format = 'fallback', async = false }) end";
                 desc = "Format file/range";
               }
 
@@ -504,13 +514,8 @@
                   nerd_font_variant = "normal";
                 };
                 sources = {
-                  default = [
-                    "lazydev"
-                    "lsp"
-                    "path"
-                    "snippets"
-                    "buffer"
-                  ];
+                  # nvf already adds lsp/path/snippets/buffer; lists concatenate.
+                  default = [ "lazydev" ];
                   providers.lazydev = {
                     name = "LazyDev";
                     module = "lazydev.integrations.blink";
@@ -525,18 +530,16 @@
             lsp = {
               enable = true;
               formatOnSave = true;
+              inlayHints.enable = true;
               lightbulb.enable = true;
               trouble.enable = true;
+              # No nvf language module enables tailwind; the preset carries the
+              # cmd, filetypes, root_dir and workspace_required.
+              presets.tailwindcss-language-server.enable = true;
+              # Keys here must match nvf's server registry names exactly: a key
+              # nvf doesn't know is emitted with no `cmd` and errors on every
+              # buffer. rust-analyzer is configured via rustaceanvim (languages.rust).
               servers = {
-                # rust-analyzer settings; init_options is auto-populated from
-                # settings["rust-analyzer"], so don't set it here
-                rust-analyzer.settings."rust-analyzer" = {
-                  cargo = {
-                    buildScripts.enable = true;
-                    features = "all";
-                  };
-                  checkOnSave = true;
-                };
                 # Protobuf — no nvf language module exists
                 buf_ls = {
                   cmd = [
@@ -550,92 +553,24 @@
                     "buf.work.yaml"
                   ];
                 };
-                # Deno — coexists with typescript-go via deno.json root marker
-                denols = {
-                  cmd = [
-                    (lib.getExe pkgs.deno)
-                    "lsp"
-                  ];
-                  filetypes = [
-                    "javascript"
-                    "javascriptreact"
-                    "javascript.jsx"
-                    "typescript"
-                    "typescriptreact"
-                    "typescript.tsx"
-                  ];
-                  root_markers = [
-                    "deno.json"
-                    "deno.jsonc"
-                  ];
-                };
-                # Tailwind with broad filetype set (ported from original config)
-                tailwindcss = {
-                  filetypes = [
-                    "astro"
-                    "astro-markdown"
-                    "blade"
-                    "clojure"
-                    "django-html"
-                    "htmldjango"
-                    "edge"
-                    "eelixir"
-                    "elixir"
-                    "ejs"
-                    "erb"
-                    "eruby"
-                    "gohtml"
-                    "gohtmltmpl"
-                    "haml"
-                    "handlebars"
-                    "hbs"
-                    "html"
-                    "html-eex"
-                    "heex"
-                    "jade"
-                    "leaf"
-                    "liquid"
-                    "markdown"
-                    "mdx"
-                    "mustache"
-                    "njk"
-                    "nunjucks"
-                    "php"
-                    "razor"
-                    "slim"
-                    "twig"
-                    "css"
-                    "less"
-                    "postcss"
-                    "sass"
-                    "scss"
-                    "stylus"
-                    "sugarss"
-                    "javascript"
-                    "javascriptreact"
-                    "reason"
-                    "rescript"
-                    "typescript"
-                    "typescriptreact"
-                    "vue"
-                    "svelte"
-                    "templ"
-                  ];
+                # Deno is enabled through languages.typescript/tsx.lsp.servers;
+                # nvf's preset sets workspace_required so it only attaches in
+                # deno.json projects.
+                tailwindcss-language-server = {
+                  # The preset already lists every common template/CSS/JS
+                  # filetype; lists concatenate, so only add what's missing.
+                  filetypes = [ "mdx" ];
                   init_options.userLanguages.rust = "html";
                 };
-                clangd = {
-                  cmd = lib.mkForce [
-                    "clangd"
-                    "--offset-encoding=utf-16"
-                  ];
-                  init_options.clangdFileStatus = true;
-                };
+                # cmd comes from nvf's preset (pkgs.clang-tools); Neovim 0.11+
+                # negotiates the offset encoding per client.
+                clangd.init_options.clangdFileStatus = true;
                 # YAML schemas: SchemaStore.nvim owns the catalog; schema-companion.nvim
                 # does content-based K8s/CRD dispatch via apiVersion+kind. Both are
                 # lazy-loaded (see lazy.plugins) and wired in on_attach below.
                 # For off-catalog files (e.g. Talos machineconfig), add a modeline:
                 #   # yaml-language-server: $schema=<URL>
-                yamlls = {
+                yaml-language-server = {
                   settings.yaml = {
                     keyOrdering = false;
                     # Disable yamlls's stale built-in schemastore fetch.
@@ -659,7 +594,7 @@
                           client.config.settings = vim.tbl_deep_extend("force",
                             client.config.settings or {},
                             { yaml = { schemas = schemastore.yaml.schemas() } })
-                          client.notify("workspace/didChangeConfiguration",
+                          client:notify("workspace/didChangeConfiguration",
                             { settings = client.config.settings })
                         end
                       end
@@ -681,9 +616,32 @@
               nix.enable = true;
               rust = {
                 enable = true;
+                # rustaceanvim owns rust-analyzer and the debug adapter; nvf
+                # asserts that its plain LSP/DAP presets are off when it is on.
+                lsp.enable = false;
+                dap.enable = false;
+                # Only read for rustaceanvim's adapter default: lldb-dap from
+                # pkgs.lldb, which works on both Linux and macOS.
+                dap.debugger = [ "lldb" ];
+                # Keep the manual conform entry (rustfmt + leptosfmt + rustywind);
+                # nvf's rust formatter would overwrite it with plain rustfmt.
+                format.enable = false;
                 extensions.crates-nvim.enable = true;
-                dap.enable = true;
-                lsp.enable = true;
+                extensions.rustaceanvim = {
+                  enable = true;
+                  # Any `server` definition replaces nvf's default wholesale,
+                  # so restate cmd here.
+                  setupOpts.server = {
+                    cmd = [ (lib.getExe pkgs.rust-analyzer) ];
+                    default_settings."rust-analyzer" = {
+                      cargo = {
+                        buildScripts.enable = true;
+                        features = "all";
+                      };
+                      checkOnSave = true;
+                    };
+                  };
+                };
               };
               go = {
                 enable = true;
@@ -702,11 +660,16 @@
                 # Skip mypy; ruff LSP already provides diagnostics
                 extraDiagnostics.enable = false;
               };
+              # deno only attaches in deno.json projects (workspace_required);
+              # typescript-go handles everything else.
               typescript = {
                 enable = true;
                 lsp = {
                   enable = true;
-                  servers = [ "typescript-go" ];
+                  servers = [
+                    "typescript-go"
+                    "deno"
+                  ];
                 };
                 format.type = [ "biome" ];
                 extraDiagnostics.types = [ "biomejs" ];
@@ -715,7 +678,10 @@
                 enable = true;
                 lsp = {
                   enable = true;
-                  servers = [ "typescript-go" ];
+                  servers = [
+                    "typescript-go"
+                    "deno"
+                  ];
                 };
                 format.type = [ "biome" ];
               };
@@ -732,7 +698,10 @@
               docker.enable = true;
               helm.enable = true;
               html.enable = true;
-              css.enable = true;
+              css = {
+                enable = true;
+                format.type = [ "biome" ];
+              };
               json.enable = true;
               # astro.enable = true;
               zig.enable = true;
@@ -746,29 +715,37 @@
                 # actionlint for GitHub Actions workflow YAML
                 yaml = [ "actionlint" ];
               };
+              # nvf has no actionlint preset; give nvim-lint's builtin a store
+              # path and only run it in repos that have workflows.
+              linters.actionlint = {
+                cmd = lib.getExe pkgs.actionlint;
+                required_files = [ ".github/workflows" ];
+              };
             };
 
             formatter.conform-nvim = {
               enable = true;
               setupOpts = {
-                format_on_save = {
-                  lsp_fallback = true;
-                  async = false;
-                  timeout_ms = 1000;
-                };
+                # nvf defaults BOTH format_on_save (sync) and format_after_save
+                # (async), which formats and writes twice. Keep a single guarded
+                # sync pass that honours the <leader>ltf toggle.
+                format_on_save = mkLuaInline ''
+                  function()
+                    if not vim.g.formatsave or vim.b.disableFormatSave then return end
+                    return { lsp_format = "fallback", timeout_ms = 1000 }
+                  end
+                '';
+                format_after_save = null;
+                # Per-filetype entries that nvf language modules already define
+                # (c, css, sh, terraform) are set via languages.<lang>.format.
                 formatters_by_ft = {
-                  c = [ "clang_format" ];
-                  css = [ "biome" ];
                   rust = [
                     "rustfmt"
                     "leptosfmt"
                     "rustywind"
                   ];
-                  sh = [ "shfmt" ];
                   bash = [ "shfmt" ];
                   zsh = [ "shfmt" ];
-                  opentofu = [ "tofu_fmt" ];
-                  terraform = [ "tofu_fmt" ];
                 };
                 formatters = {
                   shfmt.prepend_args = [
@@ -841,7 +818,6 @@
                       }
                     ];
                   };
-                  explorer.hidden = true;
                   indent = {
                     enabled = true;
                     animate.enabled = false;
@@ -850,7 +826,13 @@
                   input.enabled = true;
                   picker = {
                     enabled = true;
-                    hidden = true;
+                    # Top-level picker.hidden means something else (which
+                    # windows to hide); dotfiles are per-source.
+                    sources = {
+                      files.hidden = true;
+                      grep.hidden = true;
+                      explorer.hidden = true;
+                    };
                   };
                   notifier.enabled = true;
                   statuscolumn.enabled = true;

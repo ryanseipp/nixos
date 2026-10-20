@@ -21,6 +21,11 @@
           enable = true;
           launchd.enable = true;
           settings = {
+            # v2 stops inferring persistent workspaces from keybindings; list
+            # them explicitly so 1-10 survive being emptied, as before.
+            config-version = 2;
+            persistent-workspaces = map toString (lib.range 1 10);
+
             accordion-padding = 30;
             after-startup-command = [ ];
             automatically-unhide-macos-hidden-apps = true;

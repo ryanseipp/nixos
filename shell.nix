@@ -1,7 +1,8 @@
 {
   pkgs ?
     let
-      lock = (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes.nixpkgs.locked;
+      nodes = (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes;
+      lock = nodes.${nodes.root.inputs.nixpkgs}.locked;
       nixpkgs = fetchTarball {
         url = "https://github.com/nixos/nixpkgs/archive/${lock.rev}.tar.gz";
         sha256 = lock.narHash;

@@ -1,10 +1,6 @@
 { ... }: {
   flake.nixosModules.base =
-    {
-      pkgs,
-      inputs,
-      ...
-    }:
+    { ... }:
     let
       cloudflareNameservers = [
         # "2606:4700:4700::1111"
@@ -14,16 +10,9 @@
       ];
     in
     {
+      # NIX_PATH (nixpkgs=flake:nixpkgs) and the nixpkgs registry entry come
+      # from `nixpkgs.flake.*`, which lib.nixosSystem sets up automatically.
       nix = {
-        package = pkgs.nix;
-        nixPath =
-          let
-            path = toString ./../..;
-          in
-          [
-            "nixpkgs=${inputs.nixpkgs}"
-            "nixos-config=${path}"
-          ];
         channel.enable = false;
         settings = {
           experimental-features = [
@@ -35,13 +24,18 @@
             "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
           ];
         };
-
-        gc = {
-          automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than 7d";
-        };
         optimise.automatic = true;
+      };
+
+      # nh clean replaces nix.gc: it also prunes user profiles and stale
+      # `result` gcroots, and keeps a minimum number of generations.
+      programs.nh = {
+        enable = true;
+        clean = {
+          enable = true;
+          dates = "weekly";
+          extraArgs = "--keep-since 7d --keep 5";
+        };
       };
 
       services = {
