@@ -37,7 +37,7 @@ in
         stateVersion = "25.11";
       };
 
-      claude-code.github.pat = "op://Dev/GitHub PAT - Claude Code MCP/credential";
+      mcp.github.pat = "op://Dev/GitHub PAT - Claude Code MCP/credential";
 
       ghostty = {
         enable = true;

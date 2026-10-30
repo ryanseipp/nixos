@@ -60,6 +60,7 @@ in
             "balenaetcher"
             "brave-browser"
             "claude"
+                        "chatgpt"
             "docker-desktop"
             "ghostty"
             "libreoffice"

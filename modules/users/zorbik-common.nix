@@ -21,7 +21,7 @@
         };
 
         packages = with pkgs; [
-          # Modern coreutils (see the claude-code modern-coreutils rule)
+          # Modern coreutils
           dust
           procs
           sd
@@ -60,13 +60,13 @@
       claude-code = {
         enable = true;
         lspPlugins = [
-          "typescript"
           "rust"
-          "java"
           "go"
-          "python"
         ];
       };
+      codex.enable = true;
+      mcp.enable = true;
+      openrig.enable = true;
       neovim.enable = true;
       bat.enable = true;
       btop.enable = true;
