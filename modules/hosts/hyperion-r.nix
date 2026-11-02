@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   config,
   ...
 }:
@@ -41,6 +42,32 @@ in
               "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
             ];
           };
+          # Upstream nixpkgs `darwin.linux-builder` (QEMU VM) for aarch64-linux
+          # builds and NixOS tests. Determinate's Native Linux Builder is
+          # disabled by this option.
+          nixosVmBasedLinuxBuilder = {
+            enable = true;
+            # Defaults to one slot per core; cap it so each build gets more
+            # cores and memory instead.
+            maxJobs = 2;
+            config = {
+              virtualisation = {
+                cores = 6;
+                darwin-builder = {
+                  memorySize = 12 * 1024;
+                  # Only applies when the qcow2 is first created; delete the
+                  # image under /var/lib/nixos-vm-based-linux-builder to resize.
+                  diskSize = 50 * 1024;
+                };
+              };
+              # The builder profile already GCs mid-build, but at 1G/3G free —
+              # not enough headroom for two concurrent builds.
+              nix.settings = {
+                min-free = lib.mkForce (5 * 1024 * 1024 * 1024);
+                max-free = lib.mkForce (15 * 1024 * 1024 * 1024);
+              };
+            };
+          };
         };
 
         users.users.zorbik = {
@@ -60,7 +87,7 @@ in
             "balenaetcher"
             "brave-browser"
             "claude"
-                        "chatgpt"
+            "chatgpt"
             "docker-desktop"
             "ghostty"
             "libreoffice"

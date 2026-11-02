@@ -40,7 +40,6 @@
               "$cobol"
               "$daml"
               "$dart"
-              "$deno"
               "$dotnet"
               "$elixir"
               "$elm"

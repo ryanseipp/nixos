@@ -45,7 +45,6 @@
 
             globals = {
               mapleader = " ";
-              markdown_fenced_languages = [ "ts=typescript" ];
             };
 
             options = {
@@ -553,9 +552,6 @@
                     "buf.work.yaml"
                   ];
                 };
-                # Deno is enabled through languages.typescript/tsx.lsp.servers;
-                # nvf's preset sets workspace_required so it only attaches in
-                # deno.json projects.
                 tailwindcss-language-server = {
                   # The preset already lists every common template/CSS/JS
                   # filetype; lists concatenate, so only add what's missing.
@@ -660,16 +656,13 @@
                 # Skip mypy; ruff LSP already provides diagnostics
                 extraDiagnostics.enable = false;
               };
-              # deno only attaches in deno.json projects (workspace_required);
-              # typescript-go handles everything else.
+              # nvf's "typescript-go" key is TS 7's native `tsc --lsp` from
+              # pkgs.typescript; the name predates TS 7 going stable.
               typescript = {
                 enable = true;
                 lsp = {
                   enable = true;
-                  servers = [
-                    "typescript-go"
-                    "deno"
-                  ];
+                  servers = [ "typescript-go" ];
                 };
                 format.type = [ "biome" ];
                 extraDiagnostics.types = [ "biomejs" ];
@@ -678,10 +671,7 @@
                 enable = true;
                 lsp = {
                   enable = true;
-                  servers = [
-                    "typescript-go"
-                    "deno"
-                  ];
+                  servers = [ "typescript-go" ];
                 };
                 format.type = [ "biome" ];
               };
