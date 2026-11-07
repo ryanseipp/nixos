@@ -27,12 +27,26 @@
           sd
 
           # Kubernetes tooling
+          argocd
+          cilium-cli
+          crossplane-cli
+          # helmfile with its own internal helm + diff/secrets/s3/git plugins;
+          # that helm isn't exposed on PATH, hence kubernetes-helm below.
+          helmfile-wrapped
+          hubble
           kind
           kubectl
           kubectl-cnpg
           kubectl-tree
           kubectx
+          kubernetes-helm
           kubescape
+          # standalone binary for helmfile; `kubectl apply -k` uses kubectl's built-in copy
+          kustomize
+
+          # OCI build / supply-chain (docker comes from the docker module)
+          cosign
+          trivy
 
           # Development tools
           crane
