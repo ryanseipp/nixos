@@ -67,6 +67,8 @@ in
       hyprland.enable = true;
       mako.enable = true;
       mpv.enable = true;
+      # titan-r holds the always-on OpenRig kernel; bring it back after reboots.
+      openrig.autostart = true;
       rofi.enable = true;
       waybar.enable = true;
 
