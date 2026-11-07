@@ -116,7 +116,9 @@ in
           };
         };
 
-        services.tailscale.enable = true;
+        # Tailscale is owned by the GUI app (tailscale-app cask, macsys
+        # network extension). Don't also run nix-darwin's tailscaled: two
+        # daemons fight over utun routes and DNS.
 
         environment = {
           systemPackages = with pkgs; [
