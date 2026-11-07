@@ -47,7 +47,7 @@
         # so stopping or changing the unit must never kill them: KillMode
         # limits a stop to the (already exited) launcher, and the unit is
         # never restarted by a switch. No ExecStop: stopping is not `rig down`.
-        systemd.user.services.openrig = lib.mkIf (cfg.autostart && pkgs.stdenv.isLinux) {
+        systemd.user.services.openrig = lib.mkIf (cfg.autostart && pkgs.stdenv.hostPlatform.isLinux) {
           Unit = {
             Description = "OpenRig daemon, kernel and last-running rigs";
             After = [ "ssh-agent.service" ];
@@ -62,7 +62,16 @@
             Environment = [
               "PATH=/run/wrappers/bin:/etc/profiles/per-user/${config.home.username}/bin:${config.home.homeDirectory}/.nix-profile/bin:/run/current-system/sw/bin"
               "SSH_AUTH_SOCK=%t/ssh-agent"
-            ];
+            ]
+            # Seats read agent config from the shell's CLAUDE_CONFIG_DIR and
+            # CODEX_HOME, so the daemon must pre-trust workspaces and write
+            # hooks in those same homes.
+            ++ lib.mapAttrsToList (name: value: "${name}=${toString value}") (
+              lib.getAttrs (lib.filter (n: config.home.sessionVariables ? ${n}) [
+                "CLAUDE_CONFIG_DIR"
+                "CODEX_HOME"
+              ]) config.home.sessionVariables
+            );
           };
           Install.WantedBy = [ "default.target" ];
         };
