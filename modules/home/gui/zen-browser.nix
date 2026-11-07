@@ -72,6 +72,10 @@
             "dom.security.https_only_mode" = true;
             "dom.security.https_only_mode_pbm" = true;
 
+            # Hardware video decode (VA-API). HDR (gfx.color_management.hdr) is
+            # left at Mozilla's default: Hyprland can't render Firefox's P010 overlays yet.
+            "media.ffmpeg.vaapi.enabled" = true;
+
             # Balanced privacy
             "privacy.trackingprotection.enabled" = true;
             "privacy.trackingprotection.socialtracking.enabled" = true;

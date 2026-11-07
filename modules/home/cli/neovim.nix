@@ -644,7 +644,7 @@
                 dap.enable = true;
                 # golangci-lint via extraDiagnostics default
               };
-              java.enable = true;
+              java.enable = false;
               python = {
                 enable = true;
                 # basedpyright for types, ruff LSP for lint + import fixes

@@ -5,12 +5,18 @@
       lib,
       config,
       pkgs,
+      osConfig ? { },
       ...
     }:
     let
-      wallpaper = ../../../assets/dc2.png;
+      wallpaper = ../../../assets/743763.jpg;
       hyprlandPkg = config.wayland.windowManager.hyprland.package;
       hyprlockPkg = config.programs.hyprlock.package;
+      hyprctl = "${hyprlandPkg}/bin/hyprctl";
+
+      # Set by the NixOS remoteHost module: the host must stay awake, and the
+      # (QD-OLED) display must go dark instead.
+      remoteHost = osConfig.remoteHost.enable or false;
 
       inherit (lib.generators) mkLuaInline;
 
@@ -60,13 +66,35 @@
             browser._var = "zen-beta";
             menu._var = "rofi -show run";
 
-            monitor = {
-              output = "";
-              mode = "highrr";
-              position = "auto";
-              scale = "auto";
-              vrr = 1;
-            };
+            monitor = [
+              # Fallback for any unknown display
+              {
+                output = "";
+                mode = "highrr";
+                position = "auto";
+                scale = "auto";
+                vrr = 0;
+              }
+              # ASUS ROG Swift PG32UCDM3 (EDID description match; port-agnostic)
+              {
+                output = "desc:ASUSTek COMPUTER INC PG32UCDM3 W4LMAV004611";
+                mode = "3840x2160@240";
+                position = "0x0";
+                scale = 1;
+                bitdepth = 10;
+                cm = "hdr";
+                # SDR-in-HDR mapping. These are per-monitor; the global
+                # render:cm_sdr_eotf is only consulted when sdr_eotf = "auto".
+                sdr_eotf = "gamma22"; # sRGB piecewise curve looks flat on a PQ signal
+                sdr_min_luminance = 0.0; # OLED: true black (default 0.2 nits greys blacks)
+                sdr_max_luminance = 200; # nits for SDR white (default 80 reads as grey)
+                sdrbrightness = 1.0; # multiplier on top of sdr_max_luminance; tune here if needed
+                sdrsaturation = 1.0;
+                # QD-OLED gamma flickers when refresh fluctuates, so keep the
+                # desktop pinned at 240Hz; VRR engages for fullscreen game/video
+                vrr = 3;
+              }
+            ];
 
             on = {
               _args = [
@@ -109,54 +137,15 @@
                 shadow.enabled = true;
               };
 
+              render = {
+                cm_enabled = true; # required for cm=hdr (default, made explicit)
+                cm_auto_hdr = 1; # harmless with cm=hdr; active if we fall back to cm="auto"
+                direct_scanout = 2; # auto: fullscreen games scan out directly for lowest-latency VRR+HDR
+              };
+
               animations.enabled = false;
               dwindle.preserve_split = true;
             };
-
-            workspace_rule = [
-              {
-                workspace = "1";
-                monitor = "DP-1";
-                default = true;
-              }
-              {
-                workspace = "2";
-                monitor = "DP-2";
-                default = true;
-              }
-              {
-                workspace = "3";
-                monitor = "DP-1";
-              }
-              {
-                workspace = "4";
-                monitor = "DP-2";
-              }
-              {
-                workspace = "5";
-                monitor = "DP-1";
-              }
-              {
-                workspace = "6";
-                monitor = "DP-2";
-              }
-              {
-                workspace = "7";
-                monitor = "DP-1";
-              }
-              {
-                workspace = "8";
-                monitor = "DP-2";
-              }
-              {
-                workspace = "9";
-                monitor = "DP-1";
-              }
-              {
-                workspace = "10";
-                monitor = "DP-2";
-              }
-            ];
 
             bind = [
               (modBind "RETURN" "hl.dsp.exec_cmd(terminal)")
@@ -222,13 +211,17 @@
 
         services.hyprpaper = {
           enable = true;
+          # hyprpaper >= 0.8 config: `wallpaper { }` blocks, no `preload`.
+          # Empty monitor = wildcard (all outputs).
           settings = {
-            preload = "${wallpaper}";
-            wallpaper = [
-              "DP-1,contain:${wallpaper}"
-              "DP-2,contain:${wallpaper}"
-            ];
             splash = false;
+            wallpaper = [
+              {
+                monitor = "";
+                path = "${wallpaper}";
+                fit_mode = "contain";
+              }
+            ];
           };
         };
 
@@ -314,20 +307,37 @@
             general = {
               lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${hyprlockPkg}/bin/hyprlock";
               before_sleep_cmd = "loginctl lock-session";
-              after_sleep_cmd = "${hyprlandPkg}/bin/hyprctl dispatch dpms on";
+              after_sleep_cmd = ''${hyprctl} dispatch 'hl.dsp.dpms({ action = "on" })' '';
             };
 
-            listener = [
-              {
-                timeout = 600; # 10 minutes - lock screen
-                on-timeout = "loginctl lock-session";
-              }
-              {
-                timeout = 900; # 15 minutes - suspend system
-                on-timeout = "systemctl suspend";
-              }
-              # DPMS off removed - causes AMD GPU crashes with hyprlock
-            ];
+            listener =
+              if remoteHost then
+                [
+                  {
+                    timeout = 240; # 4 minutes - lock screen
+                    on-timeout = "loginctl lock-session";
+                  }
+                  {
+                    # 5 minutes - display off. Previously crashed amdgpu with
+                    # hyprlock; if that recurs the monitor just loses signal
+                    # and goes to standby, which is still safe for the OLED.
+                    timeout = 300;
+                    on-timeout = ''${hyprctl} dispatch 'hl.dsp.dpms({ action = "off" })' '';
+                    on-resume = ''${hyprctl} dispatch 'hl.dsp.dpms({ action = "on" })' '';
+                  }
+                ]
+              else
+                [
+                  {
+                    timeout = 600; # 10 minutes - lock screen
+                    on-timeout = "loginctl lock-session";
+                  }
+                  {
+                    timeout = 900; # 15 minutes - suspend system
+                    on-timeout = "systemctl suspend";
+                  }
+                  # DPMS off removed - causes AMD GPU crashes with hyprlock
+                ];
           };
         };
       };

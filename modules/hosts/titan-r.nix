@@ -1,4 +1,8 @@
-{ inputs, config, ... }:
+{
+  inputs,
+  config,
+  ...
+}:
 let
   homeModules = config.flake.homeModules;
   homeProfiles = config.flake.homeProfiles;
@@ -21,7 +25,7 @@ in
       (
         { pkgs, ... }:
         let
-          kernel = pkgs.linuxKernel.packages.linux_7_1;
+          kernel = pkgs.linuxKernel.packages.linux_7_3;
         in
         {
           networking = {
@@ -30,10 +34,9 @@ in
             networkmanager.enable = true;
           };
 
-          services.tailscale = {
-            enable = true;
-            useRoutingFeatures = "client";
-          };
+          services.tailscale.enable = true;
+          # Exit node + Tailscale SSH + mosh + no suspend, for remote work.
+          remoteHost.enable = true;
 
           users.users.zorbik = {
             isNormalUser = true;

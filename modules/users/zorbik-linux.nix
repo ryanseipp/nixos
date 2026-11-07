@@ -16,6 +16,10 @@ in
       home = {
         inherit homeDirectory;
 
+        # catppuccin's cursors module drives home.pointerCursor; relying on
+        # that implicitly is deprecated, so opt in explicitly
+        pointerCursor.enable = true;
+
         packages = with pkgs; [
           # System utilities
           age
@@ -62,6 +66,7 @@ in
       };
       hyprland.enable = true;
       mako.enable = true;
+      mpv.enable = true;
       rofi.enable = true;
       waybar.enable = true;
 
@@ -110,6 +115,17 @@ in
         ssh.settings."*" = {
           AddKeysToAgent = "yes";
           IdentityFile = [
+            "${homeDirectory}/.ssh/rseipp_id_ed25519_sk"
+            "${homeDirectory}/.ssh/rseipp_id_ed25519_sk2"
+          ];
+          IdentitiesOnly = "yes";
+        };
+
+        # Non-FIDO key so pushes work over mosh and from unattended agents
+        # while the YubiKey is away from this machine; sk keys as fallback.
+        ssh.settings."github.com" = {
+          IdentityFile = [
+            "${homeDirectory}/.ssh/titan-r_github_ed25519"
             "${homeDirectory}/.ssh/rseipp_id_ed25519_sk"
             "${homeDirectory}/.ssh/rseipp_id_ed25519_sk2"
           ];

@@ -29,6 +29,7 @@ in
 
         packages = with pkgs; [
           graalvmPackages.graalvm-ce
+          mosh
           poppler-utils
           yubikey-manager
           yubikey-personalization
@@ -88,6 +89,13 @@ in
           ControlPersist = "no";
           IdentityFile = "${homeDirectory}/.ssh/id_ed25519";
           IdentitiesOnly = "yes";
+        };
+
+        # Remote dev box over the tailnet (Tailscale SSH; MagicDNS name).
+        # `mosh titan-r -- tmux new -As rig` for the long-lived session.
+        ssh.settings."titan-r" = {
+          User = "zorbik";
+          ServerAliveInterval = 30;
         };
       };
     };
