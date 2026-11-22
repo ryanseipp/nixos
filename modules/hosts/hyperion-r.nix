@@ -50,13 +50,20 @@ in
             # Defaults to one slot per core; cap it so each build gets more
             # cores and memory instead.
             maxJobs = 2;
+            # Wipe the qcow2 on every start. Its writable store overlay
+            # persists across rebuilds while the read-only store image under
+            # it is regenerated, and the two drift until services (dbus,
+            # firewall, sshd) fail to start and the builder can no longer
+            # rebuild itself. Outputs are copied back to the host, so only
+            # the guest-side cache is lost.
+            ephemeral = true;
             config = {
               virtualisation = {
                 cores = 6;
                 darwin-builder = {
                   memorySize = 12 * 1024;
-                  # Only applies when the qcow2 is first created; delete the
-                  # image under /var/lib/nixos-vm-based-linux-builder to resize.
+                  # Image is recreated each boot (ephemeral), so this applies
+                  # on the next restart.
                   diskSize = 50 * 1024;
                 };
               };
